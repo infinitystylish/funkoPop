@@ -66,7 +66,9 @@
 				</form>
 			</div>
 		</div>
-		<button class="btn btn-primary" @click="volver">Volver</button>
+		<div class="button-list-container pull-right">
+			<button class="btn btn-primary" @click="volver">Volver</button>
+		</div>
 	</div>
 </template>
 
@@ -109,11 +111,11 @@ export default {
 					var cantidadComprada = this.pop.cantidadComprada.trim();
 
 					var cantidadDisponible = cantidadComprada;
-					var vendidos= 0;
-					var margenGanancia= precioPublico - costo;
+					var vendidos = 0;
+					var margenGanancia = Math.ceil((precioPublico - costo) * 10) / 10;
 					var descuentos= 0;
-					var ganancia= (vendidos * margenGanancia) - descuentos;
-					var recuperacionDinero= costo * vendidos;
+					var ganancia = (vendidos * margenGanancia) - descuentos;
+					var recuperacionDinero = costo * vendidos;
 
 					this.$http.post('https://funkopop-e84d7.firebaseio.com/pops.json',{
 						licencia: licencia,

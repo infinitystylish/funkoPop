@@ -13,14 +13,26 @@ export default {
     }
   },
   methods: {
-  },
-  created(){
+    compare(a,b){
+      const nameA = a.licencia.toUpperCase();
+      const nameB = b.licencia.toUpperCase();
+
+      let comparison = 0;
+      if(nameA > nameB ){
+        comparison = 1;
+      }else if( nameA < nameB ){
+        comparison = 0;
+      }
+      return comparison;
+    },
+    getData(){
       this.$http.get('https://funkopop-e84d7.firebaseio.com/pops.json')
         .then(respuesta => { 
-            console.log(respuesta.json());
+            //console.log(respuesta.json());
             return respuesta.json();
         })
         .then(respuestaJson => {
+          this.pops = [];
           for (let id in respuestaJson){
             let pop = {
               id: id,
@@ -39,9 +51,17 @@ export default {
               recuperacionDinero: respuestaJson[id].recuperacionDinero
             }
             this.pops.push(pop);
+            this.pops.sort(this.compare)
           }
         });
     }
+  },
+  created(){
+    this.getData();
+  },
+  watch: {
+    '$route': 'getData'
+  },
 }
 </script>
 
