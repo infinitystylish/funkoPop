@@ -1,5 +1,13 @@
 <template>
 	<div>
+		<div class="fixed-total">
+			<div class="total-cost">
+				<span>Total de inversion: ${{total}} </span>
+			</div>
+			<div class="total-recuperado">
+				<span>Total recuperado: ${{totalRecuperado}} </span>
+			</div>
+		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h1>Listado de Funko Pop</h1>
@@ -131,6 +139,20 @@
 				}
 			}
 		},
+		computed: {
+		  total: function(){
+		  	let sum = 0;
+		    return this.pops.reduce(function(prev, pop){
+		      return Math.ceil( (sum = sum + (pop.costo * pop.cantidadComprada) )*10) / 10; 
+		    },0);
+		  },
+		  totalRecuperado(){
+		  	let sum = 0;
+		    return this.pops.reduce(function(prev, pop){
+		      return Math.ceil( (sum = sum + (pop.vendidos * pop.costo) )*10) / 10; 
+		    },0);
+		  }
+		}
 	}
 </script>
 
@@ -155,6 +177,23 @@
 
 	.table-danger{	    	
 		background-color: #f2dede;
+	}
+
+	.fixed-total{
+		position: fixed;
+		left: 0;
+		bottom: 100px;
+		width: 300px;
+		background-color: #f5f5f5;
+   	 	border-color: #ddd;
+   	 	border-width: 1px;
+   	 	border-style: solid;
+   	 	padding: 10px 15px;
+   	 	border-top-right-radius: 3px;
+   	 	border-bottom-right-radius: 3px;
+		.total-recuperado{
+			margin-top: 20px;
+		}
 	}
 
 </style>
