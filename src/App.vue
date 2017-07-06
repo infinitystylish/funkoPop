@@ -43,6 +43,7 @@ export default {
               costo: respuestaJson[id].costo,
               cantidadComprada: respuestaJson[id].cantidadComprada,
 
+              costoTotal: respuestaJson[id].costoTotal,
               cantidadDisponible: respuestaJson[id].cantidadDisponible,
               vendidos: respuestaJson[id].vendidos,
               margenGanancia: respuestaJson[id].margenGanancia,

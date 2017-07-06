@@ -112,10 +112,9 @@ export default {
 
 					var cantidadDisponible = cantidadComprada;
 					var vendidos = 0;
-					var margenGanancia = Math.ceil((precioPublico - costo) * 10) / 10;
 					var descuentos= 0;
-					var ganancia = (vendidos * margenGanancia) - descuentos;
-					var recuperacionDinero = costo * vendidos;
+					
+					
 
 					this.$http.post('https://funkopop-e84d7.firebaseio.com/pops.json',{
 						licencia: licencia,
@@ -123,13 +122,12 @@ export default {
 						numeroPop: numeroPop,
 						precioPublico: precioPublico,
 						costo: costo,
+	
 						cantidadComprada: cantidadComprada,
 						cantidadDisponible: cantidadDisponible,
 						vendidos: vendidos,
-						margenGanancia: margenGanancia,
 						descuentos: descuentos,
-						ganancia: ganancia,
-						recuperacionDinero: recuperacionDinero
+						
 					}).then(respuesta => {
 						if(respuesta.status == 200){
 							this.estado = true;

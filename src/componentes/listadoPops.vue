@@ -34,6 +34,9 @@
 									Costo
 								</th>
 								<th>
+									Costo total
+								</th>
+								<th>
 									Precio a público
 								</th>
 								<th>
@@ -51,9 +54,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(pop, indice) of pops">
+							<tr v-for="(pop, indice) of pops" v-bind:class="{ 'table-danger' : disponibilidadFunko(pop)}">
+
 								<td>
-									{{indice + 1}}
+									{{indice + 1}} 
 								</td>
 								<td>
 									{{ pop.licencia }}
@@ -77,19 +81,22 @@
 									{{ pop.costo }}
 								</td>
 								<td>
+									{{ pop.costo * pop.cantidadComprada }}
+								</td>
+								<td>
 									{{ pop.precioPublico }}
 								</td>
 								<td>
-									{{ pop.margenGanancia }}
+									{{ Math.ceil((pop.precioPublico - pop.costo) * 10) / 10 }}
 								</td>
 								<td>
 									{{ pop.descuentos }}
 								</td>
 								<td>
-									{{ pop.ganancia }}
+									{{ (pop.vendidos * pop.margenGanancia) - pop.descuentos }}
 								</td>
 								<td>
-									{{ pop.recuperacionDinero }}
+									{{ pop.vendidos * pop.costo }}
 								</td>
 							</tr>
 						</tbody>
@@ -114,6 +121,14 @@
 		methods:{
 			volver(){
 				this.$router.push({ name: 'homePops' });
+			},
+			disponibilidadFunko(pop){
+				if(pop.cantidadDisponible > 0){
+					return false;
+				}
+				else{
+					return true;
+				}
 			}
 		},
 	}
@@ -136,5 +151,10 @@
 				
 			}
 		}
+	}	
+
+	.table-danger{	    	
+		background-color: #f2dede;
 	}
+
 </style>
