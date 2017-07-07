@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <router-view :pops="pops"></router-view>
   </div>
 </template>
@@ -63,6 +63,7 @@ export default {
   watch: {
     '$route': 'getData'
   },
+  
 }
 </script>
 

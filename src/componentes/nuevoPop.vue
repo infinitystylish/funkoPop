@@ -112,7 +112,7 @@ export default {
 
 					var cantidadDisponible = cantidadComprada;
 					var vendidos = 0;
-					var descuentos= 0;
+					var descuentos = 0;
 					
 					
 
