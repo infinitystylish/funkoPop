@@ -88,15 +88,17 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Registrar venta</h4>
+		        <h4 class="modal-title" id="myModalLabel">Modificar Funko Pop</h4>
 		      </div>
 		      <div class="modal-body">
-		      	<label for="">Modificar:</label>
-		        <input type="text" v-model="nuevaVenta">
-
-				<label for="">Precio público:</label>
-		        <input type="text" v-model="precioPublico">
-
+		      	<div class="form-group">
+			      	<label for="">Cantidad vendida:</label>
+			        <input type="text" v-model="nuevaVenta" class="form-control">
+			    </div>
+				<div class="form-group">
+					<label for="">Precio público:</label>
+			        <input type="text" v-model="precioPublico" class="form-control">
+			    </div>
 		        <input type="hidden" v-model="idPop">
 		        <input type="hidden" v-model="id">
 		        <input type="hidden" v-model="comprado">
@@ -144,17 +146,25 @@
 				this.id = indice;
 				this.comprado = cantidadComprada;
 				this.precioPublico = precioPublico;
-				this.vendidos = vendidos;
+				this.vendidos = parseInt(vendidos);
 				this.nuevaVenta = 0;
 			},
 			registrarVenta(indice,id){
-				let vendidos = this.pops[indice].vendidos + this.nuevaVenta;
-				let comprados = this.pops[indice].cantidadDisponible = this.comprado -  this.vendidos;
+				let vendidos = parseInt(this.pops[indice].vendidos) + parseInt(this.nuevaVenta);
+				let comprados = this.pops[indice].cantidadDisponible = this.comprado -  vendidos;
 				let precioPublico = this.pops[indice].precioPublico = this.precioPublico;
 				this.$http.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json', {
-					vendidos: parseInt(vendidos),
-					cantidadDisponible: parseInt(comprados)
-				}).then(respuesta => { console.log(respuesta);})
+					vendidos: vendidos,
+					cantidadDisponible: comprados
+				}).then(respuesta => { 
+					setTimeout(function(){
+						$('#myModal').modal('hide');
+					},500);
+					if(respuesta.status == 200){
+						this.pops[indice].vendidos = vendidos;
+						this.pops[indice].cantidadDisponible = comprados;
+					}
+				})
 			}
 		},
 		watch:{

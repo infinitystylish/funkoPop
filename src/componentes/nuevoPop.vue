@@ -62,7 +62,9 @@
 							</div>
 						</div>
 					</div>
-					<button type="button" v-on:click="agregarPop()" class="btn btn-default">Submit</button>
+					<div class="button-list-container pull-right">
+						<button type="button" v-on:click="agregarPop()" class="btn btn-primary btn-success">Guardar</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -87,10 +89,10 @@ export default {
 		        // cantidadComprada: '1',
 		        licencia: '',
 		        nombre: '',
-		        numeroPop: '',
-		        costo: '',
-		        precioPublico: '',
-		        cantidadComprada: '',
+		        numeroPop: 0,
+		        costo: 0,
+		        precioPublico: 0,
+		        cantidadComprada: 0,
 			},
 			estado: ""
 		}
@@ -105,17 +107,15 @@ export default {
 				if(result){
 					var licencia = this.pop.licencia.trim();
 					var nombre = this.pop.nombre.trim();
-					var numeroPop = this.pop.numeroPop.trim();
-					var precioPublico = this.pop.precioPublico.trim();
-					var costo = this.pop.costo.trim();
-					var cantidadComprada = this.pop.cantidadComprada.trim();
+					var numeroPop = parseInt(this.pop.numeroPop);
+					var precioPublico = parseFloat(this.pop.precioPublico);
+					var costo = parseFloat(this.pop.costo);
+					var cantidadComprada = parseInt(this.pop.cantidadComprada);
 
 					var cantidadDisponible = cantidadComprada;
 					var vendidos = 0;
 					var descuentos = 0;
 					
-					
-
 					this.$http.post('https://funkopop-e84d7.firebaseio.com/pops.json',{
 						licencia: licencia,
 						nombre: nombre,
@@ -133,10 +133,10 @@ export default {
 							this.estado = true;
 							this.pop.licencia = '';
 							this.pop.nombre = '';
-							this.pop.numeroPop = '';
-							this.pop.precioPublico = '';
-							this.pop.costo = '';
-							this.pop.cantidadComprada = '';
+							this.pop.numeroPop = 0;
+							this.pop.precioPublico = 0;
+							this.pop.costo = 0;
+							this.pop.cantidadComprada = 0;
 						}
 					});
 				}

@@ -93,7 +93,7 @@
 									{{ pop.descuentos }}
 								</td>
 								<td>
-									{{ (pop.vendidos * pop.margenGanancia) - pop.descuentos }}
+									{{ (pop.vendidos * (Math.ceil((pop.precioPublico - pop.costo) * 10) / 10)) - pop.descuentos }}
 								</td>
 								<td>
 									{{ pop.vendidos * pop.costo }}
