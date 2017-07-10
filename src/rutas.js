@@ -2,6 +2,7 @@ import ListadoPops from './componentes/listadoPops.vue'
 import HomePops from './componentes/homePops.vue'
 import NuevoPop from './componentes/nuevoPop.vue'
 import modificarPop from './componentes/modificarPop.vue'
+import avisoPop from './componentes/avisoPop.vue'
 
 export const rutas = [
 	{ 
@@ -15,5 +16,8 @@ export const rutas = [
 	},
 	{
 		path: '/modificarPop', component:  modificarPop, name: 'modificarPop'
+	},
+	{
+		path: '/avisoPop', component:  avisoPop, name: 'avisoPop'
 	}
 ]

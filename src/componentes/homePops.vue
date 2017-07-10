@@ -5,6 +5,7 @@
 			<router-link tag="button" to="nuevoPop" class="btn btn-success btn-lg">Nuevo FunkoPop</router-link>
 
 			<router-link tag="button" to="modificarPop" class="btn btn-info btn-lg">Modificar FunkoPop</router-link>
+			<router-link tag="button" to="avisoPop" class="btn btn-warning btn-lg">Aviso / Apartado FunkoPop</router-link>
 		</div>
 
 		<div class="total">

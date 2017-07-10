@@ -81,22 +81,22 @@
 									{{ pop.costo }}
 								</td>
 								<td>
-									{{ pop.costo * pop.cantidadComprada }}
+									{{ costoTotal(pop) }}
 								</td>
 								<td>
 									{{ pop.precioPublico }}
 								</td>
 								<td>
-									{{ Math.ceil((pop.precioPublico - pop.costo) * 10) / 10 }}
+									{{ margenGanancia(pop) }}
 								</td>
 								<td>
 									{{ pop.descuentos }}
 								</td>
 								<td>
-									{{ (pop.vendidos * (Math.ceil((pop.precioPublico - pop.costo) * 10) / 10)) - pop.descuentos }}
+									{{ ganancia(pop) }}
 								</td>
 								<td>
-									{{ pop.vendidos * pop.costo }}
+									{{ vendidos(pop) }}
 								</td>
 							</tr>
 						</tbody>
@@ -129,8 +129,20 @@
 				else{
 					return true;
 				}
+			},
+			costoTotal(pop){
+				return pop.costo * pop.cantidadComprada;
+			},
+			margenGanancia(pop){
+				return Math.ceil((pop.precioPublico - pop.costo) * 10) / 10;
+			},
+			ganancia(pop){
+				return (pop.vendidos * (Math.ceil((pop.precioPublico - pop.costo) * 10) / 10)) - pop.descuentos;
+			},
+			vendidos(pop){
+				return pop.vendidos * pop.costo;
 			}
-		},
+		}
 	}
 </script>
 
