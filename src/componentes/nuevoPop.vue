@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="internal-content">
 		<div v-if="estado === true">
 			<div class="alert alert-success" role="alert">
 				<strong>¡Hecho!</strong> 

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="internal-content">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h1>Listado de Funko Pop</h1>

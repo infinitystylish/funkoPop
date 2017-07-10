@@ -1,6 +1,33 @@
 <template>
-  <div class="container-fluid">
-    <router-view :pops="pops"></router-view>
+  <div>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+          <img alt="Brand" class="img-responsive" src="./assets/funko-morelia-logo.jpg">
+        </a>
+      </div>
+        <div class="navbar-collapse" id="bs-example-navbar-collapse-9"> 
+          <ul class="nav navbar-nav"> 
+            <li class="active">
+              <a href="#" @click.prevent="volver">Home</a>
+            </li> 
+            <li>
+              <router-link tag="a" to="listadoPops">Lista de FunkoPop</router-link>
+            </li> 
+            <li>
+               <router-link tag="a" to="nuevoPop">Nuevo FunkoPop</router-link>
+            </li>
+            <li>
+              <router-link tag="a" to="modificarPop">Modificar FunkoPop</router-link>
+            </li> 
+          </ul> 
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <router-view :pops="pops"></router-view>
+    </div>
   </div>
 </template>
 
@@ -13,6 +40,9 @@ export default {
     }
   },
   methods: {
+    volver(){
+      this.$router.push({ name: 'homePops' });
+    },
     compare(a,b){
       const nameA = a.licencia.toUpperCase();
       const nameB = b.licencia.toUpperCase();
@@ -68,5 +98,16 @@ export default {
 </script>
 
 <style lang="scss">
-
+  .navbar-brand{
+    max-width: 100px;
+    height: auto;
+  }
+  .navbar-collapse{
+    display: flex;
+    align-items: center;
+    height: 100px;
+  }
+  .internal-content{
+    margin-top: 200px;
+  }
 </style>
