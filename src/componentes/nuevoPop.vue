@@ -122,7 +122,7 @@ export default {
 					var vendidos = 0;
 					var descuentos = 0;
 					
-					this.$http.post('https://funkopop-e84d7.firebaseio.com/pops.json',{
+					this.axios.post('https://funkopop-e84d7.firebaseio.com/pops.json',{
 						licencia: licencia,
 						nombre: nombre,
 						numeroPop: numeroPop,
@@ -135,6 +135,7 @@ export default {
 						descuentos: descuentos,
 						
 					}).then(respuesta => {
+						console.log(respuesta);
 						if(respuesta.status == 200){
 							this.estado = true;
 							this.pop.licencia = '';
@@ -153,7 +154,7 @@ export default {
 				this.estado = false;
 			});
 		},
-	}
+	}	
 }
 </script>
 

@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
-import VueResource from 'vue-resource'
+import Axios from 'axios'
+import VueAxios from 'vue-axios'
 import { rutas } from './rutas.js'
 import VeeValidate, { Validator } from 'vee-validate';
 import messages from 'vee-validate/dist/locale/es';
@@ -15,7 +16,8 @@ const config = {
 
 Vue.use(VeeValidate, config);
 Vue.use(VueRouter);
-Vue.use(VueResource);
+Vue.use(VueAxios, Axios)
+
 
 const enrutador = new VueRouter({
 	routes: rutas,

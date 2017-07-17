@@ -56,10 +56,9 @@ export default {
       return comparison;
     },
     getData(){
-      this.$http.get('https://funkopop-e84d7.firebaseio.com/pops.json')
+      this.axios.get('https://funkopop-e84d7.firebaseio.com/pops.json')
         .then(respuesta => { 
-            //console.log(respuesta.json());
-            return respuesta.json();
+            return respuesta.data;
         })
         .then(respuestaJson => {
           this.pops = [];

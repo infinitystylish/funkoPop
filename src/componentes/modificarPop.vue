@@ -153,7 +153,7 @@
 				let vendidos = parseInt(this.pops[indice].vendidos) + parseInt(this.nuevaVenta);
 				let comprados = this.pops[indice].cantidadDisponible = this.comprado -  vendidos;
 				let precioPublico = this.pops[indice].precioPublico = this.precioPublico;
-				this.$http.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json', {
+				this.axios.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json', {
 					vendidos: vendidos,
 					cantidadDisponible: comprados
 				}).then(respuesta => { 
