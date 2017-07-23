@@ -20,7 +20,13 @@
             </li>
             <li>
               <router-link tag="a" to="modificarPop">Modificar FunkoPop</router-link>
-            </li> 
+            </li>
+            <li>
+              <router-link tag="a" to="avisoPop">Listado de Avisos</router-link>
+            </li>
+            <li>
+              <router-link tag="a" to="pedidosPop">Pedidos FunkoPop</router-link>
+            </li>  
           </ul> 
         </div>
       </div>
@@ -107,6 +113,6 @@ export default {
     height: 100px;
   }
   .internal-content{
-    margin-top: 200px;
+    margin-top: 140px;
   }
 </style>

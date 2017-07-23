@@ -61,7 +61,9 @@
 								 No hay disponibles  
 							</td>
 							<td v-else>
-								Hay {{pop.cantidadDisponible}} disponibles
+								Hay {{pop.cantidadDisponible}} 
+								<span v-if="pop.cantidadDisponible > 1"> disponibles</span>
+								<span v-else> disponible</span>
 							</td>
 							<td>
 								{{ pop.licencia }}

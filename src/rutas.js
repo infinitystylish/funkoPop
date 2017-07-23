@@ -3,6 +3,7 @@ import HomePops from './componentes/homePops.vue'
 import NuevoPop from './componentes/nuevoPop.vue'
 import modificarPop from './componentes/modificarPop.vue'
 import avisoPop from './componentes/avisoPop.vue'
+import pedidosPop from './componentes/pedidosPop.vue'
 
 export const rutas = [
 	{ 
@@ -19,5 +20,8 @@ export const rutas = [
 	},
 	{
 		path: '/avisoPop', component:  avisoPop, name: 'avisoPop'
-	}
+	},
+	{
+		path: '/pedidosPop', component:  pedidosPop, name: 'pedidosPop'
+	},
 ]
