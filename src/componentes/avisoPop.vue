@@ -22,6 +22,9 @@
 								Tipo de aviso
 							</th>
 							<th>
+								Anotaciones
+							</th>
+							<th>
 								Adelanto
 							</th>
 							<th>
@@ -29,6 +32,9 @@
 							</th>
 							<th>
 								Hecho
+							</th>
+							<th>
+								Modificar
 							</th>
 						</tr>
 					</thead>
@@ -47,6 +53,9 @@
 								{{ aviso.avisoTipo }}
 							</td>
 							<td>
+								{{ aviso.anotaciones }}	
+							</td>
+							<td>
 								{{ aviso.adelanto }}
 							</td>
 							<td>
@@ -57,11 +66,64 @@
 									<input type="checkbox" id="avisoEstado" v-model="aviso.avisoEstado" @click="changeStatus(indice,aviso.id, aviso.avisoEstado)">
 								</label>
 							</td>
+							<td>
+								<div class="button-container-table">
+									<button class="btn btn-primary" data-toggle="modal" data-target="#modificarAvisoModal" @click="setAviso(indice,aviso.id, aviso.avisoTipo, aviso.anotaciones, aviso.adelanto, aviso.fechaEntrega)">Modificar aviso</button>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
+
+
+		<!-- Modal -->
+		<div class="modal fade" id="modificarAvisoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">AvisoFunko Pop</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<input type="hidden" v-model="avisoM.indice">
+		      	<input type="hidden" v-model="avisoM.id">
+			    <div class="form-group">
+			    	<label for="aviso" class="radio-inline">
+						<input type="radio" id="aviso" value="aviso" v-model="avisoM.avisoTipo"> Aviso
+					</label>
+					<label for="apartado" class="radio-inline">
+						<input type="radio" id="apartado" value="apartado" v-model="avisoM.avisoTipo"> Apartado
+					</label>
+					<label for="conseguir" class="radio-inline">
+						<input type="radio" id="conseguir" value="conseguir" v-model="avisoM.avisoTipo"> Conseguir
+					</label>
+					<label for="pendienteEntrega" class="radio-inline">
+						<input type="radio" id="pendienteEntrega" value="pendienteEntrega" v-model="avisoM.avisoTipo"> Pendiente de entrega
+					</label>
+			    </div>
+			    <div class="form-group">
+					<label for="">Anotaciones:</label>
+			        <input type="text" v-model="avisoM.anotaciones" class="form-control">
+			    </div>
+			    <div class="form-group" v-if="avisoM.avisoTipo == 'apartado'">
+					<label for="">Adelanto:</label>
+			        <input type="number" v-model="avisoM.adelanto" class="form-control">
+			    </div>
+			    <div class="form-group" v-if="avisoM.avisoTipo == 'pendienteEntrega'">
+					<label for="">Fecha Entrega:</label>
+			        <input type="text" v-model="avisoM.fechaEntrega" class="form-control">
+			    </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		        <button type="button" class="btn btn-primary" v-on:click="modificarAviso(avisoM.indice,avisoM.id, avisoM.avisoTipo, avisoM.anotaciones, avisoM.adelanto, avisoM.fechaEntrega)">Guardar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
 
 		<!-- Modal -->
 		<div class="modal fade" id="avisoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -101,11 +163,15 @@
 						<input type="radio" id="pendienteEntrega" value="pendienteEntrega" v-model="aviso.avisoTipo"> Pendiente de entrega
 					</label>
 			    </div>
+			    <div class="form-group">
+					<label for="">Anotaciones:</label>
+			        <input type="text" v-model="aviso.anotaciones" class="form-control">
+			    </div>
 			    <div class="form-group" v-if="aviso.avisoTipo == 'apartado'">
 					<label for="">Adelanto:</label>
 			        <input type="number" v-model="aviso.adelanto" class="form-control">
 			    </div>
-			     <div class="form-group" v-if="aviso.avisoTipo == 'pendienteEntrega'">
+			    <div class="form-group" v-if="aviso.avisoTipo == 'pendienteEntrega'">
 					<label for="">Fecha Entrega:</label>
 			        <input type="text" v-model="aviso.fechaEntrega" class="form-control">
 			    </div>
@@ -137,9 +203,19 @@ export default {
 		        avisoEstado: false,
 		       	avisoTipo: '',
 		       	adelanto: '',
-		       	fechaEntrega: ''
+		       	fechaEntrega: '',
+		       	anotaciones: ''
 			},
-			avisosPop : []
+			avisosPop : [],
+			avisoM: {
+				indice: 0,
+				id: '',
+				avisoEstado: false,
+		       	avisoTipo: '',
+		       	adelanto: '',
+		       	fechaEntrega: '',
+		       	anotaciones: ''
+			}
 	    }
 	},
 	methods: {
@@ -157,7 +233,7 @@ export default {
 			var avisoEstado = this.aviso.avisoEstado;
 			var adelanto = parseFloat(this.aviso.adelanto);
 			var fechaEntrega = this.aviso.fechaEntrega.trim();
-			
+			var anotaciones = this.aviso.anotaciones.trim();
 			
 			this.axios.post('https://funkopop-e84d7.firebaseio.com/avisos.json',{
 				nombre: nombre,
@@ -166,6 +242,7 @@ export default {
 				avisoEstado: avisoEstado,
 				adelanto: adelanto,
 				fechaEntrega: fechaEntrega,
+				anotaciones: anotaciones
 				
 			}).then(respuesta => {
 				setTimeout(function(){
@@ -193,6 +270,7 @@ export default {
 	              adelanto: respuestaJson[id].adelanto,
 	              avisoEstado: respuestaJson[id].avisoEstado,
 	              fechaEntrega: respuestaJson[id].fechaEntrega,
+	              anotaciones: respuestaJson[id].anotaciones
 	            }
 	            this.avisosPop.push(aviso);
 	          }
@@ -208,6 +286,32 @@ export default {
 			})
 
 		},
+		setAviso(indice,id, avisoTipo, anotaciones, adelanto, fechaEntrega){
+			this.avisoM.indice = indice;
+			this.avisoM.id = id;
+			this.avisoM.avisoTipo = avisoTipo;
+			this.avisoM.anotaciones = anotaciones || '';
+			this.avisoM.adelanto = adelanto || '' ;
+			this.avisoM.fechaEntrega = fechaEntrega;
+		},
+		modificarAviso(indice,avisoId, avisoTipo, anotaciones, adelanto, fechaEntrega){
+			this.axios.patch('https://funkopop-e84d7.firebaseio.com/avisos/' + avisoId + '.json', {
+					avisoTipo: avisoTipo,
+					anotaciones: anotaciones,
+					adelanto: adelanto,
+					fechaEntrega: fechaEntrega,
+			}).then(respuesta => { 
+				setTimeout(function(){
+					$('#modificarAvisoModal').modal('hide');
+				},500);
+				if(respuesta.status == 200){
+					this.avisosPop[indice].avisoTipo = avisoTipo;
+					this.avisosPop[indice].anotaciones = anotaciones;
+					this.avisosPop[indice].adelanto = adelanto;
+					this.avisosPop[indice].fechaEntrega = fechaEntrega;
+				}
+			})
+		}
 
 	},
 	created(){
@@ -230,5 +334,9 @@ export default {
 
 	.table-success{
 		background-color: #d6e9c6;
+	}
+
+	.button-container-table{
+		text-align: center;
 	}
 </style>
