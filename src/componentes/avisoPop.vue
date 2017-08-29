@@ -6,7 +6,69 @@
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h1>Listado de Avisos</h1>
+				<h1>Listado de avisos</h1>
+			</div>
+			<div class="panel-body">
+				<table class="table table-hover table-bordered table-funkopop">
+					<thead>
+						<tr>
+							<th>
+								Nombre
+							</th>
+							<th>
+								Nombre Funko Pop
+							</th>
+							<th>
+								Tipo de aviso
+							</th>
+							<th>
+								Anotaciones
+							</th>
+							<th>
+								Hecho
+							</th>
+							<th>
+								Modificar
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(aviso, indice) in filtroAvisos" v-bind:class="{ 'table-success' : aviso.avisoEstado}">
+							<td>
+								{{ aviso.nombre }}
+							</td>
+							<td>
+								<span v-for="nombreIndividual in aviso.nombreFunkoPop">
+									{{ nombreIndividual.nombre }}
+								</span>
+								
+							</td>
+							<td>
+								{{ aviso.avisoTipo }}
+							</td>
+							<td>
+								{{ aviso.anotaciones }}	
+							</td>
+							<td>
+								<label class="aviso-checkbox" for="avisoEstado">
+									<input type="checkbox" id="avisoEstado" v-model="aviso.avisoEstado" @click="changeStatus(indice,aviso.id, aviso.avisoEstado)">
+								</label>
+							</td>
+							<td>
+								<div class="button-container-table">
+									<button class="btn btn-primary" data-toggle="modal" data-target="#modificarAvisoModal" @click="setAviso(indice,aviso.id, aviso.avisoTipo, aviso.anotaciones, aviso.adelanto, aviso.fechaEntrega)">Modificar aviso</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h1>Listado de apartados</h1>
 			</div>
 			<div class="panel-body">
 				<table class="table table-hover table-bordered table-funkopop">
@@ -39,7 +101,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(aviso, indice) in avisosPop" v-bind:class="{ 'table-success' : aviso.avisoEstado}">
+						<tr v-for="(aviso, indice) in filtroApartados" v-bind:class="{ 'table-success' : aviso.avisoEstado}">
 							<td>
 								{{ aviso.nombre }}
 							</td>
@@ -76,7 +138,79 @@
 				</table>
 			</div>
 		</div>
-
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h1>Listado a conseguir</h1>
+			</div>
+			<div class="panel-body">
+				<table class="table table-hover table-bordered table-funkopop">
+					<thead>
+						<tr>
+							<th>
+								Nombre
+							</th>
+							<th>
+								Nombre Funko Pop
+							</th>
+							<th>
+								Tipo de aviso
+							</th>
+							<th>
+								Anotaciones
+							</th>
+							<th>
+								Adelanto
+							</th>
+							<th>
+								Fecha de entrega
+							</th>
+							<th>
+								Hecho
+							</th>
+							<th>
+								Modificar
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(aviso, indice) in filtroConseguir" v-bind:class="{ 'table-success' : aviso.avisoEstado}">
+							<td>
+								{{ aviso.nombre }}
+							</td>
+							<td>
+								<span v-for="nombreIndividual in aviso.nombreFunkoPop">
+									{{ nombreIndividual.nombre }}
+								</span>
+								
+							</td>
+							<td>
+								{{ aviso.avisoTipo }}
+							</td>
+							<td>
+								{{ aviso.anotaciones }}	
+							</td>
+							<td>
+								{{ aviso.adelanto }}
+							</td>
+							<td>
+								{{ aviso.fechaEntrega }}
+							</td>
+							<td>
+								<label class="aviso-checkbox" for="avisoEstado">
+									<input type="checkbox" id="avisoEstado" v-model="aviso.avisoEstado" @click="changeStatus(indice,aviso.id, aviso.avisoEstado)">
+								</label>
+							</td>
+							<td>
+								<div class="button-container-table">
+									<button class="btn btn-primary" data-toggle="modal" data-target="#modificarAvisoModal" @click="setAviso(indice,aviso.id, aviso.avisoTipo, aviso.anotaciones, aviso.adelanto, aviso.fechaEntrega)">Modificar aviso</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 
 		<!-- Modal -->
 		<div class="modal fade" id="modificarAvisoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -317,6 +451,26 @@ export default {
 	created(){
 		this.getAvisos();
 	},
+	computed: {
+		filtroAvisos: function () {
+			var self = this;
+			return self.avisosPop.filter(function (aviso) {
+			  return aviso.avisoTipo == "aviso";
+			})
+		},
+		filtroApartados: function () {
+			var self = this;
+			return self.avisosPop.filter(function (aviso) {
+			  return aviso.avisoTipo == "apartado";
+			})
+		},
+		filtroConseguir: function () {
+			var self = this;
+			return self.avisosPop.filter(function (aviso) {
+			  return aviso.avisoTipo == "conseguir";
+			})
+		}
+	}
 }
 
 </script>

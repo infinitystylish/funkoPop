@@ -6,6 +6,7 @@ import VueAxios from 'vue-axios'
 import { rutas } from './rutas.js'
 import VeeValidate, { Validator } from 'vee-validate';
 import messages from 'vee-validate/dist/locale/es';
+import Lodash from 'lodash';
 
 Validator.addLocale(messages);
 

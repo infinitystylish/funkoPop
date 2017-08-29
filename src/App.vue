@@ -19,9 +19,6 @@
                <router-link tag="a" to="nuevoPop">Nuevo FunkoPop</router-link>
             </li>
             <li>
-              <router-link tag="a" to="modificarPop">Modificar FunkoPop</router-link>
-            </li>
-            <li>
               <router-link tag="a" to="avisoPop">Listado de Avisos</router-link>
             </li>
             <li>

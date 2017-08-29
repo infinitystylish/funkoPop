@@ -39,7 +39,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(pop, indice) in pedido.funkoPop">
+							<tr v-for="(pop, indice) in pedido.funkoPop" v-bind:class="{ 'table-success' : disponibilidadPedido(pop)}">
 								<td >
 									{{ pop.nombrePop  }}
 								</td>
@@ -63,6 +63,9 @@
 								</td>
 								<td >
 									{{ pop.estadoEntrega }}
+									<button class="btn btn-success" v-if="checarEntrega(pop)" @click="registrarEntrega(pedido.id ,indice,pop.costoFigura,indiceP)">
+										Entregado
+									</button>
 								</td>
 							</tr>
 						</tbody>
@@ -311,7 +314,6 @@
 		              funkoPop : this.pedido.funkoPop
 		            }
 		            this.pedidos.push(pedido);
-		            console.log(this.pedidos);
 		          }
 		        });
 		        
@@ -353,7 +355,6 @@
 		    	}
 		    },
 		    registrarPago(pedidoId,indice,costoFigura,indiceP){
-		    	console.log(indiceP);
 		    	this.axios.patch('https://funkopop-e84d7.firebaseio.com/pedidos/' + pedidoId + '/pedido/' + indice + '.json', {
 					pago : costoFigura,
 					pagoFaltante: 0,
@@ -366,7 +367,34 @@
 						
 					}
 				})
-		    }
+		    },
+		    registrarEntrega(pedidoId,indice,costoFigura,indiceP){
+		    	this.axios.patch('https://funkopop-e84d7.firebaseio.com/pedidos/' + pedidoId + '/pedido/' + indice + '.json', {
+					estadoEntrega : "Entregado"
+				}).then(respuesta => { 
+					if(respuesta.status == 200){
+						this.pedidos[indiceP].funkoPop[indice].estadoEntrega = "Entregado";
+					}
+				})
+		    },
+		    checarEntrega(pedido){
+		    	if(pedido.estadoEntrega == "Pendiente envio"){
+		    		return true;
+		    	}
+		    	else{
+		    		return false;
+		    	}
+		    },
+		    disponibilidadPedido(pop){
+		    	console.log(pop.estadoEntrega);
+		    	console.log(pop.estado);
+				if(pop.estadoEntrega == "Entregado" && pop.estado == "Pagado"){
+					return true;
+				}
+				else{
+					return false;
+				}
+			},
 
 	  	},
 	  	created(){
@@ -397,5 +425,8 @@
 			}
 			
 		}
+	}
+	.table-success{
+		background-color: #d6e9c6;
 	}
 </style>
