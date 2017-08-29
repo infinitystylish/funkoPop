@@ -386,8 +386,6 @@
 		    	}
 		    },
 		    disponibilidadPedido(pop){
-		    	console.log(pop.estadoEntrega);
-		    	console.log(pop.estado);
 				if(pop.estadoEntrega == "Entregado" && pop.estado == "Pagado"){
 					return true;
 				}

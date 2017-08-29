@@ -1,35 +1,83 @@
 <template>
+
   <div>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-        <a class="navbar-brand" href="#">
-          <img alt="Brand" class="img-responsive" src="./assets/funko-morelia-logo.jpg">
-        </a>
-      </div>
-        <div class="navbar-collapse" id="bs-example-navbar-collapse-9"> 
-          <ul class="nav navbar-nav"> 
-            <li class="active">
-              <a href="#" @click.prevent="volver">Home</a>
-            </li> 
-            <li>
-              <router-link tag="a" to="listadoPops">Lista de FunkoPop</router-link>
-            </li> 
-            <li>
-               <router-link tag="a" to="nuevoPop">Nuevo FunkoPop</router-link>
-            </li>
-            <li>
-              <router-link tag="a" to="avisoPop">Listado de Avisos</router-link>
-            </li>
-            <li>
-              <router-link tag="a" to="pedidosPop">Pedidos FunkoPop</router-link>
-            </li>  
-          </ul> 
+    <div v-if="!isAuthenticated" id="loginContainer">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+              <img alt="Brand" class="img-responsive" src="./assets/funko-morelia-logo.jpg">
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+
+            <h3 style="text-align: center;">Login Funko Pop</h3>
+
+            <form>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Correo Electrónico</label>
+                <input v-model:email="auth.email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input v-model:password="auth.password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+
+              <div v-if="auth.message !== ''" class="alert" role="alert"
+                :class="{'alert-danger': auth.hasErrors, 'alert-success': !auth.hasErrors}">
+                <button @click="dismissAlert" type="button" class="close"><span aria-hidden="true">×</span></button>
+                <p><strong>{{auth.message}}</strong></p>
+              </div>
+
+              <button type="button" @click="login" class="btn btn-primary">Iniciar sesión</button>
+              
+              <!-- <button type="button" @click="signUp" class="btn btn-success">Signup</button>-->
+            </form>
+          </div>
         </div>
       </div>
-    </nav>
-    <div class="container-fluid">
-      <router-view :pops="pops"></router-view>
+    </div>
+    <div v-else>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            <img alt="Brand" class="img-responsive" src="./assets/funko-morelia-logo.jpg">
+          </a>
+        </div>
+          <div class="navbar-collapse" id="bs-example-navbar-collapse-9"> 
+            <ul class="nav navbar-nav"> 
+              <li class="active">
+                <a href="#" @click.prevent="volver">Home</a>
+              </li> 
+              <li>
+                <router-link tag="a" to="listadoPops">Lista de FunkoPop</router-link>
+              </li> 
+              <li>
+                 <router-link tag="a" to="nuevoPop">Nuevo FunkoPop</router-link>
+              </li>
+              <li>
+                <router-link tag="a" to="avisoPop">Listado de Avisos</router-link>
+              </li>
+              <li>
+                <router-link tag="a" to="pedidosPop">Pedidos FunkoPop</router-link>
+              </li>  
+            </ul> 
+             <div class="cerrar-sesion">
+              <button @click="signOut" class="btn btn-danger" type="button">Signout</button>
+            </div>
+          </div>
+          
+        </div>
+      </nav>
+      <div class="container-fluid">
+        <router-view :pops="pops"></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +87,15 @@
 export default {
   data(){
     return{
-      pops: []
+      pops: [],
+      auth : {
+        user: null,
+        email: '',
+        password: '',
+        message: '',
+        userName: '',
+        hasErrors: false
+      }
     }
   },
   methods: {
@@ -87,7 +143,35 @@ export default {
             this.pops.sort(this.compare)
           }
         });
-    }
+    },
+    login: function (event) {
+      var vm = this;
+      vm.auth.message = '';
+      vm.auth.hasErrors = false;
+
+      if (vm.auth.email === '' || vm.auth.password === '') {
+      alert('Please provide the email and password');
+      return;
+      }
+      // Sign-in the user with the email and password
+      firebase.auth().signInWithEmailAndPassword(vm.auth.email, vm.auth.password)
+      .then(function (data) {
+        vm.auth.user = firebase.auth().currentUser;
+      }).catch(function(error) {
+        vm.auth.message = error.message;
+        vm.auth.hasErrors = true;
+      });
+    },
+    signOut: function () {
+      // Signout the user using firebase
+      firebase.auth().signOut()
+        .then(function(error) {
+          this.auth.user = firebase.auth().currentUser;
+          this.auth.message = 'User signed out Successfully';
+        }.bind(this), function (error) {
+          alert('Failed to signout user, try again later');
+        });
+    },
   },
   created(){
     this.getData();
@@ -95,6 +179,21 @@ export default {
   watch: {
     '$route': 'getData'
   },
+  computed: {
+    isAuthenticated: function () {
+        // This function changes the auth.user state when 
+        // the auth status of user changes.
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            this.auth.user = user;
+          } else {
+            this.auth.user = null;
+          }
+        }.bind(this));
+
+        return (this.auth.user !== null);
+      }
+  }
   
 }
 </script>
@@ -111,5 +210,11 @@ export default {
   }
   .internal-content{
     margin-top: 140px;
+  }
+  .cerrar-sesion{
+    margin-left: auto;
+  }
+  #loginContainer{
+    margin-top: 150px;
   }
 </style>

@@ -157,6 +157,11 @@
 								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(indice,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico)">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
+
+								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.id)">
+									<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+								</button>
+
 							</td>
 						</tr>
 					</tbody>
@@ -203,6 +208,43 @@
 		  </div>
 		</div>
 
+
+		<!-- Modal -->
+		<div class="modal fade" id="apartadoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog modal-lg" role="document">
+		    <div class="modal-content">
+		      	<div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">Apartados Funko Pop</h4>
+		      	</div>
+		      	<div class="modal-body">
+		      		<ul class="list-group">
+
+					    <li class="list-group-item" v-for="(apartado, index) in apartados">
+					    	<div class="figure-division">
+						      	<div class="form-group">
+							      	<label for="nombrePop">Nombre cliente:</label>
+							        <input type="text" v-model="apartado.nombreCliente" class="form-control">
+							    </div>
+							    <div class="form-group">
+							      	<label for="cantidad">Cantidad:</label>
+							        <input type="number" v-model="apartado.cantidadApartada" class="form-control">
+							    </div>
+							</div>
+					    </li>
+					</ul>
+					<input type="hidden" v-model="idPop">
+					<button class="btn btn-primary" @click="agregarApartado">Agregar</button>
+				</div>
+			    <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			        <button type="button" class="btn btn-primary" v-on:click="agregarApartados(idPop)">Guardar</button>
+			     </div>
+		    </div>
+		  </div>
+		</div>
+
+
 	</div>
 </template>
 
@@ -219,7 +261,13 @@
 		    	vendidos: 0,
 		    	precioPublico: 0,
 		    	validacionCantidad: false,
-		    	mensajeError: ''
+		    	mensajeError: '',
+				apartados:[
+					{
+						nombreCliente: "",
+						cantidadApartada: 0,
+					}	
+				]
 		    }
 		},
 		methods:{
@@ -270,7 +318,53 @@
 						this.pops[indice].cantidadDisponible = comprados;
 					}
 				})
-			}
+			},
+			popApartado(id){
+				this.idPop = id;
+			},
+			agregarApartado(){
+				this.apartados.push(
+					{
+						nombreCliente: '',
+						cantidadApartada: 0,
+					}
+				);
+			},
+			agregarApartados(id){
+				console.log(id);
+				console.log(this.apartados);
+
+				for (let apartado in this.apartados) {
+					this.apartados[apartado].nombreCliente = this.apartados[apartado].nombreCliente.trim();
+				}
+				
+				 var apartados = this.apartados;
+
+				this.axios.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json',{
+					apartados
+				}).then(respuesta => {
+					setTimeout(function(){
+						$('#apartadosModal').modal('hide');
+					},500);
+					if(respuesta.status == 200){
+						// this.pedidoD.nombrePedido = "";
+						// this.pedidoD.funkoPop = [
+						// 	{
+						// 		nombrePop: "",
+						// 		cantidad: 0,
+						// 		costoFigura: 0,
+						// 		costoEnvioFigura: 0,
+						// 		status: 0,
+						// 		pago: 0,
+						// 		pagoFaltante: 0,
+						// 		preventa: false,
+						// 		estado: ""
+						// 	}
+						// ];
+						// this.getPedidos();
+					}
+				});
+			},
 		},
 		computed:{
 			buscarPop(){
@@ -325,6 +419,9 @@
 	.column-button{
 		display: flex;
 		justify-content: center;
+	}
+	.btn-apartado{
+		margin-left: 20px;
 	}
 
 </style>

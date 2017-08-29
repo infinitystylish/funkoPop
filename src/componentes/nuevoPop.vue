@@ -87,18 +87,18 @@ export default {
 	data (){
 		return{
 			pop: {
-		        // licencia: 'Gears of War',
-		        // nombre: 'Damon Baird',
-		        // numeroPop: '197',
-		        // costo: '216.88',
-		        // precioPublico: '299',
-		        // cantidadComprada: '1',
-		        licencia: '',
-		        nombre: '',
-		        numeroPop: '',
-		        costo: '',
-		        precioPublico: '',
-		        cantidadComprada: '',
+		        licencia: 'Gears of War',
+		        nombre: 'Damon Baird',
+		        numeroPop: '197',
+		        costo: '216.88',
+		        precioPublico: '299',
+		        cantidadComprada: '1',
+		        // licencia: '',
+		        // nombre: '',
+		        // numeroPop: '',
+		        // costo: '',
+		        // precioPublico: '',
+		        // cantidadComprada: '',
 			},
 			estado: ""
 		}
@@ -121,6 +121,7 @@ export default {
 					var cantidadDisponible = cantidadComprada;
 					var vendidos = 0;
 					var descuentos = 0;
+					var apartados = "";
 					
 					this.axios.post('https://funkopop-e84d7.firebaseio.com/pops.json',{
 						licencia: licencia,
@@ -133,6 +134,7 @@ export default {
 						cantidadDisponible: cantidadDisponible,
 						vendidos: vendidos,
 						descuentos: descuentos,
+						apartados: apartados
 						
 					}).then(respuesta => {
 						console.log(respuesta);

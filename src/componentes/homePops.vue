@@ -39,7 +39,7 @@ export default {
 	props: ['pops'],
 	data() {
 	    return {
-	      
+	     
 	    }
 	},
 	computed: {
@@ -67,7 +67,6 @@ export default {
 	            return sum = sum + parseInt(pop.vendidos); 
 	        },0);
 	      },
-
 	    }
 }
 
