@@ -69,7 +69,7 @@
               </li>  
             </ul> 
              <div class="cerrar-sesion">
-              <button @click="signOut" class="btn btn-danger" type="button">Signout</button>
+              <button @click="signOut" class="btn btn-danger" type="button">Cerrar sesión</button>
             </div>
           </div>
           
@@ -137,7 +137,9 @@ export default {
               margenGanancia: respuestaJson[id].margenGanancia,
               descuentos: respuestaJson[id].descuentos,
               ganancia: respuestaJson[id].ganancia,
-              recuperacionDinero: respuestaJson[id].recuperacionDinero
+              recuperacionDinero: respuestaJson[id].recuperacionDinero,
+
+              apartados: respuestaJson[id].apartados
             }
             this.pops.push(pop);
             this.pops.sort(this.compare)

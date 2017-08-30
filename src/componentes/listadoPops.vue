@@ -27,10 +27,13 @@
 								Cantidad comprada
 							</th>
 							<th>
-								Cantidad disponible
+								Vendidos
 							</th>
 							<th>
-								Vendidos
+								Apartados
+							</th>
+							<th>
+								Cantidad disponible
 							</th>
 							<th>
 								Costo
@@ -60,12 +63,12 @@
 					</thead>
 					<tbody>
 						<tr v-show="buscar" v-for="(pop, indice) in buscarPop" class="table-info">
-							<td v-if="disponibilidadFunko(pop)">
+							<td v-if="calcularCantidadDisponible(pop) == 0">
 								 No hay disponibles  
 							</td>
 							<td v-else>
-								Hay {{pop.cantidadDisponible}} 
-								<span v-if="pop.cantidadDisponible > 1"> disponibles</span>
+								Hay {{calcularCantidadDisponible(pop)}} 
+								<span v-if="calcularCantidadDisponible(pop) > 1"> disponibles</span>
 								<span v-else> disponible</span>
 							</td>
 							<td>
@@ -81,10 +84,13 @@
 								{{ pop.cantidadComprada }}
 							</td>
 							<td>
-								{{ pop.cantidadDisponible }}
+								{{ pop.vendidos }}
 							</td>
 							<td>
-								{{ pop.vendidos }}
+								{{ calcularApartados(pop) }}
+							</td>
+							<td>
+								{{ calcularCantidadDisponible(pop) }}
 							</td>
 							<td>
 								{{ pop.costo }}
@@ -109,7 +115,7 @@
 							</td>
 						</tr>
 
-						<tr v-for="(pop, indice) of ordenarPops" v-bind:class="{ 'table-danger' : disponibilidadFunko(pop)}">
+						<tr v-for="(pop, indice) of ordenarPops" v-bind:class="{'table-warning': disponibilidadApartadoFunko(pop), 'table-danger' : disponibilidadFunko(pop)}">
 
 							<td>
 								{{indice + 1}} 
@@ -127,10 +133,13 @@
 								{{ pop.cantidadComprada }}
 							</td>
 							<td>
-								{{ pop.cantidadDisponible }}
+								{{ pop.vendidos }}
 							</td>
 							<td>
-								{{ pop.vendidos }}
+								{{ calcularApartados(pop) }}
+							</td>
+							<td>
+								{{ calcularCantidadDisponible(pop) }}
 							</td>
 							<td>
 								{{ pop.costo }}
@@ -158,7 +167,7 @@
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
 
-								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.id)">
+								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.id,pop.vendidos)">
 									<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
 								</button>
 
@@ -233,12 +242,21 @@
 							</div>
 					    </li>
 					</ul>
+
 					<input type="hidden" v-model="idPop">
+					<input type="hidden" v-model="vendidos">
+					
+					<div class="alert alert-danger my-alert" v-if="validacionApartados" role="alert">
+					  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					  <span class="sr-only">Error:</span>
+					  {{mensajeError}}
+					</div>
+
 					<button class="btn btn-primary" @click="agregarApartado">Agregar</button>
 				</div>
 			    <div class="modal-footer">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			        <button type="button" class="btn btn-primary" v-on:click="agregarApartados(idPop)">Guardar</button>
+			        <button type="button" class="btn btn-primary" v-bind:class="{ hidden: validacionApartados }" v-on:click="agregarApartados(idPop)">Guardar</button>
 			     </div>
 		    </div>
 		  </div>
@@ -267,7 +285,9 @@
 						nombreCliente: "",
 						cantidadApartada: 0,
 					}	
-				]
+				],
+				apartar : {},
+				validacionApartados: false
 		    }
 		},
 		methods:{
@@ -282,8 +302,47 @@
 					return true;
 				}
 			},
+			disponibilidadApartadoFunko(pop){
+				let totalApartados = 0;
+				let cantidadApartada = 0;
+				let cantidadTotal = 0;
+				for (let apartado in pop.apartados) {
+					cantidadApartada = parseInt(pop.apartados[apartado].cantidadApartada)
+					totalApartados += cantidadApartada;
+				}
+
+				cantidadTotal = pop.cantidadDisponible - totalApartados;
+
+				if(cantidadTotal > 0){
+					return false;
+				}
+				else{
+					return true;
+				}
+			},
 			costoTotal(pop){
 				return pop.costo * pop.cantidadComprada;
+			},
+			calcularApartados(pop){
+				let totalApartados = 0;
+				let cantidadApartada = 0;
+				let cantidadTotal = 0;
+				for (let apartado in pop.apartados) {
+					cantidadApartada = parseInt(pop.apartados[apartado].cantidadApartada)
+					totalApartados += cantidadApartada;
+				}
+				return totalApartados;
+			},
+			calcularCantidadDisponible(pop){
+				let totalApartados = 0;
+				let cantidadApartada = 0;
+				let cantidadTotal = 0;
+				for (let apartado in pop.apartados) {
+					cantidadApartada = parseInt(pop.apartados[apartado].cantidadApartada)
+					totalApartados += cantidadApartada;
+				}
+				cantidadTotal = pop.cantidadDisponible - totalApartados;
+				return cantidadTotal;
 			},
 			margenGanancia(pop){
 				return Math.ceil((pop.precioPublico - pop.costo) * 10) / 10;
@@ -319,8 +378,9 @@
 					}
 				})
 			},
-			popApartado(id){
+			popApartado(id,vendidos){
 				this.idPop = id;
+				this.vendidos = parseInt(vendidos);
 			},
 			agregarApartado(){
 				this.apartados.push(
@@ -331,9 +391,6 @@
 				);
 			},
 			agregarApartados(id){
-				console.log(id);
-				console.log(this.apartados);
-
 				for (let apartado in this.apartados) {
 					this.apartados[apartado].nombreCliente = this.apartados[apartado].nombreCliente.trim();
 				}
@@ -344,24 +401,11 @@
 					apartados
 				}).then(respuesta => {
 					setTimeout(function(){
-						$('#apartadosModal').modal('hide');
+						$('#apartadoModal').modal('hide');
 					},500);
 					if(respuesta.status == 200){
-						// this.pedidoD.nombrePedido = "";
-						// this.pedidoD.funkoPop = [
-						// 	{
-						// 		nombrePop: "",
-						// 		cantidad: 0,
-						// 		costoFigura: 0,
-						// 		costoEnvioFigura: 0,
-						// 		status: 0,
-						// 		pago: 0,
-						// 		pagoFaltante: 0,
-						// 		preventa: false,
-						// 		estado: ""
-						// 	}
-						// ];
-						// this.getPedidos();
+						 this.apartados = "";
+						 //this.getPedidos();
 					}
 				});
 			},
@@ -372,7 +416,7 @@
 			},
 			ordenarPops: function () {
 				return _.orderBy(this.pops, 'cantidadDisponible')
-			}
+			},
 		},
 		watch: {
 			'nuevaVenta': function(val, oldVal){
@@ -384,6 +428,24 @@
 					this.validacionCantidad = false;
 					this.mensajeError = "";
 				}
+			},
+			apartados: {
+				handler: function(val, oldVal){
+					let totalApartados = 0;
+					for (let apartado in val){
+						totalApartados += parseInt(val[apartado].cantidadApartada);
+					}
+					if(totalApartados > parseInt(this.vendidos)){
+						this.validacionApartados = true;
+						this.mensajeError = "No puedes apartar mas de lo que tienes";
+						return;
+					}
+					else if(totalApartados <= parseInt(this.vendidos)){
+						this.validacionApartados = false;
+						this.mensajeError = "";
+					}
+				},
+				deep: true
 			}
 		}
 	}
@@ -407,7 +469,10 @@
 			}
 		}
 	}	
-
+	.table-warning{
+		background-color: #fcf8e3;
+	}
+	
 	.table-danger{	    	
 		background-color: #f2dede;
 	}
