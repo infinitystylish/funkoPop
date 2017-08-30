@@ -116,7 +116,7 @@
 						</tr>
 
 						<tr v-for="(pop, indice) of ordenarPops" v-bind:class="{'table-warning': disponibilidadApartadoFunko(pop), 'table-danger' : disponibilidadFunko(pop)}">
-
+							
 							<td>
 								{{indice + 1}} 
 							</td>
@@ -163,11 +163,11 @@
 								{{ recuperacionDinero(pop) }}
 							</td>
 							<td class="column-button">
-								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(indice,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico)">
+								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(indice,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados)">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
 
-								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.id,pop.vendidos)">
+								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.id,pop.cantidadDisponible,pop.apartados)">
 									<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
 								</button>
 
@@ -198,6 +198,24 @@
 					<label for="">Precio público:</label>
 			        <input type="text" v-model="precioPublico" class="form-control">
 			    </div>
+				<div class="label">Apartados</div>
+			    <div v-for="apartado in apartados">
+			    	<div class="row">
+			    		<div class="col-sm-6">
+			    			<div class="form-group">
+						    	<label>Nombre Cliente</label>
+						    	<input type="text" v-model="apartado.nombreCliente" class="form-control">
+						    </div>
+					    </div>
+					    <div class="col-sm-6">
+					    	<div class="form-group">
+						    	<label>Cantidad Apartada</label>
+						    	<input type="number" v-model="apartado.cantidadApartada" class="form-control">
+						    </div>
+					    </div>
+				    </div>
+			    </div>
+
 		        <input type="hidden" v-model="idPop">
 		        <input type="hidden" v-model="id">
 		        <input type="hidden" v-model="comprado">
@@ -227,6 +245,7 @@
 			        <h4 class="modal-title" id="myModalLabel">Apartados Funko Pop</h4>
 		      	</div>
 		      	<div class="modal-body">
+		      		<div>{{apartados[0]}}</div>
 		      		<ul class="list-group">
 
 					    <li class="list-group-item" v-for="(apartado, index) in apartados">
@@ -277,6 +296,7 @@
 		    	nuevaVenta: 0,
 		    	comprado: 0,
 		    	vendidos: 0,
+		    	cantidadDisponible: 0,
 		    	precioPublico: 0,
 		    	validacionCantidad: false,
 		    	mensajeError: '',
@@ -311,13 +331,13 @@
 					totalApartados += cantidadApartada;
 				}
 
-				cantidadTotal = pop.cantidadDisponible - totalApartados;
+				//cantidadTotal = pop.cantidadDisponible - totalApartados;
 
-				if(cantidadTotal > 0){
-					return false;
+				if(totalApartados > 0){
+					return true;
 				}
 				else{
-					return true;
+					return false;
 				}
 			},
 			costoTotal(pop){
@@ -337,6 +357,7 @@
 				let totalApartados = 0;
 				let cantidadApartada = 0;
 				let cantidadTotal = 0;
+				let vendidos = pop.vendidos;
 				for (let apartado in pop.apartados) {
 					cantidadApartada = parseInt(pop.apartados[apartado].cantidadApartada)
 					totalApartados += cantidadApartada;
@@ -353,13 +374,14 @@
 			recuperacionDinero(pop){
 				return pop.vendidos * pop.costo;
 			},
-			popVenta(id,indice,vendidos,cantidadComprada, precioPublico){
+			popVenta(id,indice,vendidos,cantidadComprada, precioPublico, apartados){
 				this.idPop = id;
 				this.id = indice;
 				this.comprado = cantidadComprada;
 				this.precioPublico = precioPublico;
 				this.vendidos = parseInt(vendidos);
 				this.nuevaVenta = 0;
+				this.apartados = apartados;
 			},
 			registrarVenta(indice,id){
 				let vendidos = parseInt(this.pops[indice].vendidos) + parseInt(this.nuevaVenta);
@@ -378,9 +400,17 @@
 					}
 				})
 			},
-			popApartado(id,vendidos){
+			popApartado(id,cantidadDisponible,apartados){
+				// this.apartados = [
+				// 	{
+				// 		nombreCliente: "",
+				// 		cantidadApartada: 0,
+				// 	}	
+				// ];
 				this.idPop = id;
-				this.vendidos = parseInt(vendidos);
+				this.cantidadDisponible = parseInt(cantidadDisponible);
+				this.apartados = apartados;
+				console.log(this.cantidadDisponible);
 			},
 			agregarApartado(){
 				this.apartados.push(
@@ -435,12 +465,13 @@
 					for (let apartado in val){
 						totalApartados += parseInt(val[apartado].cantidadApartada);
 					}
-					if(totalApartados > parseInt(this.vendidos)){
+
+					if(totalApartados > parseInt(this.cantidadDisponible)){
 						this.validacionApartados = true;
 						this.mensajeError = "No puedes apartar mas de lo que tienes";
 						return;
 					}
-					else if(totalApartados <= parseInt(this.vendidos)){
+					else if(totalApartados <= parseInt(this.cantidadDisponible)){
 						this.validacionApartados = false;
 						this.mensajeError = "";
 					}

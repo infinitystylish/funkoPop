@@ -87,18 +87,18 @@ export default {
 	data (){
 		return{
 			pop: {
-		        licencia: 'Gears of War',
-		        nombre: 'Damon Baird',
-		        numeroPop: '197',
-		        costo: '216.88',
-		        precioPublico: '299',
-		        cantidadComprada: '1',
-		        // licencia: '',
-		        // nombre: '',
-		        // numeroPop: '',
-		        // costo: '',
-		        // precioPublico: '',
-		        // cantidadComprada: '',
+		        // licencia: 'Gears of War',
+		        // nombre: 'Damon Baird',
+		        // numeroPop: '197',
+		        // costo: '216.88',
+		        // precioPublico: '299',
+		        // cantidadComprada: '1',
+		        licencia: '',
+		        nombre: '',
+		        numeroPop: '',
+		        costo: '',
+		        precioPublico: '',
+		        cantidadComprada: '',
 			},
 			estado: ""
 		}
