@@ -3,26 +3,20 @@
 		<div class="funko-options">
 			<router-link tag="button" to="listadoPops" class="btn btn-primary btn-lg">Lista de FunkoPop</router-link>
 			<router-link tag="button" to="nuevoPop" class="btn btn-success btn-lg">Nuevo FunkoPop</router-link>
-
 			<router-link tag="button" to="avisoPop" class="btn btn-warning btn-lg">Aviso / Apartado FunkoPop</router-link>
-
 			<router-link tag="button" to="pedidosPop" class="btn btn-danger btn-lg">Pedidos FunkoPop</router-link>
 		</div>
-
 		<div class="total">
 			<div class="total-cost">
-			<span>Total de inversion: ${{total}} </span>
+				<span>Total de inversion: ${{totalInvertido}} </span>
 			</div>
 			<div class="total-recuperado">
 				<span>Total recuperado: ${{totalRecuperado}} </span>
-				</div>
-			<hr />
-				<span v-if="total - totalRecuperado > 0">Faltan</span>
-				<span v-else>Tienes</span>
-					 {{ total - totalRecuperado }} 
-				<span v-if="total - totalRecuperado > 0">para recuperar inversión</span>
-				<span v-else> de ganancia </span>
-			<hr>
+			</div>
+			<div class="ganancia">
+				<span v-if="totalInvertido - totalRecuperado - ganancia < 0">Tu ganancia es de {{ ganancia - totalInvertido }}</span>
+				<span v-else>Faltan {{ (ganancia + totalRecupedado) - totalInvertido}}</span>
+			</div>
 			<div class="total-comprado">
 				<span>Total comprado: {{totalComprado}} </span>
 			</div>
@@ -43,31 +37,37 @@ export default {
 	    }
 	},
 	computed: {
-	      total: function(){
-	        let sum = 0;
-	        return this.pops.reduce(function(prev, pop){
-	            return Math.ceil( (sum = sum + (pop.costo * pop.cantidadComprada) )*10) / 10; 
-	        },0);
-	      },
-	      totalRecuperado(){
-	        let sum = 0;
-	        return this.pops.reduce(function(prev, pop){
-	            return Math.ceil( (sum = sum + (pop.vendidos * pop.costo) )*10) / 10; 
-	        },0);
-	      },
-	      totalComprado(){
-	        let sum = 0;
-	        return this.pops.reduce(function(prev, pop){
-	            return sum = sum + parseInt(pop.cantidadComprada); 
-	        },0);
-	      },
-	      totalVendido(){
-	        let sum = 0;
-	        return this.pops.reduce(function(prev, pop){
-	            return sum = sum + parseInt(pop.vendidos); 
-	        },0);
-	      },
-	    }
+		totalInvertido: function(){
+			let sum = 0;
+			return this.pops.reduce(function(prev, pop){
+			    return Math.ceil( (sum = sum + (pop.costo * pop.cantidadComprada) )*10) / 10; 
+			},0);
+		},
+		totalRecuperado(){
+			let sum = 0;
+			return this.pops.reduce(function(prev, pop){
+			    return Math.ceil( (sum = sum + (pop.vendidos * pop.costo) )*10) / 10; 
+			},0);
+		},
+		totalComprado(){
+			let sum = 0;
+			return this.pops.reduce(function(prev, pop){
+			    return sum = sum + parseInt(pop.cantidadComprada); 
+			},0);
+		},
+		totalVendido(){
+			let sum = 0;
+			return this.pops.reduce(function(prev, pop){
+			    return sum = sum + parseInt(pop.vendidos); 
+			},0);
+		},
+		ganancia(){
+			let sum = 0;
+			return this.pops.reduce(function(prev, pop){
+			    return sum = sum + parseInt(pop.vendidos) * pop.precioPublico; 
+			},0);
+		}
+	}
 }
 
 </script>
@@ -91,7 +91,7 @@ export default {
    	 	padding: 10px 15px;
    	 	border-top-right-radius: 3px;
    	 	border-bottom-right-radius: 3px;
-		.total-recuperado,.total-vendido,.total-comprado{
+		.total-recuperado,.total-vendido,.total-comprado,.total-invertido,.ganancia{
 			margin-top: 10px;
 		}
 		hr{

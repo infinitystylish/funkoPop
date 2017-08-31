@@ -115,8 +115,7 @@
 							</td>
 						</tr>
 
-						<tr v-for="(pop, indice) of ordenarPops" v-bind:class="{'table-warning': disponibilidadApartadoFunko(pop), 'table-danger' : disponibilidadFunko(pop)}">
-							
+						<tr v-for="(pop, indice) of ordenarPops" v-bind:class="{'table-warning': disponibilidadApartadoFunko(pop), 'table-danger' : disponibilidadFunko(pop)}">	
 							<td>
 								{{indice + 1}} 
 							</td>
@@ -163,14 +162,12 @@
 								{{ recuperacionDinero(pop) }}
 							</td>
 							<td class="column-button">
-								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(indice,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados)">
+								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados)">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
-
 								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.id,pop.cantidadDisponible,pop.apartados)">
 									<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
 								</button>
-
 							</td>
 						</tr>
 					</tbody>
@@ -183,104 +180,113 @@
 
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Modificar Funko Pop</h4>
-		      </div>
-		      <div class="modal-body">
-		      	<div class="form-group">
-			      	<label for="">Cantidad vendida:</label>
-			        <input type="text" v-model="nuevaVenta" class="form-control">
-			    </div>
-				<div class="form-group">
-					<label for="">Precio público:</label>
-			        <input type="text" v-model="precioPublico" class="form-control">
-			    </div>
-				<div class="label">Apartados</div>
-			    <div v-for="apartado in apartados">
-			    	<div class="row">
-			    		<div class="col-sm-6">
-			    			<div class="form-group">
-						    	<label>Nombre Cliente</label>
-						    	<input type="text" v-model="apartado.nombreCliente" class="form-control">
+			<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Modificar Funko Pop</h4>
+					</div>
+			      	<div class="modal-body">
+				      	<div class="form-group">
+					      	<label for="">Cantidad vendida:</label>
+					        <input type="text" v-model="nuevaVenta" class="form-control">
+					    </div>
+						<div class="form-group">
+							<label for="">Precio público:</label>
+					        <input type="text" v-model="precioPublico" class="form-control">
+					    </div>
+						<div class="label">Apartados</div>
+					    <div v-for="(apartado, index) in apartados"> 
+					    	<div class="row">
+					    		<div class="col-sm-4">
+					    			<div class="form-group">
+								    	<label>Nombre Cliente</label>
+								    	<input type="text" v-model="apartado.nombreCliente" class="form-control">
+								    </div>
+							    </div>
+							    <div class="col-sm-4">
+							    	<div class="form-group">
+								    	<label>Cantidad Apartada</label>
+								    	<input type="number" v-model="apartado.cantidadApartada" class="form-control">
+								    </div>   
+							    </div>
+								<div class="col-sm-4">
+									<div class="register-buttons">
+										<button type="button" class="btn btn-success" v-on:click="registrarVentaApartado(idPop,id,index)">
+									    	<span class="glyphicon glyphicon-ok" aria-hidden="true">Vendido</span>
+									    </button>
+								     	<button type="button" class="btn btn-danger" v-on:click="removeElement(index)">
+									    	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									    </button>
+									</div>
+								</div>
 						    </div>
 					    </div>
-					    <div class="col-sm-6">
-					    	<div class="form-group">
-						    	<label>Cantidad Apartada</label>
-						    	<input type="number" v-model="apartado.cantidadApartada" class="form-control">
-						    </div>
-					    </div>
-				    </div>
+
+				        <input type="hidden" v-model="idPop">
+				        <input type="hidden" v-model="id">
+				        <input type="hidden" v-model="comprado">
+				        <input type="hidden" v-model="vendidos">
+
+				        <div class="alert alert-danger my-alert" v-if="validacionCantidad" role="alert">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							{{mensajeError}}
+						</div>
+			     	</div>
+			      	<div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="button" class="btn btn-primary" v-bind:class="{ hidden: validacionCantidad }" v-on:click="registrarVenta(idPop,id)">Guardar</button>
+			      	</div>
 			    </div>
-
-		        <input type="hidden" v-model="idPop">
-		        <input type="hidden" v-model="id">
-		        <input type="hidden" v-model="comprado">
-		        <input type="hidden" v-model="vendidos">
-
-		        <div class="alert alert-danger my-alert" v-if="validacionCantidad" role="alert">
-				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-				  <span class="sr-only">Error:</span>
-				  {{mensajeError}}
-				</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		        <button type="button" class="btn btn-primary" v-bind:class="{ hidden: validacionCantidad }" v-on:click="registrarVenta(idPop,id)">Guardar</button>
-		      </div>
-		    </div>
-		  </div>
+		  	</div>
 		</div>
 
 
 		<!-- Modal -->
 		<div class="modal fade" id="apartadoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		  <div class="modal-dialog modal-lg" role="document">
-		    <div class="modal-content">
-		      	<div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="myModalLabel">Apartados Funko Pop</h4>
-		      	</div>
-		      	<div class="modal-body">
-		      		<div>{{apartados[0]}}</div>
-		      		<ul class="list-group">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+			      	<div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="myModalLabel">Apartados Funko Pop</h4>
+			      	</div>
+			      	<div class="modal-body">
 
-					    <li class="list-group-item" v-for="(apartado, index) in apartados">
-					    	<div class="figure-division">
-						      	<div class="form-group">
-							      	<label for="nombrePop">Nombre cliente:</label>
-							        <input type="text" v-model="apartado.nombreCliente" class="form-control">
-							    </div>
-							    <div class="form-group">
-							      	<label for="cantidad">Cantidad:</label>
-							        <input type="number" v-model="apartado.cantidadApartada" class="form-control">
-							    </div>
-							</div>
-					    </li>
-					</ul>
+			      		<ul class="list-group">
 
-					<input type="hidden" v-model="idPop">
-					<input type="hidden" v-model="vendidos">
-					
-					<div class="alert alert-danger my-alert" v-if="validacionApartados" role="alert">
-					  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-					  <span class="sr-only">Error:</span>
-					  {{mensajeError}}
+						    <li class="list-group-item" v-for="(apartado, index) in apartados">
+						    	<div class="figure-division">
+							      	<div class="form-group">
+								      	<label for="nombrePop">Nombre cliente:</label>
+								        <input type="text" v-model="apartado.nombreCliente" class="form-control">
+								    </div>
+								    <div class="form-group">
+								      	<label for="cantidad">Cantidad:</label>
+								        <input type="number" v-model="apartado.cantidadApartada" class="form-control">
+								    </div>
+								</div>
+						    </li>
+						</ul>
+
+						<input type="hidden" v-model="idPop">
+						<input type="hidden" v-model="vendidos">
+						
+						<div class="alert alert-danger my-alert" v-if="validacionApartados" role="alert">
+						  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						  <span class="sr-only">Error:</span>
+						  {{mensajeError}}
+						</div>
+
+						<button class="btn btn-primary" @click="agregarApartado">Agregar</button>
 					</div>
-
-					<button class="btn btn-primary" @click="agregarApartado">Agregar</button>
-				</div>
-			    <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			        <button type="button" class="btn btn-primary" v-bind:class="{ hidden: validacionApartados }" v-on:click="agregarApartados(idPop)">Guardar</button>
-			     </div>
-		    </div>
-		  </div>
+				    <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="button" class="btn btn-primary" v-bind:class="{ hidden: validacionApartados }" v-on:click="agregarApartados(idPop)">Guardar</button>
+				    </div>
+			    </div>
+		  	</div>
 		</div>
-
 
 	</div>
 </template>
@@ -330,8 +336,6 @@
 					cantidadApartada = parseInt(pop.apartados[apartado].cantidadApartada)
 					totalApartados += cantidadApartada;
 				}
-
-				//cantidadTotal = pop.cantidadDisponible - totalApartados;
 
 				if(totalApartados > 0){
 					return true;
@@ -383,34 +387,42 @@
 				this.nuevaVenta = 0;
 				this.apartados = apartados;
 			},
-			registrarVenta(indice,id){
-				let vendidos = parseInt(this.pops[indice].vendidos) + parseInt(this.nuevaVenta);
-				let comprados = this.pops[indice].cantidadDisponible = this.comprado -  vendidos;
-				let precioPublico = this.pops[indice].precioPublico = this.precioPublico;
+			registrarVenta(indiceOriginal,id){
+				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.nuevaVenta);
+				let comprados = this.pops[indiceOriginal].cantidadDisponible = this.comprado -  vendidos;
+				let precioPublico = this.pops[indiceOriginal].precioPublico = this.precioPublico;
+				let apartados = this.pops[indiceOriginal].apartados = this.apartados;
 				this.axios.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json', {
 					vendidos: vendidos,
-					cantidadDisponible: comprados
+					cantidadDisponible: comprados,
+					apartados: apartados
 				}).then(respuesta => { 
 					setTimeout(function(){
 						$('#myModal').modal('hide');
 					},500);
 					if(respuesta.status == 200){
-						this.pops[indice].vendidos = vendidos;
-						this.pops[indice].cantidadDisponible = comprados;
+						this.pops[indiceOriginal].vendidos = vendidos;
+						this.pops[indiceOriginal].cantidadDisponible = comprados;
+						this.pops[indiceOriginal].apartados = apartados;
 					}
 				})
 			},
+			registrarVentaApartado(indiceOriginal,id,indexApartado){
+				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.pops[indiceOriginal].apartados[indexApartado].cantidadApartada);
+				this.pops[indiceOriginal].apartados.splice(indexApartado, 1); 
+				let comprados = this.pops[indiceOriginal].cantidadDisponible = this.comprado -  vendidos;
+				this.pops[indiceOriginal].vendidos = vendidos;
+				this.pops[indiceOriginal].cantidadDisponible = comprados;
+			},
 			popApartado(id,cantidadDisponible,apartados){
-				// this.apartados = [
-				// 	{
-				// 		nombreCliente: "",
-				// 		cantidadApartada: 0,
-				// 	}	
-				// ];
+				this.apartados = [
+					{
+						nombreCliente: "",
+						cantidadApartada: 0,
+					}	
+				];
 				this.idPop = id;
 				this.cantidadDisponible = parseInt(cantidadDisponible);
-				this.apartados = apartados;
-				console.log(this.cantidadDisponible);
 			},
 			agregarApartado(){
 				this.apartados.push(
@@ -425,7 +437,7 @@
 					this.apartados[apartado].nombreCliente = this.apartados[apartado].nombreCliente.trim();
 				}
 				
-				 var apartados = this.apartados;
+				var apartados = this.apartados;
 
 				this.axios.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json',{
 					apartados
@@ -439,13 +451,21 @@
 					}
 				});
 			},
+			removeElement: function (index) {
+				this.apartados.splice(index, 1);
+			}
 		},
 		computed:{
 			buscarPop(){
 				return this.pops.filter((pop) => pop.nombre.toLowerCase().includes(this.buscar));
 			},
 			ordenarPops: function () {
-				return _.orderBy(this.pops, 'cantidadDisponible')
+				var originalIndex = 0;
+				for(let val in this.pops){
+					this.pops[val].originalIndex = originalIndex;
+					originalIndex++;
+				}
+				return _.orderBy(this.pops, 'cantidadDisponible');
 			},
 		},
 		watch: {
@@ -518,6 +538,16 @@
 	}
 	.btn-apartado{
 		margin-left: 20px;
+	}
+	.register-buttons{
+		height: 60px;
+		display: flex;
+		align-items: flex-end;
+		button{
+			&:nth-child(2){
+				margin-left: 10px;
+			}
+		}
 	}
 
 </style>

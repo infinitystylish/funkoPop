@@ -76,86 +76,82 @@
 
 		<!-- Modal -->
 		<div class="modal fade" id="pedidosModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		  <div class="modal-dialog modal-lg" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Pedidos Funko Pop</h4>
-		      </div>
-		      <div class="modal-body">
-			      	<div class="form-inline">
-						<div class="form-group">
-				      	<label for="">Nombre de pedido:</label>
-				        <input type="text" v-model="pedidoD.nombrePedido" class="form-control">
-				    </div>
-		      		<ul class="list-group">
-	
-					    <li class="list-group-item" v-for="(funkoPop, index) in pedidoD.funkoPop">
-					    	<div class="figure-division">
-						      	<div class="form-group">
-							      	<label for="nombrePop">Nombre Funko Pop:</label>
-							        <input type="text" v-model="funkoPop.nombrePop" class="form-control">
-							    </div>
-							    <div class="form-group">
-							      	<label for="cantidad">Cantidad:</label>
-							        <input type="number" v-model="funkoPop.cantidad" class="form-control">
-							    </div>
-								<div class="form-group">
-									<label for="costoFigura">Costo Figura:</label>
-									<select v-model="funkoPop.costoFigura">
-									  <option disabled value="">Selecciona un costo</option>
-									  <option v-for="costo in costoFigura">{{ costo }}</option>
-									</select>
+			<div class="modal-dialog modal-lg" role="document">
+			    <div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Pedidos Funko Pop</h4>
+					</div>
+					<div class="modal-body">
+				      	<div class="form-inline">
+							<div class="form-group">
+						      	<label for="">Nombre de pedido:</label>
+						        <input type="text" v-model="pedidoD.nombrePedido" class="form-control">
+						    </div>
+				      		<ul class="list-group">
+			
+							    <li class="list-group-item" v-for="(funkoPop, index) in pedidoD.funkoPop">
+							    	<div class="figure-division">
+								      	<div class="form-group">
+									      	<label for="nombrePop">Nombre Funko Pop:</label>
+									        <input type="text" v-model="funkoPop.nombrePop" class="form-control">
+									    </div>
+									    <div class="form-group">
+									      	<label for="cantidad">Cantidad:</label>
+									        <input type="number" v-model="funkoPop.cantidad" class="form-control">
+									    </div>
+										<div class="form-group">
+											<label for="costoFigura">Costo Figura:</label>
+											<select v-model="funkoPop.costoFigura">
+											  <option disabled value="">Selecciona un costo</option>
+											  <option v-for="costo in costoFigura">{{ costo }}</option>
+											</select>
+										</div>
+									</div>
+							    </li>
+							</ul>
+
+							<button class="btn btn-primary" @click="agregarFunkoPop">Agregar</button>
+
+							<div class="align-right">
+								<div class="checkbox">
+								    <label>
+								      <input type="checkbox" v-model="preventa"> Preventa
+								    </label>
 								</div>
 							</div>
-					    </li>
-					</ul>
 
-					<button class="btn btn-primary" @click="agregarFunkoPop">Agregar</button>
-
-					<div class="align-right">
-						<div class="checkbox">
-						    <label>
-						      <input type="checkbox" v-model="preventa"> Preventa
-						    </label>
-						</div>
+					    </div>
 					</div>
-
-			    </div>
-			</div>
-		    <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		        <button type="button" class="btn btn-primary" v-on:click="agregarPedido()">Guardar</button>
-		      </div>
-		    </div>
-		  </div>
+				    <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="button" class="btn btn-primary" v-on:click="agregarPedido()">Guardar</button>
+				    </div>
+				</div>
+		  	</div>
 		</div>
-
-
-
 
 		<!-- Modal -->
 		<div class="modal fade" id="costoFiguraModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		  <div class="modal-dialog modal-lg" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Agregar costo figura Funko Pop</h4>
-		      </div>
-		      <div class="modal-body">
-		      	 <div class="form-group">
-					<label for="">Costo figura:</label>
-			        <input type="number" v-model="costoFigura" class="form-control">
-			    </div>
-		      </div>
-		    <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		        <button type="button" class="btn btn-primary" v-on:click="agregarCostoFigura()">Guardar</button>
-		      </div>
-		    </div>
-		  </div>
+			<div class="modal-dialog modal-lg" role="document">
+			    <div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Agregar costo figura Funko Pop</h4>
+					</div>
+			      	<div class="modal-body">
+			      		<div class="form-group">
+							<label for="">Costo figura:</label>
+					        <input type="number" v-model="costoFigura" class="form-control">
+					    </div>
+			    	</div>
+				    <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="button" class="btn btn-primary" v-on:click="agregarCostoFigura()">Guardar</button>
+				    </div>
+				</div>
+	  		</div>
 		</div>
-
 
 	</div>
 </template>
@@ -262,8 +258,6 @@
 						this.pedidoD.funkoPop[pedido].estado = "Falta de pago";
 					}
 
-
-
 				}
 				
 				var pedido = this.pedidoD.funkoPop;
@@ -295,26 +289,26 @@
 				});
 			},
 			getPedidos(){
-		      this.axios.get('https://funkopop-e84d7.firebaseio.com/pedidos.json')
+		    	this.axios.get('https://funkopop-e84d7.firebaseio.com/pedidos.json')
 		        .then(respuesta => { 
 		            return respuesta.data;
 		        })
 		        .then(respuestaJson => {
-		          this.pedido.nombrePedido = "";
-		          this.pedidos = [];
-		          for (let id in respuestaJson){
-		          	 this.pedido.nombrePedido = respuestaJson[id].nombrePedido;
-		          	 this.pedido.funkoPop = [];
-		          	for (let pedido in respuestaJson[id].pedido) {
-		          		this.pedido.funkoPop.push(respuestaJson[id].pedido[pedido]);
-		          	}
-		          	let pedido = {
-		              id: id,
-		              nombrePedido: this.pedido.nombrePedido,
-		              funkoPop : this.pedido.funkoPop
-		            }
-		            this.pedidos.push(pedido);
-		          }
+					this.pedido.nombrePedido = "";
+					this.pedidos = [];
+					for (let id in respuestaJson){
+						this.pedido.nombrePedido = respuestaJson[id].nombrePedido;
+						this.pedido.funkoPop = [];
+						for (let pedido in respuestaJson[id].pedido) {
+							this.pedido.funkoPop.push(respuestaJson[id].pedido[pedido]);
+						}
+						let pedido = {
+						id: id,
+						nombrePedido: this.pedido.nombrePedido,
+						funkoPop : this.pedido.funkoPop
+					}
+					this.pedidos.push(pedido);
+					}
 		        });
 		        
 		    },
@@ -334,16 +328,16 @@
 		    },
 		    getCostoFigura(){
 		    	 this.axios.get('https://funkopop-e84d7.firebaseio.com/costoFigura.json')
-			        .then(respuesta => { 
-			            return respuesta.data;
-			        })
-			        .then(respuestaJson => {
-			          this.costoFigura = [];
-			          for (let id in respuestaJson){
-			         	this.costoFigura.push(respuestaJson[id].costoFigura);
-			         	}
-			       
-			        });
+		        .then(respuesta => { 
+		            return respuesta.data;
+		        })
+		        .then(respuestaJson => {
+		          this.costoFigura = [];
+		          for (let id in respuestaJson){
+		         	this.costoFigura.push(respuestaJson[id].costoFigura);
+		         	}
+		       
+		        });
 			        
 		    },
 		    checarPago(pedido){
