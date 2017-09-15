@@ -201,13 +201,13 @@
 					    		<div class="col-sm-4">
 					    			<div class="form-group">
 								    	<label>Nombre Cliente</label>
-								    	<input type="text" v-model="apartado.nombreCliente" class="form-control">
+								    	<input type="text" v-model="apartado.nombreCliente" class="form-control" disabled>
 								    </div>
 							    </div>
 							    <div class="col-sm-4">
 							    	<div class="form-group">
 								    	<label>Cantidad Apartada</label>
-								    	<input type="number" v-model="apartado.cantidadApartada" class="form-control">
+								    	<input type="number" v-model="apartado.cantidadApartada" class="form-control" disabled>
 								    </div>   
 							    </div>
 								<div class="col-sm-4">
@@ -415,14 +415,24 @@
 				this.pops[indiceOriginal].cantidadDisponible = comprados;
 			},
 			popApartado(id,cantidadDisponible,apartados){
-				this.apartados = [
-					{
-						nombreCliente: "",
-						cantidadApartada: 0,
-					}	
-				];
+			
+				if(apartados === undefined){
+					
+					this.apartados = [
+						{
+							nombreCliente: "",
+							cantidadApartada: 0,
+						}	
+					];
+					
+				}
+				else{
+					this.apartados = apartados;
+				}
+				
 				this.idPop = id;
 				this.cantidadDisponible = parseInt(cantidadDisponible);
+
 			},
 			agregarApartado(){
 				this.apartados.push(
@@ -447,7 +457,7 @@
 					},500);
 					if(respuesta.status == 200){
 						 this.apartados = "";
-						 //this.getPedidos();
+						 this.ordenarPops();
 					}
 				});
 			},
@@ -471,7 +481,11 @@
 		watch: {
 			'nuevaVenta': function(val, oldVal){
 				let totalVenta = parseInt(this.vendidos) + parseInt(val);
-				if(totalVenta > this.comprado){
+				var cantidadApartada = 0;
+				for(let val in this.apartados){
+					cantidadApartada += parseInt(this.apartados[val].cantidadApartada);
+				}
+				if( (cantidadApartada + totalVenta) > this.comprado){
 					this.validacionCantidad = true;
 					this.mensajeError = "No puedes vender mas de lo que tienes";
 				}else if(totalVenta <= this.comprado){
