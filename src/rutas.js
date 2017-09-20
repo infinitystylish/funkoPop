@@ -6,18 +6,18 @@ import pedidosPop from './componentes/pedidosPop.vue'
 
 export const rutas = [
 	{ 
-		path: '/', component: HomePops, name: 'homePops'
+		path: '/FunkoPop', component: HomePops, name: 'homePops'
 	},
 	{
-		path: '/listadoPops', component:  ListadoPops, name: 'listadoPops'
+		path: '/FunkoPop/listadoPops', component:  ListadoPops, name: 'listadoPops'
 	},
 	{
-		path: '/nuevoPop', component:  NuevoPop, name: 'nuevoPop'
+		path: '/FunkoPop/nuevoPop', component:  NuevoPop, name: 'nuevoPop'
 	},
 	{
-		path: '/avisoPop', component:  avisoPop, name: 'avisoPop'
+		path: '/FunkoPop/avisoPop', component:  avisoPop, name: 'avisoPop'
 	},
 	{
-		path: '/pedidosPop', component:  pedidosPop, name: 'pedidosPop'
+		path: '/FunkoPop/pedidosPop', component:  pedidosPop, name: 'pedidosPop'
 	},
 ]
