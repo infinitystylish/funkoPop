@@ -6,7 +6,7 @@
 				<div class="container-fluid">
 					<div class="navbar-header">
 						<a class="navbar-brand" href="#">
-							<img alt="Brand" class="img-responsive" src="./assets/funko-morelia-logo.jpg">
+							<img alt="Brand" class="img-responsive" src="https://raw.githubusercontent.com/infinitystylish/FunkoPop/master/docs/funko-morelia-logo.jpg">
 						</a>
 					</div>
 				</div>

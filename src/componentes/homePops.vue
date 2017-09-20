@@ -15,7 +15,7 @@
 			</div>
 			<div class="ganancia">
 				<span v-if="totalInvertido - totalRecuperado - ganancia < 0">Tu ganancia es de {{ ganancia - totalInvertido }}</span>
-				<span v-else>Faltan {{ (ganancia + totalRecupedado) - totalInvertido}}</span>
+				<span v-else>Faltan {{ (ganancia + totalRecuperado) - totalInvertido}}</span>
 			</div>
 			<div class="total-comprado">
 				<span>Total comprado: {{totalComprado}} </span>
