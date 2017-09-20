@@ -1,10 +1,10 @@
 <template>
 	<div class="internal-content">
 		<div class="funko-options">
-			<router-link tag="button" to="FunkoPop/listadoPops" class="btn btn-primary btn-lg">Lista de FunkoPop</router-link>
-			<router-link tag="button" to="FunkoPop/nuevoPop" class="btn btn-success btn-lg">Nuevo FunkoPop</router-link>
-			<router-link tag="button" to="FunkoPop/avisoPop" class="btn btn-warning btn-lg">Aviso / Apartado FunkoPop</router-link>
-			<router-link tag="button" to="FunkoPop/pedidosPop" class="btn btn-danger btn-lg">Pedidos FunkoPop</router-link>
+			<router-link tag="button" to="/FunkoPop/listadoPops" class="btn btn-primary btn-lg">Lista de FunkoPop</router-link>
+			<router-link tag="button" to="/FunkoPop/nuevoPop" class="btn btn-success btn-lg">Nuevo FunkoPop</router-link>
+			<router-link tag="button" to="/FunkoPop/avisoPop" class="btn btn-warning btn-lg">Aviso / Apartado FunkoPop</router-link>
+			<router-link tag="button" to="/FunkoPop/pedidosPop" class="btn btn-danger btn-lg">Pedidos FunkoPop</router-link>
 		</div>
 		<div class="total">
 			<div class="total-cost">
