@@ -53,16 +53,16 @@
 								<a href="#" @click.prevent="volver">Home</a>
 							</li> 
 							<li>
-								<router-link tag="a" to="listadoPops">Lista de FunkoPop</router-link>
+								<router-link tag="a" to="/FunkoPop/listadoPops">Lista de FunkoPop</router-link>
 							</li> 
 							<li>
-								<router-link tag="a" to="nuevoPop">Nuevo FunkoPop</router-link>
+								<router-link tag="a" to="/FunkoPop/nuevoPop">Nuevo FunkoPop</router-link>
 							</li>
 							<li>
-								<router-link tag="a" to="avisoPop">Listado de Avisos</router-link>
+								<router-link tag="a" to="/FunkoPop/avisoPop">Listado de Avisos</router-link>
 							</li>
 							<li>
-								<router-link tag="a" to="pedidosPop">Pedidos FunkoPop</router-link>
+								<router-link tag="a" to="/FunkoPop/pedidosPop">Pedidos FunkoPop</router-link>
 							</li>  
 				        </ul> 
 				    	<div class="cerrar-sesion">
