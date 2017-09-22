@@ -45,6 +45,9 @@
 								Precio a público
 							</th>
 							<th>
+								Ganancia de embalaje
+							</th>
+							<th>
 								Margen de ganancia
 							</th>
 							<th>
@@ -102,6 +105,9 @@
 								{{ pop.precioPublico }}
 							</td>
 							<td>
+								{{ pop.gananciaEmbalaje }}
+							</td>
+							<td>
 								{{ margenGanancia(pop) }}
 							</td>
 							<td>
@@ -150,6 +156,9 @@
 								{{ pop.precioPublico }}
 							</td>
 							<td>
+								{{ pop.gananciaEmbalaje }}
+							</td>
+							<td>
 								{{ margenGanancia(pop) }}
 							</td>
 							<td>
@@ -162,10 +171,10 @@
 								{{ recuperacionDinero(pop) }}
 							</td>
 							<td class="column-button">
-								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados)">
+								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
-								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.id,pop.cantidadDisponible,pop.apartados)">
+								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
 									<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
 								</button>
 							</td>
@@ -194,6 +203,14 @@
 						<div class="form-group">
 							<label for="">Precio público:</label>
 					        <input type="text" v-model="precioPublico" class="form-control">
+					    </div>
+					    <div class="form-group">
+							<label for="">Descuentos:</label>
+					        <input type="text" v-model="descuentos" class="form-control">
+					    </div>
+					     <div class="form-group">
+							<label for="">Ganancia Embalaje:</label>
+					        <input type="text" v-model="gananciaEmbalaje" class="form-control">
 					    </div>
 						<div class="label">Apartados</div>
 					    <div v-for="(apartado, index) in apartados"> 
@@ -270,6 +287,7 @@
 						</ul>
 
 						<input type="hidden" v-model="idPop">
+						 <input type="hidden" v-model="id">
 						<input type="hidden" v-model="vendidos">
 						
 						<div class="alert alert-danger my-alert" v-if="validacionApartados" role="alert">
@@ -282,7 +300,7 @@
 					</div>
 				    <div class="modal-footer">
 				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				        <button type="button" class="btn btn-primary" v-bind:class="{ hidden: validacionApartados }" v-on:click="agregarApartados(idPop)">Guardar</button>
+				        <button type="button" class="btn btn-primary" v-bind:class="{ hidden: validacionApartados }" v-on:click="agregarApartados(idPop,id)">Guardar</button>
 				    </div>
 			    </div>
 		  	</div>
@@ -304,7 +322,9 @@
 		    	vendidos: 0,
 		    	cantidadDisponible: 0,
 		    	precioPublico: 0,
+		    	descuentos: 0,
 		    	validacionCantidad: false,
+		    	gananciaEmbalaje: 0,
 		    	mensajeError: '',
 				apartados:[
 					{
@@ -370,15 +390,15 @@
 				return cantidadTotal;
 			},
 			margenGanancia(pop){
-				return Math.ceil((pop.precioPublico - pop.costo) * 10) / 10;
+				return Math.round((pop.precioPublico - pop.costo)* 100) / 100;
 			},
 			ganancia(pop){
-				return (pop.vendidos * (Math.ceil((pop.precioPublico - pop.costo) * 10) / 10)) - pop.descuentos;
+				return Math.round(( (pop.vendidos *  Math.round((pop.precioPublico - pop.costo)* 100) / 100) - parseInt(pop.descuentos) ) * 100) / 100;
 			},
 			recuperacionDinero(pop){
-				return pop.vendidos * pop.costo;
+				return Math.round((pop.vendidos * pop.costo)* 100) / 100;
 			},
-			popVenta(id,indice,vendidos,cantidadComprada, precioPublico, apartados){
+			popVenta(id,indice,vendidos,cantidadComprada, precioPublico, apartados, descuentos){
 				this.idPop = id;
 				this.id = indice;
 				this.comprado = cantidadComprada;
@@ -386,16 +406,21 @@
 				this.vendidos = parseInt(vendidos);
 				this.nuevaVenta = 0;
 				this.apartados = apartados;
+				this.descuentos =  parseInt(descuentos);
 			},
 			registrarVenta(indiceOriginal,id){
 				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.nuevaVenta);
 				let comprados = this.pops[indiceOriginal].cantidadDisponible = this.comprado -  vendidos;
 				let precioPublico = this.pops[indiceOriginal].precioPublico = this.precioPublico;
 				let apartados = this.pops[indiceOriginal].apartados = this.apartados;
+				let descuentos = this.pops[indiceOriginal].descuentos = this.descuentos;
+				let gananciaEmbalaje = this.pops[indiceOriginal].gananciaEmbalaje = this.gananciaEmbalaje;
 				this.axios.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json', {
 					vendidos: vendidos,
 					cantidadDisponible: comprados,
-					apartados: apartados
+					apartados: apartados,
+					descuentos: descuentos,
+					gananciaEmbalaje: gananciaEmbalaje
 				}).then(respuesta => { 
 					setTimeout(function(){
 						$('#myModal').modal('hide');
@@ -414,9 +439,9 @@
 				this.pops[indiceOriginal].vendidos = vendidos;
 				this.pops[indiceOriginal].cantidadDisponible = comprados;
 			},
-			popApartado(id,cantidadDisponible,apartados){
+			popApartado(id,indice,cantidadDisponible,apartados){
 			
-				if(apartados === undefined){
+				if(apartados === undefined || apartados === ""){
 					
 					this.apartados = [
 						{
@@ -431,7 +456,9 @@
 				}
 				
 				this.idPop = id;
+				this.id = indice;
 				this.cantidadDisponible = parseInt(cantidadDisponible);
+				
 
 			},
 			agregarApartado(){
@@ -442,12 +469,33 @@
 					}
 				);
 			},
-			agregarApartados(id){
+			agregarApartados(indiceOriginal,id){
+
+				var noCero = false;
+
 				for (let apartado in this.apartados) {
 					this.apartados[apartado].nombreCliente = this.apartados[apartado].nombreCliente.trim();
+					if(this.apartados[apartado].cantidadApartada == 0){
+						noCero = true;
+						break;
+					}
 				}
-				
-				var apartados = this.apartados;
+
+				if(noCero === true){
+					this.validacionApartados = true;
+					this.mensajeError = "No hay nada que apartar";
+					return;
+				}
+
+				let apartados = this.pops[indiceOriginal].apartados = this.apartados;
+				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.nuevaVenta);
+
+				let cantidadApartada = 0;
+				for(let val in this.apartados){
+					cantidadApartada += parseInt(this.apartados[val].cantidadApartada);
+				}
+
+				let cantidadDisponible = this.pops[indiceOriginal].cantidadDisponible - vendidos - cantidadApartada;
 
 				this.axios.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json',{
 					apartados
@@ -456,10 +504,13 @@
 						$('#apartadoModal').modal('hide');
 					},500);
 					if(respuesta.status == 200){
-						 this.apartados = "";
-						 this.ordenarPops();
+						this.apartados = "";
+						//this.pops[indiceOriginal].vendidos = vendidos;
+						//this.pops[indiceOriginal].cantidadDisponible = cantidadDisponible ;
+						//this.pops[indiceOriginal].apartados = cantidadApartada;
 					}
 				});
+
 			},
 			removeElement: function (index) {
 				this.apartados.splice(index, 1);
@@ -485,6 +536,7 @@
 				for(let val in this.apartados){
 					cantidadApartada += parseInt(this.apartados[val].cantidadApartada);
 				}
+				//console.log(this.apartados);
 				if( (cantidadApartada + totalVenta) > this.comprado){
 					this.validacionCantidad = true;
 					this.mensajeError = "No puedes vender mas de lo que tienes";
@@ -496,10 +548,10 @@
 			apartados: {
 				handler: function(val, oldVal){
 					let totalApartados = 0;
+					var noCero = false;
 					for (let apartado in val){
 						totalApartados += parseInt(val[apartado].cantidadApartada);
 					}
-
 					if(totalApartados > parseInt(this.cantidadDisponible)){
 						this.validacionApartados = true;
 						this.mensajeError = "No puedes apartar mas de lo que tienes";

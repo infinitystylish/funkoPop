@@ -1,0 +1,5 @@
+Correr el comando npm run build
+Copiar los archivos generados en dist (build.js y build.js.map)
+Pegar los archivos en docs
+Subir a github
+Subir a github pages

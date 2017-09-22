@@ -33,24 +33,7 @@
 								<span v-show="errors.has('numero-pop')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
 								<span v-show="errors.has('numero-pop')" class="help is-danger">{{ errors.first('numero-pop') }}</span>
 							</div>
-
-							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('precio-publico') }">
-								<label for="nombre">Precio a público:</label>
-								<div class="input-group">
-									<span class="input-group-addon">$</span>
-									<input type="number" class="form-control" id="precio-publico" name="precio-publico" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('precio-publico') }" data-vv-as="precio público"  v-model="pop.precioPublico">
-									<span v-show="errors.has('precio-publico')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-								</div>
-								<span v-show="errors.has('precio-publico')" class="help is-danger">{{ errors.first('precio-publico') }}</span>
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('nombre') }">
-								<label for="nombre">Nombre:</label>
-								<input type="text" class="form-control" id="nombre" name="nombre" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('nombre') }" v-model="pop.nombre">
-								<span v-show="errors.has('nombre')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-								<span v-show="errors.has('nombre')" class="help is-danger">{{ errors.first('nombre') }}</span>
-							</div>
+							
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('costo') }">
 								<label for="licencia">Costo:</label>
 								<div class="input-group">
@@ -60,12 +43,31 @@
 								</div>
 								<span v-show="errors.has('costo')" class="help is-danger">{{ errors.first('costo') }}</span>
 							</div>
+
+						</div>
+						<div class="col-xs-6">
+							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('nombre') }">
+								<label for="nombre">Nombre:</label>
+								<input type="text" class="form-control" id="nombre" name="nombre" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('nombre') }" v-model="pop.nombre">
+								<span v-show="errors.has('nombre')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+								<span v-show="errors.has('nombre')" class="help is-danger">{{ errors.first('nombre') }}</span>
+							</div>
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('cantidad-comprada') }">
 								<label for="nombre">Cantidad comprada:</label>
 								<input type="number" class="form-control" id="cantidad-comprada" name="cantidad-comprada" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('cantidad-comprada') }" data-vv-as="cantidad comprada" v-model="pop.cantidadComprada" min="0">
 								<span v-show="errors.has('cantidad-comprada')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
 								<span v-show="errors.has('cantidad-comprada')" class="help is-danger">{{ errors.first('cantidad-comprada') }}</span>
 							</div>
+							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('precio-publico') }">
+								<label for="nombre">Precio a público:</label>
+								<div class="input-group">
+									<span class="input-group-addon">$</span>
+									<input type="number" class="form-control" id="precio-publico" name="precio-publico" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('precio-publico') }" data-vv-as="precio público"  v-model="pop.precioPublico">
+									<span v-show="errors.has('precio-publico')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+								</div>
+								<span v-show="errors.has('precio-publico')" class="help is-danger">{{ errors.first('precio-publico') }}</span>
+							</div>
+							
 						</div>
 					</div>
 					<div class="button-list-container pull-right">
@@ -122,6 +124,7 @@ export default {
 					var vendidos = 0;
 					var descuentos = 0;
 					var apartados = "";
+					var gananciaEmbalaje = 0;
 					
 					this.axios.post('https://funkopop-e84d7.firebaseio.com/pops.json',{
 						licencia: licencia,
@@ -134,7 +137,9 @@ export default {
 						cantidadDisponible: cantidadDisponible,
 						vendidos: vendidos,
 						descuentos: descuentos,
-						apartados: apartados
+						apartados: apartados,
+
+						gananciaEmbalaje: gananciaEmbalaje
 						
 					}).then(respuesta => {
 						console.log(respuesta);

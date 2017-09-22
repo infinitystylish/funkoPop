@@ -6,7 +6,7 @@
 				<div class="container-fluid">
 					<div class="navbar-header">
 						<a class="navbar-brand" href="#">
-							<img alt="Brand" class="img-responsive" src="./assets/funko-morelia-logo.jpg">
+							<img alt="Brand" class="img-responsive" src="https://raw.githubusercontent.com/infinitystylish/FunkoPop/master/docs/funko-morelia-logo.jpg">
 						</a>
 					</div>
 				</div>
@@ -50,7 +50,7 @@
 				  	<div class="navbar-collapse" id="bs-example-navbar-collapse-9"> 
 				        <ul class="nav navbar-nav"> 
 							<li class="active">
-								<a href="#" @click.prevent="volver">Home</a>
+								<a href="#" @click.prevent="volver">Inicio</a>
 							</li> 
 							<li>
 								<router-link tag="a" to="/FunkoPop/listadoPops">Lista de FunkoPop</router-link>
@@ -135,7 +135,8 @@ export default {
 						ganancia: respuestaJson[id].ganancia,
 						recuperacionDinero: respuestaJson[id].recuperacionDinero,
 
-						apartados: respuestaJson[id].apartados
+						apartados: respuestaJson[id].apartados,
+						gananciaEmbalaje: respuestaJson[id].gananciaEmbalaje
 		            }
 		            this.pops.push(pop);
 		            this.pops.sort(this.compare)
