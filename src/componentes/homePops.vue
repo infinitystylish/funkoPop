@@ -13,9 +13,15 @@
 			<div class="total-recuperado">
 				<span>Total recuperado: ${{totalRecuperado}} </span>
 			</div>
+			<div class="total-ganado">
+				<span>Total ganado: ${{totalGanancia - totalDescuento}} </span>
+			</div>
+			<div class="total-descuento">
+				<span>Total descuento: ${{totalDescuento}} </span>
+			</div>
 			<div class="ganancia">
-				<span v-if="totalInvertido - totalRecuperado - ganancia < 0">Tu ganancia es de {{ ganancia - totalInvertido }}</span>
-				<span v-else>Faltan {{ Math.abs((ganancia + totalRecuperado) - totalInvertido) }}</span>
+				<span v-if="(totalRecuperado + totalGanancia) - totalInvertido  > 0">Tu ganancia es de {{ totalInvertido - (totalRecuperado + totalGanancia) }}</span>
+				<span v-else>Faltan {{ Math.abs((totalGanancia + totalRecuperado) - totalInvertido) }}</span>
 			</div>
 			<div class="total-comprado">
 				<span>Total comprado: {{totalComprado}} </span>
@@ -52,6 +58,13 @@ export default {
 			    return Math.ceil( (sum = sum + (pop.vendidos * pop.costo) )*10) / 10; 
 			},0);
 		},
+		totalGanancia(){
+			let sum = 0;
+			return this.pops.reduce(function(prev, pop){
+				console.log(sum);
+			    return Math.ceil( (sum = sum + ( parseInt(pop.vendidos) * (pop.precioPublico - pop.costo) ) )*10) / 10;
+			},0);
+		},
 		totalComprado(){
 			let sum = 0;
 			return this.pops.reduce(function(prev, pop){
@@ -64,6 +77,12 @@ export default {
 			    return sum = sum + parseInt(pop.vendidos); 
 			},0);
 		},
+		totalDescuento(){
+			let sum = 0;
+			return this.pops.reduce(function(prev, pop){
+			    return sum = sum + parseInt(pop.descuentos); 
+			},0);
+		},
 		ganancia(){
 			let sum = 0;
 			return this.pops.reduce(function(prev, pop){
@@ -73,7 +92,6 @@ export default {
 		gananciaEmbalaje(){
 			let sum = 0;
 			return this.pops.reduce(function(prev, pop){
-				console.log(pop.gananciaEmbalaje);
 			    return sum = sum + parseInt(pop.gananciaEmbalaje); 
 			},0);
 		}
@@ -101,7 +119,7 @@ export default {
    	 	padding: 10px 15px;
    	 	border-top-right-radius: 3px;
    	 	border-bottom-right-radius: 3px;
-		.total-recuperado,.total-vendido,.total-comprado,.total-invertido,.ganancia,.ganancia-embalaje{
+		.total-recuperado,.total-vendido,.total-comprado,.total-invertido,.ganancia,.ganancia-embalaje,.total-ganado,.total-descuento{
 			margin-top: 10px;
 		}
 		hr{

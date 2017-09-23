@@ -429,6 +429,7 @@
 						this.pops[indiceOriginal].vendidos = vendidos;
 						this.pops[indiceOriginal].cantidadDisponible = comprados;
 						this.pops[indiceOriginal].apartados = apartados;
+						this.gananciaEmbalaje = 0;
 					}
 				})
 			},
@@ -526,7 +527,8 @@
 					this.pops[val].originalIndex = originalIndex;
 					originalIndex++;
 				}
-				return _.orderBy(this.pops, 'cantidadDisponible');
+				return _.orderBy(this.pops, 'cantidadDisponible','desc');
+				//return _.orderBy(this.pops, 'nombre');
 			},
 		},
 		watch: {
