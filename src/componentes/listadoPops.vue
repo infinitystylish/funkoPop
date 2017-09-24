@@ -119,6 +119,14 @@
 							<td>
 								{{ recuperacionDinero(pop) }}
 							</td>
+							<td class="column-button">
+								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+								</button>
+								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
+									<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+								</button>
+							</td>
 						</tr>
 
 						<tr v-for="(pop, indice) of ordenarPops" v-bind:class="{'table-warning': disponibilidadApartadoFunko(pop), 'table-danger' : disponibilidadFunko(pop)}">	
