@@ -373,7 +373,7 @@
 				}
 			},
 			costoTotal(pop){
-				return pop.costo * pop.cantidadComprada;
+				return Math.round((pop.costo * pop.cantidadComprada)* 100) / 100;
 			},
 			calcularApartados(pop){
 				let totalApartados = 0;

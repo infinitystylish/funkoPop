@@ -21,7 +21,7 @@
 			</div>
 			<div class="ganancia">
 				<span v-if="(totalRecuperado + totalGanancia) - totalInvertido  > 0">Tu ganancia es de {{ totalInvertido - (totalRecuperado + totalGanancia) }}</span>
-				<span v-else>Faltan {{ Math.abs((totalGanancia + totalRecuperado) - totalInvertido) }}</span>
+				<span v-else>Faltan {{ Math.abs(  Math.ceil( ( (totalGanancia + totalRecuperado) - totalInvertido) *10) / 10) }}</span>
 			</div>
 			<div class="total-comprado">
 				<span>Total comprado: {{totalComprado}} </span>
@@ -61,7 +61,6 @@ export default {
 		totalGanancia(){
 			let sum = 0;
 			return this.pops.reduce(function(prev, pop){
-				console.log(sum);
 			    return Math.ceil( (sum = sum + ( parseInt(pop.vendidos) * (pop.precioPublico - pop.costo) ) )*10) / 10;
 			},0);
 		},
@@ -86,13 +85,13 @@ export default {
 		ganancia(){
 			let sum = 0;
 			return this.pops.reduce(function(prev, pop){
-			    return sum = sum + parseInt(pop.vendidos) * pop.precioPublico; 
+			    return Math.ceil( (sum = sum + parseInt(pop.vendidos) * pop.precioPublico)*10) / 10; 
 			},0);
 		},
 		gananciaEmbalaje(){
 			let sum = 0;
 			return this.pops.reduce(function(prev, pop){
-			    return sum = sum + parseInt(pop.gananciaEmbalaje); 
+			    return Math.ceil( (sum = sum + parseInt(pop.gananciaEmbalaje))*10) / 10;; 
 			},0);
 		}
 	}

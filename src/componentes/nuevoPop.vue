@@ -99,7 +99,7 @@ export default {
 		        nombre: '',
 		        numeroPop: '',
 		        costo: '',
-		        precioPublico: '',
+		        precioPublico: 300,
 		        cantidadComprada: '',
 			},
 			estado: ""
