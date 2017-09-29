@@ -91,7 +91,8 @@ export default {
 		        message: '',
 		        userName: '',
 		        hasErrors: false
-		    }
+		    },
+		
 		}
 	},
   	methods: {

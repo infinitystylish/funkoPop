@@ -22,9 +22,9 @@
 						<div class="col-xs-6">
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('licencia') }">
 								<label for="licencia">Licencia:</label>
-								<input type="text" class="form-control" id="licencia" name="licencia" v-validate="'required'"  v-model="pop.licencia">
-								<span v-show="errors.has('licencia')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-								<span v-show="errors.has('licencia')" class="help is-danger">{{ errors.first('licencia') }}</span>
+								<!--<input type="text" class="form-control" id="licencia" name="licencia" v-validate="'required'"  v-model="pop.licencia">-->
+								<autocomplete :suggestions="suggestions" v-model="pop.licencia"></autocomplete>
+
 							</div>
 							
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('numero-pop') }">
@@ -85,7 +85,12 @@
 
 <script>
 
+import Autocomplete from './autocomplete.vue'
+
 export default {
+	components: {
+		Autocomplete
+	},
 	data (){
 		return{
 			pop: {
@@ -102,7 +107,64 @@ export default {
 		        precioPublico: 300,
 		        cantidadComprada: '',
 			},
-			estado: ""
+			estado: "",
+		    suggestions: [
+		        { license: 'Gears Of War'},
+		        { license: 'Rugrats'},
+		        { license: 'Amy Winehouse'},
+		        { license: 'Death Note'},
+		        { license: 'Motorhead'},
+		        { license: 'Jhon Wick 2'},
+		        { license: 'Justice League'},
+		        { license: 'Suicide Squad'},
+		        { license: 'Mad Max'},
+		        { license: 'Crash Bandicoot'},
+		        { license: 'Mortal Kombat'},
+		        { license: 'Hey Arnold'},
+		        { license: 'Guns And Roses'},
+		        { license: 'South Park'},
+		        { license: 'Batman:TheAnimatedSeries'},
+		        { license: 'Cthulhu'},
+		        { license: 'Star Wars'},
+		        { license: 'The Walking Dead'},
+		        { license: 'Deadpool'},
+		        { license: 'The Lord of the Rings'},
+		        { license: 'Guardians of the galaxy Vol.2'},
+		        { license: 'One Punch Man'},
+		        { license: 'Dragon Ball Super'},
+		        { license: 'Dragon Ball'},
+		        { license: 'Harry Potter'},
+		        { license: 'AHHHH! Monsters'},
+		        { license: 'Resident Evil'},
+		        { license: 'Justin Bieber'},
+		        { license: 'Naruto Shippuden'},
+		        { license: 'Sailor Moon'},
+		        { license: 'Pets'},
+		        { license: 'Ricky y morty'},
+		        { license: 'American Horror History'},
+		        { license: 'Daredevil'},
+		        { license: 'Marvel'},
+		        { license: 'Alien Covenant'},
+		        { license: 'The shining'},
+		        { license: 'Metallica'},
+		        { license: 'It'},
+		        { license: 'Anabelle'},
+		        { license: 'Bride of chuky'},
+		        { license: 'Carrie'},
+		        { license: 'Thor: Ragnarok'},
+		        { license: 'CatDog'},
+		        { license: 'Marvel Captain America: Civil War'},
+		        { license: 'Disney'},
+		        { license: 'The Silence of the Lambs'},
+		        { license: 'Sherlock'},
+		        { license: 'Sailor Moon'},
+		        { license: 'Overwatch'},
+		        { license: 'Justin Bieber'},
+		        { license: 'Motorhead'},
+		        { license: 'Adventure Time'},
+		        { license: 'Batman TV 1966'},
+		        { license: 'Pirates of the Caribbean: Dead Men Tell No Tales'},
+		    ]
 		}
 	},
   	methods:{

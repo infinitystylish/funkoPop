@@ -26,7 +26,7 @@ const enrutador = new VueRouter({
 })
 
 new Vue({
-  el: '#app',
-  router: enrutador,
-  render: h => h(App)
+	el: '#app',
+	router: enrutador,
+	render: h => h(App),
 })
