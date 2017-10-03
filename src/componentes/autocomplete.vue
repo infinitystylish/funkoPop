@@ -42,7 +42,7 @@ export default {
     // Filtering the suggestion based on the input
     matches () {
       return this.suggestions.filter((obj) => {
-        return obj.license.toLowerCase().indexOf(this.value) >= 0
+        return obj.license.toLowerCase().indexOf(this.value.toLowerCase()) >= 0
       })
     },
     openSuggestion () {
@@ -59,7 +59,7 @@ export default {
       if(value === ''){
         this.open = false;
       }
-      this.$emit('input', value)
+      this.$emit('input', value);
     },
     // When enter pressed on the input
     enter () {

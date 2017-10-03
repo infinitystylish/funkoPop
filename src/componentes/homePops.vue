@@ -14,7 +14,7 @@
 				<span>Total recuperado: ${{totalRecuperado}} </span>
 			</div>
 			<div class="total-ganado">
-				<span>Total ganado: ${{totalGanancia - totalDescuento}} </span>
+				<span>Total ganado: ${{ Math.ceil( (totalGanancia - totalDescuento)*10) / 10 }} </span>
 			</div>
 			<div class="total-descuento">
 				<span>Total descuento: ${{totalDescuento}} </span>
@@ -79,7 +79,7 @@ export default {
 		totalDescuento(){
 			let sum = 0;
 			return this.pops.reduce(function(prev, pop){
-			    return sum = sum + parseInt(pop.descuentos); 
+			    return  Math.ceil( ( sum = sum + parseInt(pop.descuentos) )*10) / 10;
 			},0);
 		},
 		ganancia(){

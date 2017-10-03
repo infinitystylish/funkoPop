@@ -114,7 +114,7 @@ export default {
 		        { license: 'Amy Winehouse'},
 		        { license: 'Death Note'},
 		        { license: 'Motorhead'},
-		        { license: 'Jhon Wick 2'},
+		        { license: 'John Wick 2'},
 		        { license: 'Justice League'},
 		        { license: 'Suicide Squad'},
 		        { license: 'Mad Max'},
