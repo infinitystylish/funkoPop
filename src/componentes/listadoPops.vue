@@ -423,7 +423,7 @@
 				let apartados = this.pops[indiceOriginal].apartados = this.apartados;
 				let descuentos = this.pops[indiceOriginal].descuentos = this.descuentos;
 				let gananciaEmbalaje = this.pops[indiceOriginal].gananciaEmbalaje = this.gananciaEmbalaje;
-				this.axios.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json', {
+				this.axios.patch('https://funko-pop.firebaseio.com/pops/' + id + '.json', {
 					vendidos: vendidos,
 					cantidadDisponible: comprados,
 					apartados: apartados,
@@ -506,7 +506,7 @@
 
 				let cantidadDisponible = this.pops[indiceOriginal].cantidadDisponible - vendidos - cantidadApartada;
 
-				this.axios.patch('https://funkopop-e84d7.firebaseio.com/pops/' + id + '.json',{
+				this.axios.patch('https://funko-pop.firebaseio.com/pops/' + id + '.json',{
 					apartados
 				}).then(respuesta => {
 					setTimeout(function(){

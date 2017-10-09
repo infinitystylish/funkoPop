@@ -112,7 +112,7 @@ export default {
 			return comparison;
 	    },
 	    getData(){
-	    	this.axios.get('https://funkopop-e84d7.firebaseio.com/pops.json')
+	    	this.axios.get('https://funko-pop.firebaseio.com/pops.json')
 	        .then(respuesta => { 
 	            return respuesta.data;
 	        })

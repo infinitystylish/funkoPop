@@ -262,7 +262,7 @@
 				
 				var pedido = this.pedidoD.funkoPop;
 
-				this.axios.post('https://funkopop-e84d7.firebaseio.com/pedidos.json',{
+				this.axios.post('https://funko-pop.firebaseio.com/pedidos.json',{
 					nombrePedido,
 					pedido
 				}).then(respuesta => {
@@ -289,7 +289,7 @@
 				});
 			},
 			getPedidos(){
-		    	this.axios.get('https://funkopop-e84d7.firebaseio.com/pedidos.json')
+		    	this.axios.get('https://funko-pop.firebaseio.com/pedidos.json')
 		        .then(respuesta => { 
 		            return respuesta.data;
 		        })
@@ -314,7 +314,7 @@
 		    },
 		    agregarCostoFigura(){
 		    	var costoFigura = this.costoFigura;
-		    	this.axios.post('https://funkopop-e84d7.firebaseio.com/costoFigura.json',{
+		    	this.axios.post('https://funko-pop.firebaseio.com/costoFigura.json',{
 					costoFigura
 				}).then(respuesta => {
 					setTimeout(function(){
@@ -327,7 +327,7 @@
 				});
 		    },
 		    getCostoFigura(){
-		    	 this.axios.get('https://funkopop-e84d7.firebaseio.com/costoFigura.json')
+		    	 this.axios.get('https://funko-pop.firebaseio.com/costoFigura.json')
 		        .then(respuesta => { 
 		            return respuesta.data;
 		        })
@@ -349,7 +349,7 @@
 		    	}
 		    },
 		    registrarPago(pedidoId,indice,costoFigura,indiceP){
-		    	this.axios.patch('https://funkopop-e84d7.firebaseio.com/pedidos/' + pedidoId + '/pedido/' + indice + '.json', {
+		    	this.axios.patch('https://funko-pop.firebaseio.com/pedidos/' + pedidoId + '/pedido/' + indice + '.json', {
 					pago : costoFigura,
 					pagoFaltante: 0,
 					estado : "Pagado"
@@ -363,7 +363,7 @@
 				})
 		    },
 		    registrarEntrega(pedidoId,indice,costoFigura,indiceP){
-		    	this.axios.patch('https://funkopop-e84d7.firebaseio.com/pedidos/' + pedidoId + '/pedido/' + indice + '.json', {
+		    	this.axios.patch('https://funko-pop.firebaseio.com/pedidos/' + pedidoId + '/pedido/' + indice + '.json', {
 					estadoEntrega : "Entregado"
 				}).then(respuesta => { 
 					if(respuesta.status == 200){

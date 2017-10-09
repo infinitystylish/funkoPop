@@ -368,7 +368,7 @@ export default {
 			var fechaEntrega = this.aviso.fechaEntrega.trim();
 			var anotaciones = this.aviso.anotaciones.trim();
 			
-			this.axios.post('https://funkopop-e84d7.firebaseio.com/avisos.json',{
+			this.axios.post('https://funko-pop.firebaseio.com/avisos.json',{
 				nombre: nombre,
 				nombreFunkoPop: nombreFunkoPop,
 				avisoTipo: avisoTipo,
@@ -388,7 +388,7 @@ export default {
 			});
 		},
 		getAvisos(){
-	    	this.axios.get('https://funkopop-e84d7.firebaseio.com/avisos.json')
+	    	this.axios.get('https://funko-pop.firebaseio.com/avisos.json')
 	        .then(respuesta => { 
 	            return respuesta.data;
 	        })
@@ -410,7 +410,7 @@ export default {
 	        });
 	    },
 		changeStatus(indice,avisoId, avisoEstado){
-			this.axios.patch('https://funkopop-e84d7.firebaseio.com/avisos/' + avisoId + '.json', {
+			this.axios.patch('https://funko-pop.firebaseio.com/avisos/' + avisoId + '.json', {
 					avisoEstado: avisoEstado
 			}).then(respuesta => { 
 				if(respuesta.status == 200){
@@ -428,7 +428,7 @@ export default {
 			this.avisoM.fechaEntrega = fechaEntrega;
 		},
 		modificarAviso(indice,avisoId, avisoTipo, anotaciones, adelanto, fechaEntrega){
-			this.axios.patch('https://funkopop-e84d7.firebaseio.com/avisos/' + avisoId + '.json', {
+			this.axios.patch('https://funko-pop.firebaseio.com/avisos/' + avisoId + '.json', {
 				avisoTipo: avisoTipo,
 				anotaciones: anotaciones,
 				adelanto: adelanto,

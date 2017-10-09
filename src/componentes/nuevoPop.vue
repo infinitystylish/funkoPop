@@ -188,7 +188,7 @@ export default {
 					var apartados = "";
 					var gananciaEmbalaje = 0;
 					
-					this.axios.post('https://funkopop-e84d7.firebaseio.com/pops.json',{
+					this.axios.post('https://funko-pop.firebaseio.com/pops.json',{
 						licencia: licencia,
 						nombre: nombre,
 						numeroPop: numeroPop,
