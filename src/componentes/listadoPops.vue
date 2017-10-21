@@ -120,7 +120,7 @@
 								{{ recuperacionDinero(pop) }}
 							</td>
 							<td class="column-button">
-								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
+								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.nombre,pop.licencia,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
 								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
@@ -179,7 +179,7 @@
 								{{ recuperacionDinero(pop) }}
 							</td>
 							<td class="column-button">
-								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
+								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.nombre,pop.licencia,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
 								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
@@ -204,6 +204,16 @@
 						<h4 class="modal-title" id="myModalLabel">Modificar Funko Pop</h4>
 					</div>
 			      	<div class="modal-body">
+			      		<div class="form-group">
+					      	<label for="">Licencia:</label>
+					        <input type="text" v-model="licencia" class="form-control">
+					    </div>
+
+					    <div class="form-group">
+					      	<label for="">Nombre:</label>
+					        <input type="text" v-model="nombrePop" class="form-control">
+					    </div>
+
 				      	<div class="form-group">
 					      	<label for="">Cantidad vendida:</label>
 					        <input type="text" v-model="nuevaVenta" class="form-control">
@@ -325,6 +335,8 @@
 		    	buscar: '',
 		    	id: 0,
 		    	idPop: 0,
+		    	nombrePop: '',
+		    	licencia: '',
 		    	nuevaVenta: 0,
 		    	comprado: 0,
 		    	vendidos: 0,
@@ -406,9 +418,11 @@
 			recuperacionDinero(pop){
 				return Math.round((pop.vendidos * pop.costo)* 100) / 100;
 			},
-			popVenta(id,indice,vendidos,cantidadComprada, precioPublico, apartados, descuentos){
+			popVenta(id,indice,nombre,licencia,vendidos,cantidadComprada, precioPublico, apartados, descuentos){
 				this.idPop = id;
 				this.id = indice;
+				this.nombrePop = nombre;
+				this.licencia = licencia;
 				this.comprado = cantidadComprada;
 				this.precioPublico = precioPublico;
 				this.vendidos = parseInt(vendidos);
@@ -417,6 +431,8 @@
 				this.descuentos =  parseInt(descuentos);
 			},
 			registrarVenta(indiceOriginal,id){
+				let licencia = this.licencia;
+				let nombre = this.nombre;
 				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.nuevaVenta);
 				let comprados = this.pops[indiceOriginal].cantidadDisponible = this.comprado -  vendidos;
 				let precioPublico = this.pops[indiceOriginal].precioPublico = this.precioPublico;
@@ -424,6 +440,8 @@
 				let descuentos = this.pops[indiceOriginal].descuentos = this.descuentos;
 				let gananciaEmbalaje = this.pops[indiceOriginal].gananciaEmbalaje = this.gananciaEmbalaje;
 				this.axios.patch('https://funko-pop.firebaseio.com/pops/' + id + '.json', {
+					nombre: nombre,
+					licencia: licencia,
 					vendidos: vendidos,
 					cantidadDisponible: comprados,
 					apartados: apartados,
@@ -455,7 +473,7 @@
 					this.apartados = [
 						{
 							nombreCliente: "",
-							cantidadApartada: 0,
+							cantidadApartada: 1,
 						}	
 					];
 					
