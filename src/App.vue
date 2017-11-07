@@ -43,11 +43,16 @@
 			<nav class="navbar navbar-inverse navbar-fixed-top">
 				<div class="container-fluid">
 					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-9" aria-expanded="false"> 
+							<span class="sr-only">Toggle navigation</span> 
+							<span class="icon-bar"></span> <span class="icon-bar"></span> 
+							<span class="icon-bar"></span> 
+						</button>
 						<a class="navbar-brand" href="#">
 							<img alt="Brand" class="img-responsive" src="https://raw.githubusercontent.com/infinitystylish/FunkoPop/master/docs/funko-morelia-logo.jpg">
 						</a>
 				    </div>
-				  	<div class="navbar-collapse" id="bs-example-navbar-collapse-9"> 
+				  	<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-9" aria-expanded="false"> 
 				        <ul class="nav navbar-nav"> 
 							<li class="active">
 								<a href="#" @click.prevent="volver">Inicio</a>
@@ -199,22 +204,94 @@ export default {
 </script>
 
 <style lang="scss">
-.navbar-brand{
-	max-width: 100px;
-	height: auto;
+
+h1{
+	@media (max-width: 767px){
+		font-size: 22px;
+	}	
 }
-.navbar-collapse{
-	display: flex;
-	align-items: center;
-	height: 100px;
+
+.table-responsive > .table > tbody > tr > td, 
+.table-responsive > .table > tbody > tr > th, 
+.table-responsive > .table > tfoot > tr > td, 
+.table-responsive > .table > tfoot > tr > th, 
+.table-responsive > .table > thead > tr > td, 
+.table-responsive > .table > thead > tr > th{
+	@media (max-width: 767px){
+		white-space: initial;
+	}
+}
+
+.table > tbody > tr > td, 
+.table > tbody > tr > th, 
+.table > tfoot > tr > td, 
+.table > tfoot > tr > th, 
+.table > thead > tr > td, 
+.table > thead > tr > th {
+	padding: 6px;
+}
+
+.navbar-brand{
+	width: 50px;
+    padding: 0;
 }
 .internal-content{
-	margin-top: 140px;
+	margin-top: 80px;
 }
 .cerrar-sesion{
-	margin-left: auto;
+	float: right;
+	margin-top: 8px;
+	@media (max-width: 767px){
+		float: none;
+		margin-bottom: 20px;
+	}
 }
 #loginContainer{
 	margin-top: 150px;
 }
+
+.funko-options{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-wrap: wrap;
+	button{
+		margin-bottom: 20px;
+		&:not(:last-child){
+			margin-right: 20px;
+		}
+		@media (max-width: 991px){
+		    display: block;
+    		width: 100%;
+    		&:not(:last-child){
+				margin-right: 0px;
+			}
+    	}	
+	}
+	@media (max-width: 991px){
+		flex-direction: column;
+	}
+}
+
+.total{
+	margin-top: 50px;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #f5f5f5;
+ 	border-color: #ddd;
+ 	border-width: 1px;
+ 	border-style: solid;
+ 	padding: 10px 15px;
+ 	border-top-right-radius: 3px;
+ 	border-bottom-right-radius: 3px;
+	.total-recuperado,.total-vendido,.total-comprado,.total-invertido,.ganancia,.ganancia-embalaje,.total-ganado,.total-descuento{
+		margin-top: 10px;
+	}
+	hr{
+		margin-top: 5px; 
+		margin-bottom: 5px; 
+	}
+}
+
 </style>
