@@ -42,33 +42,35 @@
 	    <div v-else>
 			<nav class="navbar navbar-inverse navbar-fixed-top">
 				<div class="container-fluid">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="#">
-							<img alt="Brand" class="img-responsive" src="https://raw.githubusercontent.com/infinitystylish/FunkoPop/master/docs/funko-morelia-logo.jpg">
-						</a>
-				    </div>
-				  	<div class="navbar-collapse" id="bs-example-navbar-collapse-9"> 
-				        <ul class="nav navbar-nav"> 
-							<li class="active">
-								<a href="#" @click.prevent="volver">Inicio</a>
-							</li> 
-							<li>
-								<router-link tag="a" to="/FunkoPop/listadoPops">Lista de FunkoPop</router-link>
-							</li> 
-							<li>
-								<router-link tag="a" to="/FunkoPop/nuevoPop">Nuevo FunkoPop</router-link>
-							</li>
-							<li>
-								<router-link tag="a" to="/FunkoPop/avisoPop">Listado de Avisos</router-link>
-							</li>
-							<li>
-								<router-link tag="a" to="/FunkoPop/pedidosPop">Pedidos FunkoPop</router-link>
-							</li>  
-				        </ul> 
-				    	<div class="cerrar-sesion">
-				    		<button @click="signOut" class="btn btn-danger" type="button">Cerrar sesión</button>
-				    	</div>
-				  	</div> 
+					<div class="navbar-container">
+						<div class="navbar-header">
+							<a class="navbar-brand" href="#">
+								<img alt="Brand" class="img-responsive" src="https://raw.githubusercontent.com/infinitystylish/FunkoPop/master/docs/funko-morelia-logo.jpg">
+							</a>
+					    </div>
+					  	<div class="navbar-collapse" id="bs-example-navbar-collapse-9"> 
+					        <ul class="nav navbar-nav"> 
+								<li class="active">
+									<a href="#" @click.prevent="volver">Inicio</a>
+								</li> 
+								<li>
+									<router-link tag="a" to="/FunkoPop/listadoPops">Lista de FunkoPop</router-link>
+								</li> 
+								<li>
+									<router-link tag="a" to="/FunkoPop/nuevoPop">Nuevo FunkoPop</router-link>
+								</li>
+								<li>
+									<router-link tag="a" to="/FunkoPop/avisoPop">Listado de Avisos</router-link>
+								</li>
+								<li>
+									<router-link tag="a" to="/FunkoPop/pedidosPop">Pedidos FunkoPop</router-link>
+								</li>  
+					        </ul> 
+					    	<div class="cerrar-sesion">
+					    		<button @click="signOut" class="btn btn-danger" type="button">Cerrar sesión</button>
+					    	</div>
+					  	</div> 
+					</div>
 				</div>
 			</nav>
 	      	<div class="container-fluid">
@@ -206,13 +208,33 @@ export default {
 .navbar-collapse{
 	display: flex;
 	align-items: center;
-	height: 100px;
+	// height: 100px;
+	@media (max-width: 767px){
+	    flex-direction: column;
+	}
+}
+
+.navbar-header{
+	display: flex;
+    justify-content: center;
+}
+
+.navbar-container{
+	height: 100%;
+    display: flex;
+    @media (max-width: 767px){
+    	flex-direction: column;
+    }
 }
 .internal-content{
 	margin-top: 140px;
 }
 .cerrar-sesion{
 	margin-left: auto;
+	@media (max-width: 767px){
+		margin-right: auto;
+		margin-bottom: 20px;
+	}
 }
 #loginContainer{
 	margin-top: 150px;

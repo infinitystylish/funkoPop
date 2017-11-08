@@ -179,7 +179,7 @@
 								{{ recuperacionDinero(pop) }}
 							</td>
 							<td class="column-button">
-								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
+								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos,pop.gananciaEmbalaje)">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
 								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
@@ -406,7 +406,7 @@
 			recuperacionDinero(pop){
 				return Math.round((pop.vendidos * pop.costo)* 100) / 100;
 			},
-			popVenta(id,indice,vendidos,cantidadComprada, precioPublico, apartados, descuentos){
+			popVenta(id,indice,vendidos,cantidadComprada, precioPublico, apartados, descuentos, gananciaEmbalaje){
 				this.idPop = id;
 				this.id = indice;
 				this.comprado = cantidadComprada;
@@ -415,6 +415,7 @@
 				this.nuevaVenta = 0;
 				this.apartados = apartados;
 				this.descuentos =  parseInt(descuentos);
+				this.gananciaEmbalaje = gananciaEmbalaje;
 			},
 			registrarVenta(indiceOriginal,id){
 				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.nuevaVenta);
@@ -437,7 +438,7 @@
 						this.pops[indiceOriginal].vendidos = vendidos;
 						this.pops[indiceOriginal].cantidadDisponible = comprados;
 						this.pops[indiceOriginal].apartados = apartados;
-						this.gananciaEmbalaje = 0;
+						//this.gananciaEmbalaje = 0;
 					}
 				})
 			},
