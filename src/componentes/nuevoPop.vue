@@ -19,7 +19,7 @@
 			<div class="panel-body">
 				<form v-on:submit.prevent="agregarPop">
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-sm-6">
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('licencia') }">
 								<label for="licencia">Licencia:</label>
 								<!--<input type="text" class="form-control" id="licencia" name="licencia" v-validate="'required'"  v-model="pop.licencia">-->
@@ -45,7 +45,7 @@
 							</div>
 
 						</div>
-						<div class="col-xs-6">
+						<div class="col-sm-6">
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('nombre') }">
 								<label for="nombre">Nombre:</label>
 								<input type="text" class="form-control" id="nombre" name="nombre" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('nombre') }" v-model="pop.nombre">

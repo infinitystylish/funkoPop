@@ -8,187 +8,207 @@
 				<div class="form-group">
 				    <input type="text" class="form-control" placeholder="Buscar Pop" v-model="buscar">
 				</div>
-				<table class="table table-hover table-bordered table-funkopop">
-					<thead>
-						<tr>
-							<th>
-								ID
-							</th>
-							<th>
-								Licencia
-							</th>
-							<th>
-								Nombre
-							</th>
-							<th>
-								Número de pop
-							</th>
-							<th>
-								Cantidad comprada
-							</th>
-							<th>
-								Vendidos
-							</th>
-							<th>
-								Apartados
-							</th>
-							<th>
-								Cantidad disponible
-							</th>
-							<th>
-								Costo
-							</th>
-							<th>
-								Costo total
-							</th>
-							<th>
-								Precio a público
-							</th>
-							<th>
-								Ganancia de embalaje
-							</th>
-							<th>
-								Margen de ganancia
-							</th>
-							<th>
-								Descuentos
-							</th>
-							<th>
-								Ganancia
-							</th>
-							<th>
-								Recuperación de dinero
-							</th>
-							<th>
-									
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-show="buscar" v-for="(pop, indice) in buscarPop" class="table-info">
-							<td v-if="calcularCantidadDisponible(pop) == 0">
-								 No hay disponibles  
-							</td>
-							<td v-else>
-								Hay {{calcularCantidadDisponible(pop)}} 
-								<span v-if="calcularCantidadDisponible(pop) > 1"> disponibles</span>
-								<span v-else> disponible</span>
-							</td>
-							<td>
-								{{ pop.licencia }}
-							</td>
-							<td>
-								{{ pop.nombre }}
-							</td>
-							<td>
-								{{ pop.numeroPop }}
-							</td>
-							<td>
-								{{ pop.cantidadComprada }}
-							</td>
-							<td>
-								{{ pop.vendidos }}
-							</td>
-							<td>
-								{{ calcularApartados(pop) }}
-							</td>
-							<td>
-								{{ calcularCantidadDisponible(pop) }}
-							</td>
-							<td>
-								{{ pop.costo }}
-							</td>
-							<td>
-								{{ costoTotal(pop) }}
-							</td>
-							<td>
-								{{ pop.precioPublico }}
-							</td>
-							<td>
-								{{ pop.gananciaEmbalaje }}
-							</td>
-							<td>
-								{{ margenGanancia(pop) }}
-							</td>
-							<td>
-								{{ pop.descuentos }}
-							</td>
-							<td>
-								{{ ganancia(pop) }}
-							</td>
-							<td>
-								{{ recuperacionDinero(pop) }}
-							</td>
-							<td class="column-button">
-								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
-									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-								</button>
-								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
-									<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
-								</button>
-							</td>
-						</tr>
-
-						<tr v-for="(pop, indice) of ordenarPops" v-bind:class="{'table-warning': disponibilidadApartadoFunko(pop), 'table-danger' : disponibilidadFunko(pop)}">	
-							<td>
-								{{indice + 1}} 
-							</td>
-							<td>
-								{{ pop.licencia }}
-							</td>
-							<td>
-								{{ pop.nombre }}
-							</td>
-							<td>
-								{{ pop.numeroPop }}
-							</td>
-							<td>
-								{{ pop.cantidadComprada }}
-							</td>
-							<td>
-								{{ pop.vendidos }}
-							</td>
-							<td>
-								{{ calcularApartados(pop) }}
-							</td>
-							<td>
-								{{ calcularCantidadDisponible(pop) }}
-							</td>
-							<td>
-								{{ pop.costo }}
-							</td>
-							<td>
-								{{ costoTotal(pop) }}
-							</td>
-							<td>
-								{{ pop.precioPublico }}
-							</td>
-							<td>
-								{{ pop.gananciaEmbalaje }}
-							</td>
-							<td>
-								{{ margenGanancia(pop) }}
-							</td>
-							<td>
-								{{ pop.descuentos }}
-							</td>
-							<td>
-								{{ ganancia(pop) }}
-							</td>
-							<td>
-								{{ recuperacionDinero(pop) }}
-							</td>
-							<td class="column-button">
-								<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos,pop.gananciaEmbalaje)">
-									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-								</button>
-								<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
-									<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<!-- 
+				<div class="abbreviations">
+					<div>Identificador: ID</div>
+					<div>Licencia: L</div>
+					<div>#Pop: Número de pop</div>
+					<div>CC: Cantidad comprada</div>
+					<div>V: Vendidos</div>
+					<div>A: Apartados</div>
+					<div>CD: Cantidad Disponible</div>
+					<div>C: Costo</div>
+					<div>CT: Costo Total</div>
+					<div>PP: Precio Público</div>
+					<div>GE: Ganancia Embalaje</div>
+					<div>MG: Margen Ganancia</div>
+					<div>D: Descuentos</div>
+					<div>G: Ganancia</div>
+					<div>Recuperación dinero: R$</div>
+				</div> 
+				-->
+				<div class="table-responsive">
+					<table class="table table-hover table-bordered table-funkopop">
+						<thead>
+							<tr>
+								<th data-toggle="tooltip" title="Identificador">
+									ID
+								</th>
+								<th>
+									Licencia
+								</th>
+								<th>
+									Nombre
+								</th>
+								<th data-toggle="tooltip" title="Número pop">
+									#Pop
+								</th>
+								<th data-toggle="tooltip" title="Cantidad comprada">
+									CC
+								</th>
+								<th data-toggle="tooltip" title="Vendidos">
+									V
+								</th>
+								<th data-toggle="tooltip" title="Apartados">
+									A
+								</th>
+								<th data-toggle="tooltip" title="cantidad Disponible">
+									CD
+								</th>
+								<th data-toggle="tooltip" title="Costo">
+									C
+								</th>
+								<th data-toggle="tooltip" title="Costo Total">
+									CT
+								</th>
+								<th data-toggle="tooltip" title="Precio Público">
+									PP
+								</th>
+								<th data-toggle="tooltip" title="ganancia Embalaje">
+									GE
+								</th>
+								<th data-toggle="tooltip" title="Margen Ganancia">
+									MG
+								</th>
+								<th data-toggle="tooltip" title="Descuentos">
+									D
+								</th>
+								<th data-toggle="tooltip" title="Ganancias">
+									G
+								</th>
+								<th data-toggle="tooltip" title="recuperacion Dinero">
+									R$
+								</th>
+								<th data-toggle="tooltip" title="Apartados/Ventas">
+									A/V	
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-show="buscar" v-for="(pop, indice) in buscarPop" class="table-info">
+								<td v-if="calcularCantidadDisponible(pop) == 0">
+									 No hay disponibles  
+								</td>
+								<td v-else>
+									Hay {{calcularCantidadDisponible(pop)}} 
+									<span v-if="calcularCantidadDisponible(pop) > 1"> disponibles</span>
+									<span v-else> disponible</span>
+								</td>
+								<td>
+									{{ pop.licencia }}
+								</td>
+								<td>
+									{{ pop.nombre }}
+								</td>
+								<td>
+									{{ pop.numeroPop }}
+								</td>
+								<td>
+									{{ pop.cantidadComprada }}
+								</td>
+								<td>
+									{{ pop.vendidos }}
+								</td>
+								<td>
+									{{ calcularApartados(pop) }}
+								</td>
+								<td>
+									{{ calcularCantidadDisponible(pop) }}
+								</td>
+								<td>
+									{{ pop.costo }}
+								</td>
+								<td>
+									{{ costoTotal(pop) }}
+								</td>
+								<td>
+									{{ pop.precioPublico }}
+								</td>
+								<td>
+									{{ pop.gananciaEmbalaje }}
+								</td>
+								<td>
+									{{ margenGanancia(pop) }}
+								</td>
+								<td>
+									{{ pop.descuentos }}
+								</td>
+								<td>
+									{{ ganancia(pop) }}
+								</td>
+								<td>
+									{{ recuperacionDinero(pop) }}
+								</td>
+								<td class="column-button">
+									<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.nombre,pop.licencia,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
+										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+									</button>
+									<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
+										<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+									</button>
+								</td>
+							</tr>
+							<tr v-for="(pop, indice) of ordenarPops" v-bind:class="{'table-warning': disponibilidadApartadoFunko(pop), 'table-danger' : disponibilidadFunko(pop)}">	
+								<td>
+									{{indice + 1}} 
+								</td>
+								<td>
+									{{ pop.licencia }}
+								</td>
+								<td>
+									{{ pop.nombre }}
+								</td>
+								<td>
+									{{ pop.numeroPop }}
+								</td>
+								<td>
+									{{ pop.cantidadComprada }}
+								</td>
+								<td>
+									{{ pop.vendidos }}
+								</td>
+								<td>
+									{{ calcularApartados(pop) }}
+								</td>
+								<td>
+									{{ calcularCantidadDisponible(pop) }}
+								</td>
+								<td>
+									{{ pop.costo }}
+								</td>
+								<td>
+									{{ costoTotal(pop) }}
+								</td>
+								<td>
+									{{ pop.precioPublico }}
+								</td>
+								<td>
+									{{ pop.gananciaEmbalaje }}
+								</td>
+								<td>
+									{{ margenGanancia(pop) }}
+								</td>
+								<td>
+									{{ pop.descuentos }}
+								</td>
+								<td>
+									{{ ganancia(pop) }}
+								</td>
+								<td>
+									{{ recuperacionDinero(pop) }}
+								</td>
+								<td class="column-button">
+									<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos,pop.gananciaEmbalaje)">
+										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+									</button>
+									<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
+										<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<div class="button-list-container pull-right">
@@ -204,6 +224,16 @@
 						<h4 class="modal-title" id="myModalLabel">Modificar Funko Pop</h4>
 					</div>
 			      	<div class="modal-body">
+			      		<div class="form-group">
+					      	<label for="">Licencia:</label>
+					        <input type="text" v-model="licencia" class="form-control">
+					    </div>
+
+					    <div class="form-group">
+					      	<label for="">Nombre:</label>
+					        <input type="text" v-model="nombrePop" class="form-control">
+					    </div>
+
 				      	<div class="form-group">
 					      	<label for="">Cantidad vendida:</label>
 					        <input type="text" v-model="nuevaVenta" class="form-control">
@@ -325,6 +355,8 @@
 		    	buscar: '',
 		    	id: 0,
 		    	idPop: 0,
+		    	nombrePop: '',
+		    	licencia: '',
 		    	nuevaVenta: 0,
 		    	comprado: 0,
 		    	vendidos: 0,
@@ -409,6 +441,8 @@
 			popVenta(id,indice,vendidos,cantidadComprada, precioPublico, apartados, descuentos, gananciaEmbalaje){
 				this.idPop = id;
 				this.id = indice;
+				this.nombrePop = nombre;
+				this.licencia = licencia;
 				this.comprado = cantidadComprada;
 				this.precioPublico = precioPublico;
 				this.vendidos = parseInt(vendidos);
@@ -418,6 +452,8 @@
 				this.gananciaEmbalaje = gananciaEmbalaje;
 			},
 			registrarVenta(indiceOriginal,id){
+				let licencia = this.licencia;
+				let nombre = this.nombre;
 				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.nuevaVenta);
 				let comprados = this.pops[indiceOriginal].cantidadDisponible = this.comprado -  vendidos;
 				let precioPublico = this.pops[indiceOriginal].precioPublico = this.precioPublico;
@@ -425,6 +461,8 @@
 				let descuentos = this.pops[indiceOriginal].descuentos = this.descuentos;
 				let gananciaEmbalaje = this.pops[indiceOriginal].gananciaEmbalaje = this.gananciaEmbalaje;
 				this.axios.patch('https://funko-pop.firebaseio.com/pops/' + id + '.json', {
+					nombre: nombre,
+					licencia: licencia,
 					vendidos: vendidos,
 					cantidadDisponible: comprados,
 					apartados: apartados,
@@ -456,7 +494,7 @@
 					this.apartados = [
 						{
 							nombreCliente: "",
-							cantidadApartada: 0,
+							cantidadApartada: 1,
 						}	
 					];
 					
@@ -584,14 +622,14 @@
 		thead{
 			th{
 				font-size: 12px;
-				min-width: 100px;
+				white-space: nowrap;
 			}
 		}
 		tbody{
 			tr{
 				td{
 					font-size: 12px;
-					min-width: 100px;
+					//min-width: 100px;
 				}
 				
 			}

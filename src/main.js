@@ -30,3 +30,4 @@ new Vue({
 	router: enrutador,
 	render: h => h(App),
 })
+

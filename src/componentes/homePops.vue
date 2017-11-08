@@ -100,30 +100,5 @@ export default {
 </script>
 
 <style lang="scss">
-	.funko-options{
-		display: flex;
-		justify-content: space-around;
-		align-items: center;
-	}
-
-	.total{
-		margin-top: 100px;
-		width: 400px;
-		margin-left: auto;
-		margin-right: auto;
-		background-color: #f5f5f5;
-   	 	border-color: #ddd;
-   	 	border-width: 1px;
-   	 	border-style: solid;
-   	 	padding: 10px 15px;
-   	 	border-top-right-radius: 3px;
-   	 	border-bottom-right-radius: 3px;
-		.total-recuperado,.total-vendido,.total-comprado,.total-invertido,.ganancia,.ganancia-embalaje,.total-ganado,.total-descuento{
-			margin-top: 10px;
-		}
-		hr{
-			margin-top: 5px; 
-			margin-bottom: 5px; 
-		}
-	}
+	
 </style>
