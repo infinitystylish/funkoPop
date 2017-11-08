@@ -85,7 +85,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-show="buscar" v-for="(pop, indice) in buscarPop" class="table-info">
+							<tr v-show="buscar" v-for="(pop, indice) in filtered_pops" class="table-info">
 								<td v-if="calcularCantidadDisponible(pop) == 0">
 									 No hay disponibles  
 								</td>
@@ -373,7 +373,8 @@
 					}	
 				],
 				apartar : {},
-				validacionApartados: false
+				validacionApartados: false,
+				filtered_pops: {}
 		    }
 		},
 		methods:{
@@ -565,11 +566,6 @@
 			}
 		},
 		computed:{
-			buscarPop(){
-				cache: false;
-				return this.pops.filter((pop) => pop.nombre.toLowerCase().trim().includes(this.buscar));
-				//return this.pops.filter((pop) => pop.nombre.includes(this.buscar));
-			},
 			ordenarPops: function () {
 				var originalIndex = 0;
 				for(let val in this.pops){
@@ -581,6 +577,12 @@
 			},
 		},
 		watch: {
+			'buscar': function(){
+				let filtered_pops = {};
+				this.filtered_pops = this.pops.filter((pop) => pop.nombre.toLowerCase().includes(this.buscar.toLowerCase()));
+				return this.filtered_pops;
+				//return this.pops.filter((pop) => pop.nombre.includes(this.buscar));
+			},
 			'nuevaVenta': function(val, oldVal){
 				let totalVenta = parseInt(this.vendidos) + parseInt(val);
 				var cantidadApartada = 0;
