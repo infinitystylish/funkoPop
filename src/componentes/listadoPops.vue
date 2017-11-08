@@ -566,8 +566,9 @@
 		},
 		computed:{
 			buscarPop(){
-				//return this.pops.filter((pop) => pop.nombre.toLowerCase().includes(this.buscar));
-				return this.pops.filter((pop) => pop.nombre.includes(this.buscar));
+				cache: false;
+				return this.pops.filter((pop) => pop.nombre.toLowerCase().trim().includes(this.buscar));
+				//return this.pops.filter((pop) => pop.nombre.includes(this.buscar));
 			},
 			ordenarPops: function () {
 				var originalIndex = 0;
