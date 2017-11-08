@@ -140,7 +140,7 @@
 									{{ recuperacionDinero(pop) }}
 								</td>
 								<td class="column-button">
-									<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.nombre,pop.licencia,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos)">
+									<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.nombre,pop.licencia,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos,pop.gananciaEmbalaje)">
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</button>
 									<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
@@ -198,7 +198,7 @@
 									{{ recuperacionDinero(pop) }}
 								</td>
 								<td class="column-button">
-									<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos,pop.gananciaEmbalaje)">
+									<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" v-on:click="popVenta(pop.originalIndex,pop.id,pop.nombre,pop.licencia,pop.vendidos,pop.cantidadComprada,pop.precioPublico,pop.apartados,pop.descuentos,pop.gananciaEmbalaje)">
 										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</button>
 									<button type="button" data-toggle="modal" data-target="#apartadoModal" class="btn btn-warning btn-apartado" v-on:click="popApartado(pop.originalIndex,pop.id,pop.cantidadDisponible,pop.apartados)">
@@ -438,7 +438,7 @@
 			recuperacionDinero(pop){
 				return Math.round((pop.vendidos * pop.costo)* 100) / 100;
 			},
-			popVenta(id,indice,vendidos,cantidadComprada, precioPublico, apartados, descuentos, gananciaEmbalaje){
+			popVenta(id,indice,nombre,licencia,vendidos,cantidadComprada, precioPublico, apartados, descuentos, gananciaEmbalaje){
 				this.idPop = id;
 				this.id = indice;
 				this.nombrePop = nombre;
@@ -453,7 +453,7 @@
 			},
 			registrarVenta(indiceOriginal,id){
 				let licencia = this.licencia;
-				let nombre = this.nombre;
+				let nombre = this.nombrePop;
 				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.nuevaVenta);
 				let comprados = this.pops[indiceOriginal].cantidadDisponible = this.comprado -  vendidos;
 				let precioPublico = this.pops[indiceOriginal].precioPublico = this.precioPublico;
@@ -566,7 +566,8 @@
 		},
 		computed:{
 			buscarPop(){
-				return this.pops.filter((pop) => pop.nombre.toLowerCase().includes(this.buscar));
+				//return this.pops.filter((pop) => pop.nombre.toLowerCase().includes(this.buscar));
+				return this.pops.filter((pop) => pop.nombre.includes(this.buscar));
 			},
 			ordenarPops: function () {
 				var originalIndex = 0;
