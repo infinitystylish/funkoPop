@@ -20,7 +20,7 @@
 				<span>Total descuento: ${{totalDescuento}} </span>
 			</div>
 			<div class="ganancia">
-				<span v-if="(totalRecuperado + totalGanancia) - totalInvertido  > 0">Tu ganancia es de {{ totalInvertido - (totalRecuperado + totalGanancia) }}</span>
+				<span v-if="(totalRecuperado + totalGanancia) - totalInvertido  > 0">Tu ganancia es de {{ Math.abs(  Math.ceil(  (totalInvertido - (totalRecuperado + totalGanancia))*10) /10) }}</span>
 				<span v-else>Faltan {{ Math.abs(  Math.ceil( ( (totalGanancia + totalRecuperado) - totalInvertido) *10) / 10) }}</span>
 			</div>
 			<div class="total-comprado">
