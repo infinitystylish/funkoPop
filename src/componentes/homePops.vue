@@ -1,11 +1,79 @@
 <template>
 	<div class="internal-content">
 		<div class="funko-options">
-			<router-link tag="button" to="/FunkoPop/listadoPops" class="btn btn-primary btn-lg">Lista de FunkoPop</router-link>
-			<router-link tag="button" to="/FunkoPop/nuevoPop" class="btn btn-success btn-lg">Nuevo FunkoPop</router-link>
-			<router-link tag="button" to="/FunkoPop/avisoPop" class="btn btn-warning btn-lg">Aviso / Apartado FunkoPop</router-link>
-			<router-link tag="button" to="/FunkoPop/pedidosPop" class="btn btn-danger btn-lg">Pedidos FunkoPop</router-link>
+			<router-link tag="button" to="/FunkoPop/listadoPops" class="btn btn-primary btn-lg btn-block">Lista de FunkoPop</router-link>
+			<router-link tag="button" to="/FunkoPop/nuevoPop" class="btn btn-success btn-lg btn-block">Nuevo FunkoPop</router-link>
+			<!-- <router-link tag="button" to="/FunkoPop/avisoPop" class="btn btn-warning btn-lg">Aviso / Apartado FunkoPop</router-link>
+			<router-link tag="button" to="/FunkoPop/pedidosPop" class="btn btn-danger btn-lg">Pedidos FunkoPop</router-link> -->
 		</div>
+		
+		<div class="buscarPop">
+			<form>
+				<div class="form-group">
+					<label for="existenciaPop">¿Esta disponible este pop? [Búsqueda por nombre]</label>
+				    <input type="text" class="form-control" id="existenciaPop" placeholder="Buscar Pop" v-model="existenciaPop">
+				</div>
+			</form>
+
+			<div class="table-responsive">
+				<table class="table table-hover table-bordered table-funkopop home">
+					<thead>
+						<tr>
+							<th>
+								Licencia
+							</th>
+							<th>
+								Nombre
+							</th>
+							<th data-toggle="tooltip" title="Número pop">
+								#Pop
+							</th>
+							<th data-toggle="tooltip" title="Apartados">
+								A
+							</th>
+							<th data-toggle="tooltip" title="cantidad Disponible">
+								CD
+							</th>
+							<th data-toggle="tooltip" title="Precio Público">
+								PP
+							</th>
+						</tr>
+					</thead>
+					<tbody v-if="quantity_filter_pops.length > 0">
+						<tr v-show="existenciaPop" v-for="(pop, indice) in quantity_filter_pops" class="table-info">
+							<td>
+								{{ pop.licencia }}
+							</td>
+							<td>
+								{{ pop.nombre }}
+							</td>
+							<td>
+								{{ pop.numeroPop }}
+							</td>
+							<td>
+								{{ calcularApartados(pop) }}
+							</td>
+							<td>
+								{{ calcularCantidadDisponible(pop) }}
+							</td>
+							<td>
+								{{ pop.precioPublico }}
+							</td>
+						</tr>
+					</tbody>
+					<tbody v-else-if="quantity_filter_pops.length == null"></tbody>
+					<tbody v-else>
+						<tr>
+							<td colspan="5">
+								No hay disponible(s)
+							</td>
+						</tr>
+					</tbody>	
+				</table>
+			</div>
+
+		</div>
+
 		<div class="total">
 			<div class="total-cost">
 				<span>Total de inversion: ${{totalInvertido}} </span>
@@ -33,6 +101,9 @@
 				<span> Ganancia embalaje: {{gananciaEmbalaje}} </span>
 			</div>
 		</div>
+		
+			
+		</div>
 	</div>
 </template>
 
@@ -42,8 +113,34 @@ export default {
 	props: ['pops'],
 	data() {
 	    return {
-	     
+	    	existenciaPop: '',
+	    	filtered_pops: {},
+	    	quantity_filter_pops: {}
 	    }
+	},
+	methods: {
+		calcularApartados(pop){
+				let totalApartados = 0;
+				let cantidadApartada = 0;
+				let cantidadTotal = 0;
+				for (let apartado in pop.apartados) {
+					cantidadApartada = parseInt(pop.apartados[apartado].cantidadApartada)
+					totalApartados += cantidadApartada;
+				}
+				return totalApartados;
+		},
+		calcularCantidadDisponible(pop){
+			let totalApartados = 0;
+			let cantidadApartada = 0;
+			let cantidadTotal = 0;
+			let vendidos = pop.vendidos;
+			for (let apartado in pop.apartados) {
+				cantidadApartada = parseInt(pop.apartados[apartado].cantidadApartada)
+				totalApartados += cantidadApartada;
+			}
+			cantidadTotal = pop.cantidadDisponible - totalApartados;
+			return cantidadTotal;
+		},
 	},
 	computed: {
 		totalInvertido: function(){
@@ -93,6 +190,20 @@ export default {
 			return this.pops.reduce(function(prev, pop){
 			    return Math.ceil( (sum = sum + parseInt(pop.gananciaEmbalaje))*10) / 10;; 
 			},0);
+		}
+	},
+	watch: {
+		'existenciaPop': function(){
+			let filtered_pops = {};
+			this.filtered_pops = 
+				this.pops.filter(
+					(pop) => pop.nombre.toLowerCase().includes(this.existenciaPop.toLowerCase())
+				);
+			this.quantity_filter_pops = this.filtered_pops.filter(
+					(pop) => pop.cantidadDisponible > 0);
+			console.log(this.quantity_filter_pops);
+			return this.quantity_filter_pops;
+
 		}
 	}
 }

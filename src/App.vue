@@ -63,12 +63,12 @@
 							<li>
 								<router-link tag="a" to="/FunkoPop/nuevoPop">Nuevo FunkoPop</router-link>
 							</li>
-							<li>
+							<!-- <li>
 								<router-link tag="a" to="/FunkoPop/avisoPop">Listado de Avisos</router-link>
 							</li>
 							<li>
 								<router-link tag="a" to="/FunkoPop/pedidosPop">Pedidos FunkoPop</router-link>
-							</li>  
+							</li>   -->
 				        </ul> 
 				    	<div class="cerrar-sesion">
 				    		<button @click="signOut" class="btn btn-danger" type="button">Cerrar sesión</button>
@@ -203,7 +203,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" type="text/css">
 
 h1{
 	@media (max-width: 767px){
@@ -252,21 +252,19 @@ h1{
 }
 
 .funko-options{
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
 	display: flex;
+	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
 	flex-wrap: wrap;
 	button{
 		margin-bottom: 20px;
-		&:not(:last-child){
-			margin-right: 20px;
-		}
 		@media (max-width: 991px){
 		    display: block;
     		width: 100%;
-    		&:not(:last-child){
-				margin-right: 0px;
-			}
     	}	
 	}
 	@media (max-width: 991px){
@@ -275,7 +273,7 @@ h1{
 }
 
 .total{
-	margin-top: 50px;
+	margin-top: 40px;
 	max-width: 400px;
 	margin-left: auto;
 	margin-right: auto;
@@ -292,6 +290,25 @@ h1{
 	hr{
 		margin-top: 5px; 
 		margin-bottom: 5px; 
+	}
+}
+
+.buscarPop{
+	max-width: 400px;
+	border-color: #ddd;
+	border-width: 1px;
+ 	border-style: solid;
+ 	padding: 10px 15px;
+ 	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+table{
+	&.table-funkopop{
+		&.home{
+			margin-top: 15px;
+		}
 	}
 }
 
