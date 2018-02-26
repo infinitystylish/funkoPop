@@ -3,6 +3,7 @@
 		<div class="funko-options">
 			<router-link tag="button" to="/FunkoPop/listadoPops" class="btn btn-primary btn-lg btn-block">Lista de FunkoPop</router-link>
 			<router-link tag="button" to="/FunkoPop/nuevoPop" class="btn btn-success btn-lg btn-block">Nuevo FunkoPop</router-link>
+			<router-link tag="button" to="/FunkoPop/pedidosAAA" class="btn btn-warning btn-lg btn-block">Lista Pedidos AAA</router-link>
 			<!-- <router-link tag="button" to="/FunkoPop/avisoPop" class="btn btn-warning btn-lg">Aviso / Apartado FunkoPop</router-link>
 			<router-link tag="button" to="/FunkoPop/pedidosPop" class="btn btn-danger btn-lg">Pedidos FunkoPop</router-link> -->
 		</div>
@@ -75,35 +76,39 @@
 		</div>
 
 		<div class="total">
-			<div class="total-cost">
-				<span>Total de inversion: ${{totalInvertido}} </span>
+			<div class="calculate">
+				<span>Total de inversion: $ -{{totalInvertido}} </span>
 			</div>
-			<div class="total-recuperado">
-				<span>Total recuperado: ${{totalRecuperado}} </span>
+			<div class="calculate">
+				<span>Total recuperado: $ {{totalRecuperado}} </span>
 			</div>
-			<div class="total-ganado">
-				<span>Total ganado: ${{ Math.ceil( (totalGanancia - totalDescuento)*10) / 10 }} </span>
+			<div class="calculate">
+				<span>Inversión: $ {{ Math.ceil((totalRecuperado - totalInvertido))}} </span>
 			</div>
-			<div class="total-descuento">
-				<span>Total descuento: ${{totalDescuento}} </span>
+			<div class="calculate">
+				<span>Total ganado: $ {{ Math.ceil( (totalGanancia)*10) / 10 }} </span>
 			</div>
-			<div class="ganancia">
-				<span v-if="(totalRecuperado + totalGanancia) - totalInvertido  > 0">Tu ganancia es de {{ Math.abs(  Math.ceil(  (totalInvertido - (totalRecuperado + totalGanancia))*10) /10) }}</span>
-				<span v-else>Faltan {{ Math.abs(  Math.ceil( ( (totalGanancia + totalRecuperado) - totalInvertido) *10) / 10) }}</span>
+			<div class="calculate">
+				<span>Total ganado antes de descuento:  $ {{ Math.ceil( ((totalRecuperado + totalGanancia) - (totalInvertido))*10) /10}} </span>
 			</div>
-			<div class="total-comprado">
+			<div class="calculate">
+				<span>Total descuento: $ -{{totalDescuento}} </span>
+			</div>
+			<div class="calculate">
+				<span v-if="(totalRecuperado + totalGanancia) - (totalInvertido + totalDescuento) > 0">Tu ganancia es de $ {{ Math.abs(  Math.ceil(  ((totalInvertido + totalDescuento) - (totalRecuperado + totalGanancia))*10) /10) }}</span>
+				<span v-else>Faltan {{ Math.abs(  Math.ceil( ( (totalGanancia + totalRecuperado) - (totalInvertido + totalDescuento)) *10) / 10) }}</span>
+			</div>
+			<div class="calculate">
 				<span>Total comprado: {{totalComprado}} </span>
 			</div>
-			<div class="total-vendido">
+			<div class="calculate">
 				<span>Total vendido: {{totalVendido}} </span>
 			</div>
-			<div class="ganancia-embalaje">
+			<div class="calculate">
 				<span> Ganancia embalaje: {{gananciaEmbalaje}} </span>
 			</div>
 		</div>
 		
-			
-		</div>
 	</div>
 </template>
 

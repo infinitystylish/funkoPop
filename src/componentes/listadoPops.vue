@@ -325,7 +325,7 @@
 						</ul>
 
 						<input type="hidden" v-model="idPop">
-						 <input type="hidden" v-model="id">
+						<input type="hidden" v-model="id">
 						<input type="hidden" v-model="vendidos">
 						
 						<div class="alert alert-danger my-alert" v-if="validacionApartados" role="alert">

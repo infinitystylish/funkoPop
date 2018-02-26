@@ -3,6 +3,7 @@ import HomePops from './componentes/homePops.vue'
 import NuevoPop from './componentes/nuevoPop.vue'
 import avisoPop from './componentes/avisoPop.vue'
 import pedidosPop from './componentes/pedidosPop.vue'
+import pedidosAAA from './componentes/pedidosAAA.vue'
 
 export const rutas = [
 	{ 
@@ -19,5 +20,8 @@ export const rutas = [
 	},
 	{
 		path: '/FunkoPop/pedidosPop', component:  pedidosPop, name: 'pedidosPop'
+	},
+	{
+		path: '/FunkoPop/pedidosAAA', component:  pedidosAAA, name: 'pedidosAAA'
 	},
 ]

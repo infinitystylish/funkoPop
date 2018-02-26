@@ -284,7 +284,7 @@ h1{
  	padding: 10px 15px;
  	border-top-right-radius: 3px;
  	border-bottom-right-radius: 3px;
-	.total-recuperado,.total-vendido,.total-comprado,.total-invertido,.ganancia,.ganancia-embalaje,.total-ganado,.total-descuento{
+	.calculate{
 		margin-top: 10px;
 	}
 	hr{
