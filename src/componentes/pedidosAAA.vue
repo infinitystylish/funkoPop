@@ -6,7 +6,7 @@
 		</div>
 		<div class="panel panel-default panel-pedidos">
 			<div class="panel-heading">
-				<h1>Pedidos AAA</h1>
+				<h1>Pedidos clientes</h1>
 			</div>
 			<div class="panel-body">
 				<div class="orders row">
@@ -20,26 +20,30 @@
 								</button>
 						  	</div>
 							<div class="table-responsive">
-								<table class="table table-bordered table-funkopop">
+								<table class="table table-bordered table-funkopop orders">
 								  <thead>
 								    <tr>
 								      <th scope="col">Pop</th>
 								      <th scope="col">Cantidad</th>
+								       <th scope="col">Precio</th>
 								      <th scope="col">Modificar/Borrar</th>
 								    </tr>
 								  </thead>
-								  <tbody v-for="(pop, indice) in pedido.popsPedidos">
+								  <tbody v-for="(pop, indicePop) in pedido.popsPedidos">
 								    <tr>
 								      <td>{{pop.nombrePop}}</td>
 								      <td>
 									    <input type="number" v-model="pop.cantidad" class="form-control">
 								  	  </td>
+								  	  <td>
+									    <input type="number" v-model="pop.precio" class="form-control">
+								  	  </td>
 								      <td>
 								      	<div class="column-button">
-									      	<button type="button" class="btn btn-warning" v-on:click="modificarCantidadApartadaPop(pedido.id,indice)">
+									      	<button type="button" class="btn btn-warning" v-on:click="modificarCantidadApartadaPop(pedido.id,indice,indicePop)">
 									      		<span aria-hidden="true" class="glyphicon glyphicon-pencil"></span>
 									      	</button>
-									      	<button type="button" class="btn btn-danger" v-on:click="quitarPopApartado(pedido.id,indice)">
+									      	<button type="button" class="btn btn-danger" v-on:click="quitarPopApartado(pedido.id,indice,indicePop)">
 									      		<span aria-hidden="true" class="glyphicon glyphicon-remove"></span>
 									      	</button>
 									    </div>
@@ -48,8 +52,13 @@
 								  </tbody>
 								</table>
 							</div>
+							<div class="card-footer">
+								
+								{{pedido.total}}
+								
+							</div>
 							<button type="button"  data-toggle="modal" data-target="#agregarPedidoModal" class="btn btn-success btn-block" v-on:click="guardarDatosApartado(indice)">
-								Agregar Pops
+								Agregar / Modificar pedido
 							</button>
 						</div>
 					</div>
@@ -80,6 +89,10 @@
 								    <div class="form-group">
 								      	<label for="cantidad">Cantidad:</label>
 								        <input type="number" v-model="pedido.cantidad" class="form-control">
+								    </div>
+								    <div class="form-group">
+								      	<label for="precio">Precio:</label>
+								        <input type="number" v-model="pedido.precio" class="form-control">
 								    </div>
 								</div>
 						    </li>
@@ -157,7 +170,8 @@ export default {
 					popsPedidos: [
 						{
 							nombrePop: "",
-							cantidad: 0
+							cantidad: 0,
+							precio: 0
 						}
 					],
 					adelanto: 0
@@ -167,10 +181,22 @@ export default {
 			identificaPedido : 0,
 			nombreCliente: '',
 			popsPedidos: [],
-			adelanto: 0 
+			adelanto: 0,
 	    }
 	},
 	methods: {
+		sumTotalOrder: function(){
+			let total = 0;
+			let precio = 0;
+			for(let val in this.pedidosGuardados){
+				total = 0;
+				for(let pop in this.pedidosGuardados[val].popsPedidos){
+					precio = this.pedidosGuardados[val].popsPedidos[pop].precio;
+					total = parseFloat(total) + parseFloat(precio);
+					this.pedidosGuardados[val].total = total;
+				}
+			}
+		},
 		getDataOrder(){
 	    	this.axios.get('https://funko-pop.firebaseio.com/pedidos.json')
 	        .then(respuesta => { 
@@ -192,14 +218,16 @@ export default {
 	        });
 	    },
 		agregarPopPedido(){
-			this.popsPedidos.push(
+			this.pedidos[0].popsPedidos.push(
 				{
 					nombrePop: "",
-					cantidad: 0
+					cantidad: 0,
+					precio: 0
 				}		
 			);
 		},
 		agregarPedido(){
+
 			var nombreCliente = this.pedidos[0].nombreCliente.trim();
 			var popsPedidos = this.pedidos[0].popsPedidos;
 			var adelanto = parseFloat(this.pedidos[0].adelanto);
@@ -227,7 +255,7 @@ export default {
 
 		},
 		agregarPedidoActualizado: function(identificaPedido){
-			console.log(this.pedidosGuardados[identificaPedido]);
+
 			let nombreCliente = this.pedidosGuardados[identificaPedido].nombreCliente;
 			let popsPedidos = this.pedidosGuardados[identificaPedido].popsPedidos;
 			let adelanto = this.pedidosGuardados[identificaPedido].adelanto;
@@ -245,38 +273,43 @@ export default {
 				}
 			});
 		},
-		modificarCantidadApartadaPop(id,index){
-			for (let pedido in this.pedidosGuardados){
-				if(this.pedidosGuardados[pedido].id == id){
-					let popPedidoCantidad = this.pedidosGuardados[pedido].popsPedidos[index].cantidad;
-					this.axios.patch('https://funko-pop.firebaseio.com/pedidos/' + id + '/popsPedidos/' + index +'.json',{
-						cantidad : popPedidoCantidad
-					}).then(respuesta => {
-						if(respuesta.status == 200){
-							//this.apartados = "";
-						}
-					});
-					return;
+		modificarCantidadApartadaPop(id,indice,indicePop){
+
+			let popPedidoCantidad = this.pedidosGuardados[indice].popsPedidos[indicePop].cantidad;
+			let popPedidoPrecio = this.pedidosGuardados[indice].popsPedidos[indicePop].precio;
+			this.axios.patch('https://funko-pop.firebaseio.com/pedidos/' + id + '/popsPedidos/' + indicePop +'.json',{
+				cantidad : popPedidoCantidad,
+				precio : popPedidoPrecio
+			}).then(respuesta => {
+				if(respuesta.status == 200){
+					//this.apartados = "";
 				}
-			}
+			});
 			
 		},
-		quitarPopApartado: function (id,index) {
-			for (let pedido in this.pedidosGuardados){
-				if(this.pedidosGuardados[pedido].id == id){
-					this.pedidosGuardados[pedido].popsPedidos.splice(index, 1);
-					this.axios.patch('https://funko-pop.firebaseio.com/pedidos/' + id +'.json',{
-						cantidad : this.pedidosGuardados[pedido].cantidad,
-						nombreCliente: this.pedidosGuardados[pedido].nombreCliente,
-						popsPedidos: this.pedidosGuardados[pedido].popsPedidos
-					}).then(respuesta => {
-						if(respuesta.status == 200){
-							//this.apartados = "";
-						}
-					});
-					return;
-				}
+		quitarPopApartado: function (id,indice,indicePop) {
 
+			this.pedidosGuardados[indice].popsPedidos.splice(indicePop,1);
+			let popsPedidos = this.pedidosGuardados[indice].popsPedidos;
+
+			this.axios.patch('https://funko-pop.firebaseio.com/pedidos/' + id +'.json',{
+				popsPedidos: popsPedidos
+			}).then(respuesta => {
+				if(respuesta.status == 200){
+					//this.apartados = "";
+				}
+			});
+
+			if ( this.pedidosGuardados[indice].popsPedidos.length <= 0 ) { 
+				this.pedidosGuardados.splice(indice,1);
+				console.log(id);
+				console.log(this.pedidosGuardados);
+				this.axios.delete('https://funko-pop.firebaseio.com/pedidos/' + id +'.json')
+					.then(respuesta => {
+					if(respuesta.status == 200){
+						//this.apartados = "";
+					}
+				});
 			}
 		},
 		guardarDatosApartado: function(indice){
@@ -287,8 +320,8 @@ export default {
 		}
 	},
 	created(){
-    	this.getDataOrder();
-  	},
+		this.getDataOrder();
+	},
   	computed:{
 		setIndex: function () {
 			var originalIndex = 0;
@@ -298,11 +331,20 @@ export default {
 			}
 		},
 	},
+	watch: {
+		"pedidosGuardados": function(){
+			this.sumTotalOrder();
+		}
+	}
 }
 
 </script>
 
 <style lang="scss">
+
+	.table-funkopop.orders{
+		margin-bottom: 0;
+	}
 	.add-order-button-container{
 		max-width: 450px;
 		margin-left: auto;
@@ -328,6 +370,18 @@ export default {
 	    border: 1px solid rgba(0,0,0,.125);
 		display: flex;
     	justify-content: space-between;
+	    .name-order{
+	    	font-size: 24px;
+	    }
+	}
+
+	.card-footer {
+	    padding: .75rem;
+	    margin-bottom: 30px;
+	    background-color: rgba(0,0,0,.03);
+	    border: 1px solid rgba(0,0,0,.125);
+		display: flex;
+    	justify-content: flex-end;
 	    .name-order{
 	    	font-size: 24px;
 	    }
