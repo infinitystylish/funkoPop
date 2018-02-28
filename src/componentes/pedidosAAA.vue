@@ -48,6 +48,9 @@
 								  </tbody>
 								</table>
 							</div>
+							<button type="button"  data-toggle="modal" data-target="#agregarPedidoModal" class="btn btn-success btn-block" v-on:click="guardarDatosApartado(indice)">
+								Agregar Pops
+							</button>
 						</div>
 					</div>
 				</div>
@@ -81,11 +84,12 @@
 								</div>
 						    </li>
 						</ul>
-						<div class="form-group">
+						<button class="btn btn-primary" @click="agregarPopPedido">Agregar</button>
+						<div class="form-group advance">
 					      	<label for="">$$ de Adelanto:</label>
 					        <input type="number" v-model="pedidos[0].adelanto" class="form-control">
 					    </div>
-						<button class="btn btn-primary" @click="agregarPopPedido">Agregar</button>
+						
 			     	</div>
 			      	<div class="modal-footer">
 				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -94,6 +98,50 @@
 			    </div>
 		  	</div>
 		</div>
+
+		<!-- Modal -->
+
+		<div class="modal fade" id="agregarPedidoModal" tabindex="-1" role="dialog" aria-labelledby="agregarPedidoModal">
+			<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Agregar mas pops al Pedido</h4>
+					</div>
+			      	<div class="modal-body">
+					    <div class="form-group">
+					        <h2>{{nombreCliente}}</h2>
+					    </div>
+				      	 <ul class="list-group">
+						    <li class="list-group-item" v-for="(pedido, index) in popsPedidos">
+						    	<div class="figure-division">
+							      	<div class="form-group">
+								      	<label for="nombrePop">Nombre pop:</label>
+								        <input type="text" v-model="pedido.nombrePop" class="form-control">
+								    </div>
+								    <div class="form-group">
+								      	<label for="cantidad">Cantidad:</label>
+								        <input type="number" v-model="pedido.cantidad" class="form-control">
+								    </div>
+								</div>
+						    </li>
+						</ul>
+						<button class="btn btn-primary" @click="agregarPopPedido()">Agregar</button>
+						<div class="form-group advance">
+					      	<label for="">$$ de Adelanto:</label>
+					        <input type="number" v-model="adelanto" class="form-control">
+					    </div>
+						
+			     	</div>
+			      	<div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="button" class="btn btn-primary" v-on:click="agregarPedidoActualizado(identificaPedido)">Guardar</button>
+			      	</div>
+			    </div>
+		  	</div>
+		</div>
+
+
 	</div>
 </template>
 
@@ -115,7 +163,11 @@ export default {
 					adelanto: 0
 				}	
 			],
-			pedidosGuardados : []
+			pedidosGuardados : [],
+			identificaPedido : 0,
+			nombreCliente: '',
+			popsPedidos: [],
+			adelanto: 0 
 	    }
 	},
 	methods: {
@@ -140,11 +192,11 @@ export default {
 	        });
 	    },
 		agregarPopPedido(){
-			this.pedidos[0].popsPedidos.push(
+			this.popsPedidos.push(
 				{
 					nombrePop: "",
-					cantidad: 0	
-				}
+					cantidad: 0
+				}		
 			);
 		},
 		agregarPedido(){
@@ -173,6 +225,25 @@ export default {
 				}
 			});
 
+		},
+		agregarPedidoActualizado: function(identificaPedido){
+			console.log(this.pedidosGuardados[identificaPedido]);
+			let nombreCliente = this.pedidosGuardados[identificaPedido].nombreCliente;
+			let popsPedidos = this.pedidosGuardados[identificaPedido].popsPedidos;
+			let adelanto = this.pedidosGuardados[identificaPedido].adelanto;
+			let id = this.pedidosGuardados[identificaPedido].id;
+			this.axios.patch('https://funko-pop.firebaseio.com/pedidos/' + id + '.json',{
+				nombreCliente: nombreCliente,
+				popsPedidos: popsPedidos,
+				adelanto: adelanto
+			}).then(respuesta => {
+				setTimeout(function(){
+					$('#agregarPedidoModal').modal('hide');
+				},500);
+				if(respuesta.status == 200){
+					//this.apartados = "";
+				}
+			});
 		},
 		modificarCantidadApartadaPop(id,index){
 			for (let pedido in this.pedidosGuardados){
@@ -207,13 +278,26 @@ export default {
 				}
 
 			}
-			
-			//this.pedidos[id].splice(index, 1);
+		},
+		guardarDatosApartado: function(indice){
+			this.identificaPedido = indice;
+			this.nombreCliente = this.pedidosGuardados[indice].nombreCliente;
+			this.popsPedidos = this.pedidosGuardados[indice].popsPedidos;
+			this.adelanto = this.pedidosGuardados[indice].adelanto;
 		}
 	},
 	created(){
     	this.getDataOrder();
   	},
+  	computed:{
+		setIndex: function () {
+			var originalIndex = 0;
+			for(let val in this.pedidosGuardados){
+				this.pedidosGuardados[val].originalIndex = originalIndex;
+				originalIndex++;
+			}
+		},
+	},
 }
 
 </script>
@@ -265,6 +349,10 @@ export default {
 				margin-left: 20px;
 			}
 		}
+	}
+
+	.advance{
+		margin-top: 30px;
 	}
 
 </style>
