@@ -6,7 +6,7 @@
 		</div>
 		<div class="panel panel-default panel-pedidos">
 			<div class="panel-heading">
-				<h1>Pedidos clientes</h1>
+				<h1>Pedidos clientes (AAA)</h1>
 			</div>
 			<div class="panel-body">
 				<div class="orders row">
@@ -64,6 +64,9 @@
 							<button type="button"  data-toggle="modal" data-target="#agregarPedidoModal" class="btn btn-success btn-block" v-on:click="guardarDatosApartado(indice)">
 								Agregar / Modificar pedido
 							</button>
+							<button type="button"  data-toggle="modal" class="btn btn-danger btn-block" v-on:click="quitarPedido(pedido.id,indice)">
+								Quitar pedido
+							</button>
 						</div>
 					</div>
 				</div>
@@ -81,10 +84,11 @@
 			      	<div class="modal-body">
 					    <div class="form-group">
 					      	<label for="">Nombre:</label>
-					        <input type="text" v-model="pedidos[0].nombreCliente" class="form-control">
+					        <input type="text" v-model="nombreCliente" class="form-control">
 					    </div>
 				      	<ul class="list-group">
-						    <li class="list-group-item" v-for="(pedido, index) in pedidos[0].popsPedidos">
+						    <li class="list-group-item" v-for="(pedido, index) in popsPedidos">
+
 						    	<div class="figure-division">
 							      	<div class="form-group">
 								      	<label for="nombrePop">Nombre pop:</label>
@@ -104,7 +108,7 @@
 						<button class="btn btn-primary" @click="agregarPopPedido">Agregar</button>
 						<div class="form-group advance">
 					      	<label for="">$$ de Adelanto:</label>
-					        <input type="number" v-model="pedidos[0].adelanto" class="form-control">
+					        <input type="number" v-model="adelanto" class="form-control">
 					    </div>
 						
 			     	</div>
@@ -140,6 +144,10 @@
 								      	<label for="cantidad">Cantidad:</label>
 								        <input type="number" v-model="pedido.cantidad" class="form-control">
 								    </div>
+								    <div class="form-group">
+								      	<label for="precio">Precio:</label>
+								        <input type="number" v-model="pedido.precio" class="form-control">
+								    </div>
 								</div>
 						    </li>
 						</ul>
@@ -174,8 +182,8 @@ export default {
 					popsPedidos: [
 						{
 							nombrePop: "",
-							cantidad: 0,
-							precio: 0
+							cantidad: 1,
+							precio: 280
 						}
 					],
 					adelanto: 0
@@ -184,7 +192,13 @@ export default {
 			pedidosGuardados : [],
 			identificaPedido : 0,
 			nombreCliente: '',
-			popsPedidos: [],
+			popsPedidos: [
+				{
+					nombrePop: "",
+					cantidad: 1,
+					precio: 280
+				}
+			],
 			adelanto: 0,
 	    }
 	},
@@ -210,11 +224,11 @@ export default {
 	        });
 	    },
 		agregarPopPedido(){
-			this.pedidos[0].popsPedidos.push(
+			this.popsPedidos.push(
 				{
 					nombrePop: "",
-					cantidad: 0,
-					precio: 0
+					cantidad: 1,
+					precio: 280
 				}		
 			);
 		},
@@ -235,9 +249,9 @@ export default {
 		},
 		agregarPedido(){
 
-			var nombreCliente = this.pedidos[0].nombreCliente.trim();
-			var popsPedidos = this.pedidos[0].popsPedidos;
-			var adelanto = parseFloat(this.pedidos[0].adelanto);
+			var nombreCliente = this.nombreCliente.trim();
+			var popsPedidos = this.popsPedidos;
+			var adelanto = parseFloat(this.adelanto);
 
 			this.axios.post('https://funko-pop.firebaseio.com/pedidos.json',{
 				nombreCliente: nombreCliente,
@@ -248,14 +262,21 @@ export default {
 					$('#pedidoModal').modal('hide');
 				},500);
 				if(respuesta.status == 200){
-					this.pedidos[0].nombreCliente = "";
-					this.pedidos[0].adelanto = "";
-					this.pedidos[0].popsPedidos = [
-						{
-							nombrePop: "",
-							cantidad: 0
-						}
-					]
+					let pedido = {
+						nombreCliente: nombreCliente,
+						popsPedidos: popsPedidos,
+						adelanto: adelanto
+		            }
+		            this.pedidosGuardados.push(pedido);
+
+					// this.pedidos[0].nombreCliente = "";
+					// this.pedidos[0].adelanto = "";
+					// this.pedidos[0].popsPedidos = [
+					// 	{
+					// 		nombrePop: "",
+					// 		cantidad: 0
+					// 	}
+					// ]
 				}
 			});
 
@@ -264,7 +285,7 @@ export default {
 
 			let nombreCliente = this.pedidosGuardados[identificaPedido].nombreCliente;
 			let popsPedidos = this.pedidosGuardados[identificaPedido].popsPedidos;
-			let adelanto = this.pedidosGuardados[identificaPedido].adelanto;
+			let adelanto = this.adelanto;
 			let id = this.pedidosGuardados[identificaPedido].id;
 			this.axios.patch('https://funko-pop.firebaseio.com/pedidos/' + id + '.json',{
 				nombreCliente: nombreCliente,
@@ -276,6 +297,7 @@ export default {
 				},500);
 				if(respuesta.status == 200){
 					//this.apartados = "";
+					this.pedidosGuardados[identificaPedido].adelanto = adelanto;
 				}
 			});
 		},
@@ -315,6 +337,15 @@ export default {
 					}
 				});
 			}
+		},
+		quitarPedido: function(id,indice){
+			this.pedidosGuardados.splice(indice,1);
+			this.axios.delete('https://funko-pop.firebaseio.com/pedidos/' + id +'.json')
+				.then(respuesta => {
+				if(respuesta.status == 200){
+					//this.apartados = "";
+				}
+			});
 		},
 		guardarDatosApartado: function(indice){
 			this.identificaPedido = indice;
