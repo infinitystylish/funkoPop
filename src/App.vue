@@ -63,6 +63,9 @@
 							<li>
 								<router-link tag="a" to="/FunkoPop/nuevoPop">Nuevo FunkoPop</router-link>
 							</li>
+							<li>
+								<router-link tag="a" to="/FunkoPop/pedidosAAA">Lista de Pedidos</router-link>
+							</li>
 							<!-- <li>
 								<router-link tag="a" to="/FunkoPop/avisoPop">Listado de Avisos</router-link>
 							</li>

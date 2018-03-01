@@ -26,7 +26,8 @@
 								      <th scope="col">Pop</th>
 								      <th scope="col">Cantidad</th>
 								       <th scope="col">Precio</th>
-								      <th scope="col">Modificar/Borrar</th>
+								       <th scope="col">Total</th>
+								      <th scope="col">Guardar/Borrar</th>
 								    </tr>
 								  </thead>
 								  <tbody v-for="(pop, indicePop) in pedido.popsPedidos">
@@ -38,9 +39,12 @@
 								  	  <td>
 									    <input type="number" v-model="pop.precio" class="form-control">
 								  	  </td>
+								  	  <td>
+									    {{pop.precio * pop.cantidad}}
+								  	  </td>
 								      <td>
 								      	<div class="column-button">
-									      	<button type="button" class="btn btn-warning" v-on:click="modificarCantidadApartadaPop(pedido.id,indice,indicePop)">
+									      	<button type="button" class="btn btn-success" v-on:click="modificarCantidadApartadaPop(pedido.id,indice,indicePop)">
 									      		<span aria-hidden="true" class="glyphicon glyphicon-pencil"></span>
 									      	</button>
 									      	<button type="button" class="btn btn-danger" v-on:click="quitarPopApartado(pedido.id,indice,indicePop)">
@@ -105,7 +109,7 @@
 						
 			     	</div>
 			      	<div class="modal-footer">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="button" class="btn btn-default" v-on:click="initPedido()" data-dismiss="modal">Cerrar</button>
 				        <button type="button" class="btn btn-primary" v-on:click="agregarPedido()">Guardar</button>
 			      	</div>
 			    </div>
@@ -185,18 +189,6 @@ export default {
 	    }
 	},
 	methods: {
-		sumTotalOrder: function(){
-			let total = 0;
-			let precio = 0;
-			for(let val in this.pedidosGuardados){
-				total = 0;
-				for(let pop in this.pedidosGuardados[val].popsPedidos){
-					precio = this.pedidosGuardados[val].popsPedidos[pop].precio;
-					total = parseFloat(total) + parseFloat(precio);
-					this.pedidosGuardados[val].total = total;
-				}
-			}
-		},
 		getDataOrder(){
 	    	this.axios.get('https://funko-pop.firebaseio.com/pedidos.json')
 	        .then(respuesta => { 
@@ -226,6 +218,21 @@ export default {
 				}		
 			);
 		},
+		initPedido(){
+			this.pedidos = [
+				{
+					nombreCliente: "",
+					popsPedidos: [
+						{
+							nombrePop: "",
+							cantidad: 0,
+							precio: 0
+						}
+					],
+					adelanto: 0
+				}	
+			]
+		},
 		agregarPedido(){
 
 			var nombreCliente = this.pedidos[0].nombreCliente.trim();
@@ -237,7 +244,6 @@ export default {
 				popsPedidos: popsPedidos,
 				adelanto: adelanto
 			}).then(respuesta => {
-				console.log(respuesta);
 				setTimeout(function(){
 					$('#pedidoModal').modal('hide');
 				},500);
@@ -302,8 +308,6 @@ export default {
 
 			if ( this.pedidosGuardados[indice].popsPedidos.length <= 0 ) { 
 				this.pedidosGuardados.splice(indice,1);
-				console.log(id);
-				console.log(this.pedidosGuardados);
 				this.axios.delete('https://funko-pop.firebaseio.com/pedidos/' + id +'.json')
 					.then(respuesta => {
 					if(respuesta.status == 200){
@@ -330,11 +334,21 @@ export default {
 				originalIndex++;
 			}
 		},
+		sumTotalOrder: function(){
+			let total = 0;
+			let precio = 0;
+			for(let val in this.pedidosGuardados){
+				total = 0;
+				for(let pop in this.pedidosGuardados[val].popsPedidos){
+					precio = this.pedidosGuardados[val].popsPedidos[pop].precio * this.pedidosGuardados[val].popsPedidos[pop].cantidad;
+					total = parseFloat(total) + parseFloat(precio);
+					this.pedidosGuardados[val].total = total;
+				}
+			}
+		}
 	},
 	watch: {
-		"pedidosGuardados": function(){
-			this.sumTotalOrder();
-		}
+		sumTotalOrder(){}
 	}
 }
 
@@ -344,6 +358,12 @@ export default {
 
 	.table-funkopop.orders{
 		margin-bottom: 0;
+		tbody{
+			td{
+				vertical-align: middle;
+    			text-align: center;
+			}
+		}
 	}
 	.add-order-button-container{
 		max-width: 450px;
@@ -387,12 +407,8 @@ export default {
 	    }
 	}
 
-	.order{
-		margin-top: 30px;
-	}
-
 	.panel-pedidos{
-		margin-top: 50px;
+		margin-top: 30px;
 	}
 
 	.column-button{
