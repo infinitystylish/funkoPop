@@ -1,16 +1,37 @@
 <template>
-	<div class="internal-content">
+	<div class="internal-content order">
+		
+		<div class="alert alert-success" role="alert"v-bind:class="{ active: datosGuardados }">>
+			Los datos han sido guardados
+		</div>
+		
+		<div class="alert alert-success" role="alert" v-bind:class="{ active: datosActualizados }">
+			Los datos han sido actualizados
+		</div>
+
+		<div class="alert alert-success" role="alert" v-bind:class="{ active: datosModificados }">
+			Los datos han sido modificados
+		</div>
+
+		<div class="alert alert-success" role="alert" v-bind:class="{ active: datosBorrados }">
+			El pedido ha sido eliminado
+		</div>
+		
+		<div class="alert alert-success" role="alert" v-bind:class="{ active: datosQuitados}">
+			Se ha quitado el pop del pedido
+		</div>
 
 		<div class="add-order-button-container">
 			<button data-toggle="modal" data-target="#pedidoModal" class="btn btn-primary btn-lg btn-block">Agregar Pedido</button>
 		</div>
+
 		<div class="panel panel-default panel-pedidos">
 			<div class="panel-heading">
 				<h1>Pedidos clientes (AAA)</h1>
 			</div>
 			<div class="panel-body">
-				<div class="orders row">
-					<div class="order col-sm-4" v-for="(pedido, indice) in pedidosGuardados">
+				<div class="orders">
+					<div class="order col-md-6" v-for="(pedido, indice) in pedidosGuardados">
 						
 						<div class="order-container">
 							<div class="card-header">
@@ -58,7 +79,7 @@
 							</div>
 							<div class="card-footer">
 								
-								{{pedido.total}}
+								Monto Total: {{pedido.total}}
 								
 							</div>
 							<button type="button"  data-toggle="modal" data-target="#agregarPedidoModal" class="btn btn-success btn-block" v-on:click="guardarDatosApartado(indice)">
@@ -200,9 +221,23 @@ export default {
 				}
 			],
 			adelanto: 0,
+			datosGuardados: false,
+			datosActualizados: false,
+			datosModificados: false,
+			datosBorrados: false,
+			datosQuitados: false
 	    }
 	},
 	methods: {
+		hideNotification(){
+			setTimeout(() => {
+				this.datosGuardados = false,
+				this.datosActualizados = false,
+				this.datosModificados = false,
+				this.datosBorrados = false,
+				this.datosQuitados = false
+			},3000);
+		},
 		getDataOrder(){
 	    	this.axios.get('https://funko-pop.firebaseio.com/pedidos.json')
 	        .then(respuesta => { 
@@ -269,14 +304,18 @@ export default {
 		            }
 		            this.pedidosGuardados.push(pedido);
 
-					// this.pedidos[0].nombreCliente = "";
-					// this.pedidos[0].adelanto = "";
-					// this.pedidos[0].popsPedidos = [
-					// 	{
-					// 		nombrePop: "",
-					// 		cantidad: 0
-					// 	}
-					// ]
+					this.nombreCliente = "";
+					this.adelanto = 0;
+					this.popsPedidos = [
+						{
+							nombrePop: "",
+							cantidad: 1,
+							precio: 280
+						}
+					]
+
+					this.datosGuardados = true;
+					this.hideNotification();
 				}
 			});
 
@@ -298,6 +337,19 @@ export default {
 				if(respuesta.status == 200){
 					//this.apartados = "";
 					this.pedidosGuardados[identificaPedido].adelanto = adelanto;
+
+					this.nombreCliente = "";
+					this.adelanto = 0;
+					this.popsPedidos = [
+						{
+							nombrePop: "",
+							cantidad: 1,
+							precio: 280
+						}
+					]
+
+					this.datosActualizados = true;
+					this.hideNotification();
 				}
 			});
 		},
@@ -311,6 +363,9 @@ export default {
 			}).then(respuesta => {
 				if(respuesta.status == 200){
 					//this.apartados = "";
+
+					this.datosModificados = true;
+					this.hideNotification();
 				}
 			});
 			
@@ -324,7 +379,8 @@ export default {
 				popsPedidos: popsPedidos
 			}).then(respuesta => {
 				if(respuesta.status == 200){
-					//this.apartados = "";
+					this.datosQuitados = true;
+					this.hideNotification();
 				}
 			});
 
@@ -333,7 +389,7 @@ export default {
 				this.axios.delete('https://funko-pop.firebaseio.com/pedidos/' + id +'.json')
 					.then(respuesta => {
 					if(respuesta.status == 200){
-						//this.apartados = "";
+						
 					}
 				});
 			}
@@ -343,7 +399,8 @@ export default {
 			this.axios.delete('https://funko-pop.firebaseio.com/pedidos/' + id +'.json')
 				.then(respuesta => {
 				if(respuesta.status == 200){
-					//this.apartados = "";
+					this.datosBorrados = true;
+					this.hideNotification();
 				}
 			});
 		},
@@ -387,6 +444,11 @@ export default {
 
 <style lang="scss">
 
+	.internal-content.order{
+		margin-bottom: 60px;
+		margin-top: 65px;
+	}
+
 	.table-funkopop.orders{
 		margin-bottom: 0;
 		tbody{
@@ -395,11 +457,6 @@ export default {
     			text-align: center;
 			}
 		}
-	}
-	.add-order-button-container{
-		max-width: 450px;
-		margin-left: auto;
-		margin-right: auto;
 	}
 	.table-dark {
 	    color: #fff;
@@ -454,6 +511,51 @@ export default {
 
 	.advance{
 		margin-top: 30px;
+	}
+
+	.order{
+		margin-bottom: 30px;
+	}
+
+	.add-order-button-container{
+		background-color: white;
+		position: fixed;
+		width: 100%;
+		bottom: 0;
+		left: 0;
+		height: 80px;
+		z-index: 2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0 20px;
+		button{
+			max-width: 450px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	.alert {
+		position: fixed;
+		z-index: 1031;
+		visibility: hidden;
+		top: 0;
+		left: 0;
+		width: 100%;
+		opacity: 0;
+		transition: all 0.5s ease-in 1s; 
+	    &.active{
+			opacity: 1;
+			visibility: visible;
+	    }
+	}
+	
+
+	@media (max-width: 767px){
+		.form-control{
+			padding: 6px;
+		}
 	}
 
 </style>
