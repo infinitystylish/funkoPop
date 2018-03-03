@@ -78,9 +78,7 @@
 								</table>
 							</div>
 							<div class="card-footer">
-								
 								Monto Total: {{pedido.total}}
-								
 							</div>
 							<button type="button"  data-toggle="modal" data-target="#agregarPedidoModal" class="btn btn-success btn-block" v-on:click="guardarDatosApartado(indice)">
 								Agregar / Modificar pedido
@@ -131,7 +129,6 @@
 					      	<label for="">$$ de Adelanto:</label>
 					        <input type="number" v-model="adelanto" class="form-control">
 					    </div>
-						
 			     	</div>
 			      	<div class="modal-footer">
 				        <button type="button" class="btn btn-default" v-on:click="initPedido()" data-dismiss="modal">Cerrar</button>
@@ -177,7 +174,6 @@
 					      	<label for="">$$ de Adelanto:</label>
 					        <input type="number" v-model="adelanto" class="form-control">
 					    </div>
-						
 			     	</div>
 			      	<div class="modal-footer">
 				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -239,6 +235,7 @@ export default {
 			},3000);
 		},
 		getDataOrder(){
+
 	    	this.axios.get('https://funko-pop.firebaseio.com/pedidos.json')
 	        .then(respuesta => { 
 	            return respuesta.data;
@@ -254,11 +251,12 @@ export default {
 						adelanto: respuestaJson[id].adelanto
 		            }
 		            this.pedidosGuardados.push(pedido);
-		            //this.pops.sort(this.compare)
 	          	}
 	        });
+
 	    },
 		agregarPopPedido(){
+
 			this.popsPedidos.push(
 				{
 					nombrePop: "",
@@ -266,8 +264,10 @@ export default {
 					precio: 280
 				}		
 			);
+
 		},
 		initPedido(){
+
 			this.pedidos = [
 				{
 					nombreCliente: "",
@@ -281,6 +281,7 @@ export default {
 					adelanto: 0
 				}	
 			]
+
 		},
 		agregarPedido(){
 
@@ -335,7 +336,6 @@ export default {
 					$('#agregarPedidoModal').modal('hide');
 				},500);
 				if(respuesta.status == 200){
-					//this.apartados = "";
 					this.pedidosGuardados[identificaPedido].adelanto = adelanto;
 
 					this.nombreCliente = "";
@@ -352,6 +352,7 @@ export default {
 					this.hideNotification();
 				}
 			});
+
 		},
 		modificarCantidadApartadaPop(id,indice,indicePop){
 
@@ -362,8 +363,6 @@ export default {
 				precio : popPedidoPrecio
 			}).then(respuesta => {
 				if(respuesta.status == 200){
-					//this.apartados = "";
-
 					this.datosModificados = true;
 					this.hideNotification();
 				}
@@ -454,7 +453,11 @@ export default {
 		tbody{
 			td{
 				vertical-align: middle;
-    			text-align: center;
+    			input{
+    				width: 70px;
+				    padding: 5px 10px;
+				    text-align: center;
+    			}
 			}
 		}
 	}
