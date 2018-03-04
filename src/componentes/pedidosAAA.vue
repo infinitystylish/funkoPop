@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="add-order-button-container">
-			<button data-toggle="modal" data-target="#pedidoModal" class="btn btn-primary btn-lg btn-block">Agregar Pedido</button>
+			<button data-toggle="modal" data-target="#pedidoModal" class="btn btn-primary btn-lg btn-block" v-on:click="clearPedido()">Agregar Pedido</button>
 		</div>
 
 		<div class="panel panel-default panel-pedidos">
@@ -265,6 +265,17 @@ export default {
 				}		
 			);
 
+		},
+		clearPedido(){
+			this.nombreCliente = "";
+			this.adelanto = 0;
+			this.popsPedidos = [
+				{
+					nombrePop: "",
+					cantidad: 1,
+					precio: 280
+				}
+			];
 		},
 		initPedido(){
 
