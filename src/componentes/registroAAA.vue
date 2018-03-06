@@ -1,5 +1,5 @@
 <template>
-	<div class="internal-content">
+	<div class="internal-content controlAAA">
 		<div class="add-order-button-container">
 			<button data-toggle="modal" data-target="#registroModal" class="btn btn-primary btn-lg btn-block" v-on:click="">Registrar Pedido</button>
 		</div>
@@ -11,49 +11,51 @@
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">
-					<table class="table table-hover table-bordered table-funkopop">
-						<thead>
-							<tr>
-								<th>
-									Nombre pedido
-								</th>
-								<th>
-									Cantidad
-								</th>
-								<th>
-									Costo USD
-								</th>
-								<th>
-									Cuota
-								</th>
-								<th>
-									Costo Figura
-								</th>
-								<th>
-									Costo Total
-								</th>
-								<th>
-									Envio EU
-								</th>
-								<th>
-									Costo Envio EU Total
-								</th>
-								<th>
-									Comision Imp
-								</th>
-								<th>
-									Costo Total Importacion
-								</th>
-								<th>
-									Costo Envio MX
-								</th>
-								<th>
-									Costo Total Figura
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<template v-for="(registro, indice) in registrosPedidosCompleto">
+					<template v-for="(registro, indice) in registrosPedidosCompleto">
+						<h1>{{registro.nombreRegistro}}</h1>
+						<table class="table table-hover table-bordered table-funkopop controlAAA">
+							<thead>
+								<tr>
+									<th>
+										Nombre pedido
+									</th>
+									<th>
+										Cantidad
+									</th>
+									<th>
+										Costo USD
+									</th>
+									<th>
+										Cuota
+									</th>
+									<th>
+										Costo Figura
+									</th>
+									<th>
+										Costo Total
+									</th>
+									<th>
+										Envio EU
+									</th>
+									<th>
+										Costo Envio EU Total
+									</th>
+									<th>
+										Comision Imp
+									</th>
+									<th>
+										Costo Total Importacion
+									</th>
+									<th>
+										Costo Envio MX
+									</th>
+									<th>
+										Costo Total Figura
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+							
 								<tr v-for="(pedidosPop, indiceP) in registro.pedidosPop">
 									<td>
 										{{ pedidosPop.nombrePop }}
@@ -93,13 +95,112 @@
 										{{ pedidosPop.costoTotalFigura.toFixed(2) }}
 									</td>
 								</tr>
-							</template>
-							<tr >
-								
-								
+								<tr>
+									<td>
+										<button data-toggle="modal" data-target="#agregarRegistroModal" class="btn btn-primary btn-small btn-block" v-on:click="guardarTemporalPedido(registro.id,indice)">Agregar Pop / Modificar Pedido</button>
+									</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>
+										{{ registro.sumaCostoFigura.toFixed(2) }}
+									</td>
+									<td></td>
+									<td>
+										{{ registro.sumaCostoEnvioEU.toFixed(2) }}
+									</td>
+									<td></td>
+									<td>
+										{{ registro.sumaCostoImportacion.toFixed(2) }}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover table-bordered table-funkopop controlAAA">
+						<thead>
+							<tr>
+								<th>
+									Fee Dls(Impuesto)
+								</th>
+								<th>
+									Fee Pesos(Impuesto)
+								</th>
+								<th>
+									Costo Figura Dls
+								</th>
+								<th>
+									Costo Figura Pesos
+								</th>
+								<th>
+									Envio EU Dls
+								</th>
+								<th>
+									Envio EU Pesos
+								</th>
+								<th>
+									Total Dls
+								</th>
+								<th>
+									Total Pesos
+								</th>
+								<th>
+									Envio Mx
+								</th>
+								<th>
+									Cobro Banco Pesos
+								</th>
+								<th>
+									
+								</th>
+								<th>
+									Costo Dólar
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									{{ registro.fee }}
+								</td>
+								<td>
+									{{ registro.cuotaPesos.toFixed(2) }}
+								</td>
+								<td>
+									{{ registro.costoFigurasDls }}
+								</td>
+								<td>
+									{{ registro.costoFigurasPesos.toFixed(2) }}
+								</td>
+								<td>
+									{{ registro.costoEnvioEU }}
+								</td>
+								<td>
+									{{ registro.costoEnvioEUPesos.toFixed(2) }}
+								</td>
+								<td>
+									{{ registro.totalPedido.toFixed(2) }}
+									
+								</td>
+								<td>
+									{{ registro.costoTotalPesos }}
+								</td>
+								<td>
+									{{ registro.costoEnvioMX }}
+								</td>
+								<td>
+									{{ registro.cobroBanco }}
+								</td>
+								<td>
+									{{  }}
+								</td>
+								<td>
+									{{ registro.costoDolar }}
+								</td>
 							</tr>
 						</tbody>
 					</table>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -117,26 +218,7 @@
 					      	<label for="">Nombre de registro(#):</label>
 					        <input type="text" v-model="nombreRegistro" class="form-control">
 					    </div>
-					    <ul class="list-group">
-						    <li class="list-group-item" v-for="(pedidoPop, index) in nuevoPedidoPop">
-								<div class="figure-division">
-									<div class="form-group">
-								      	<label for="nombrePop">Nombre pop:</label>
-								        <input type="text" v-model="pedidoPop.nombrePop" class="form-control">
-								    </div>
-								    <div class="form-group">
-								      	<label for="cantidad">Cantidad:</label>
-								        <input type="number" v-model="pedidoPop.cantidad" class="form-control">
-								    </div>
-								    <div class="form-group">
-								      	<label for="costoDls">Costo USD:</label>
-								        <input type="number" v-model="pedidoPop.costoDls" class="form-control">
-								    </div>
-								</div>
-							</li>
-						</ul>
-						<button class="btn btn-primary" @click="agregarPopPedido">Agregar</button>
-						<div class="form-group">
+					    <div class="form-group">
 					      	<label for="costoDls">Costo Figuras [Dls]:</label>
 					        <input type="number" v-model="costoFigurasDls" class="form-control">
 					    </div>
@@ -156,10 +238,106 @@
 					      	<label for="">Costo Envio MX [Mnx]:</label>
 					        <input type="text" v-model="costoEnvioMX" class="form-control">
 					    </div>
+					    <ul class="list-group">
+						    <li class="list-group-item" v-for="(pedidoPop, index) in nuevoPedidoPop">
+								<div class="figure-division">
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="form-group">
+										      	<label for="nombrePop">Nombre pop:</label>
+										        <input type="text" v-model="pedidoPop.nombrePop" class="form-control">
+										    </div>
+										</div>
+										<div class="col-sm-4">
+										    <div class="form-group">
+										      	<label for="cantidad">Cantidad:</label>
+										        <input type="number" v-model="pedidoPop.cantidad" class="form-control">
+										    </div>
+										</div>
+										<div class="col-sm-4">
+										    <div class="form-group">
+										      	<label for="costoDls">Costo USD:</label>
+										        <input type="number" v-model="pedidoPop.costoDls" class="form-control">
+										    </div>
+									    </div>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<button class="btn btn-primary" @click="agregarPopPedido">Agregar</button>
 			     	</div>
 			      	<div class="modal-footer">
 				        <button type="button" class="btn btn-default" v-on:click="" data-dismiss="modal">Cerrar</button>
 				        <button type="button" class="btn btn-primary" v-on:click="agregarRegistroPedido">Guardar</button>
+			      	</div>
+			    </div>
+		  	</div>
+		</div>
+
+		<!-- Modal Agregar Registro Modal -->
+		<div class="modal fade" id="agregarRegistroModal" tabindex="-1" role="dialog" aria-labelledby="agregarRegistroModal">
+			<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Agregar Registro</h4>
+					</div>
+			      	<div class="modal-body">
+					    <div class="form-group">
+					      	<label for="">Nombre de registro</label>
+					        <input type="text" v-model="registroTemporal.nombreRegistro" class="form-control">
+					    </div>
+					    <div class="form-group">
+					      	<label for="costoDls">Costo Figuras [Dls]:</label>
+					        <input type="number" v-model="registroTemporal.costoFigurasDls" class="form-control">
+					    </div>
+					    <div class="form-group">
+					      	<label for="costoDls">Fee [Dls]:</label>
+					        <input type="number" v-model="registroTemporal.fee" class="form-control">
+					    </div>
+					    <div class="form-group">
+					      	<label for="">Costo Envio EU [Dls]:</label>
+					        <input type="text" v-model="registroTemporal.costoEnvioEU" class="form-control">
+					    </div>
+						<div class="form-group">
+					      	<label for="costoDls">Cobro Banco [Mnx]:</label>
+					        <input type="number" v-model="registroTemporal.cobroBanco" class="form-control">
+					    </div>
+					    <div class="form-group">
+					      	<label for="">Costo Envio MX [Mnx]:</label>
+					        <input type="text" v-model="registroTemporal.costoEnvioMX" class="form-control">
+					    </div>
+					    <ul class="list-group">
+						    <li class="list-group-item" v-for="(pedidoPop, index) in registroTemporal.pedidosPop">
+								<div class="figure-division">
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="form-group">
+										      	<label for="nombrePop">Nombre pop:</label>
+										        <input type="text" v-model="pedidoPop.nombrePop" class="form-control">
+										    </div>
+										</div>
+										<div class="col-sm-4">
+										    <div class="form-group">
+										      	<label for="cantidad">Cantidad:</label>
+										        <input type="number" v-model="pedidoPop.cantidad" class="form-control">
+										    </div>
+										</div>
+										<div class="col-sm-4">
+										    <div class="form-group">
+										      	<label for="costoDls">Costo USD:</label>
+										        <input type="number" v-model="pedidoPop.costoDls" class="form-control">
+										    </div>
+									    </div>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<button class="btn btn-primary" @click="agregarPopRegistroModificado(registroTemporal.id,registroTemporal.indice)">Agregar</button>
+			     	</div>
+			      	<div class="modal-footer">
+				        <button type="button" class="btn btn-default" v-on:click="" data-dismiss="modal">Cerrar</button>
+				        <button type="button" class="btn btn-primary" v-on:click="guardarRegistroModificado(registroTemporal.id,registroTemporal.indice)">Guardar</button>
 			      	</div>
 			    </div>
 		  	</div>
@@ -179,8 +357,8 @@ export default {
 				{
 					pedidosPop:[
 						{
-							cantidad: 6,
-							costoDls: 6.6,
+							cantidad: 1,
+							costoDls: 6.35,
 							nombrePop: "",
 						}
 					],
@@ -197,12 +375,16 @@ export default {
 			cobroBanco: 0,
 			nuevoPedidoPop:[
 				{
-					cantidad: 6,
-					costoDls: 6.6,
+					cantidad: 1,
+					costoDls: 6.35,
 					nombrePop: "",
 				}
 			],
 			registrosGuardados : [],
+			idPedido : "",
+			indice : 0,
+			registroTemporal : []
+			
 	    }
 	},
 	methods: {
@@ -210,14 +392,52 @@ export default {
 
 			this.nuevoPedidoPop.push(
 				{
-					cantidad: 6,
-					costoDls: 6.6,
+					cantidad: 1,
+					costoDls: 6.35,
 					nombrePop: "",
 				}		
 			);
 
 		},
+		agregarPopRegistroModificado(id,indice){
+			this.registroTemporal.pedidosPop.push(
+				{
+					cantidad: 1,
+					costoDls: 6.35,
+					nombrePop: "",
+				}		
+			);
+		},
+		guardarRegistroModificado(id,indice){
 
+			var nombreRegistro = this.registroTemporal.nombreRegistro;
+			var costoFigurasDls = this.registroTemporal.costoFigurasDls;
+			var fee = this.registroTemporal.fee;
+			var costoEnvioEU = this.registroTemporal.costoEnvioEU;
+			var cobroBanco = this.registroTemporal.cobroBanco;
+			var costoEnvioMX = this.registroTemporal.costoEnvioMX;
+			var pedidosPop = this.registroTemporal.pedidosPop;
+
+			var id = id;
+
+			this.axios.patch('https://funko-pop.firebaseio.com/registrosAAA/' + id + '.json', {
+				nombreRegistro: nombreRegistro,
+				costoFigurasDls: costoFigurasDls,
+				fee: fee,
+				costoEnvioEU: costoEnvioEU,
+				cobroBanco: cobroBanco,
+				costoEnvioMX: costoEnvioMX,
+				pedidosPop: pedidosPop
+			}).then(respuesta => { 
+				setTimeout(function(){
+					$('#agregarRegistroModal').modal('hide');
+				},500);
+				if(respuesta.status == 200){
+					this.registroTemporal = [];
+					//this.gananciaEmbalaje = 0;
+				}
+			})
+		},
 		agregarRegistroPedido(){
 
 			var nombreRegistro = this.nombreRegistro.trim();
@@ -258,7 +478,10 @@ export default {
 			});
 
 		},
-
+		guardarTemporalPedido(id,indice){
+			this.registroTemporal = this.registrosGuardados[indice];
+			this.registroTemporal.indice = indice;
+		},
 		getDataRegister(){
 
 	    	this.axios.get('https://funko-pop.firebaseio.com/registrosAAA.json')
@@ -286,78 +509,7 @@ export default {
 	        });
 
 	    },
-	    calcularTotalPedido(indice){
-	    	var totalPedido = 0;
-	    	totalPedido = parseFloat(this.registrosGuardados[indice].costoFigurasDls) + parseFloat(this.registrosGuardados[indice].costoEnvioEU);
-	    	return totalPedido; 
-	    },
-	    calcularPrecioDolar(indice){
-	    	var costoDolar = 0;
-	    	costoDolar = parseFloat(this.registrosGuardados[indice].cobroBanco) / this.calcularTotalPedido(indice)
-	    	return costoDolar;
-	    },
-	    calcularCuota(indice){
-	    	var cantidadoPops = this.calcularTotal(indice);
-	    	var precioDolar = this.calcularPrecioDolar(indice);
-	    	var cuota = 0;
-
-	    	//cuota = (precioDolar * this.registrosGuardados[indice].fee) / cantidadoPops;
-	    	cuota = (precioDolar * this.registrosGuardados[indice].fee) / 30;
-	    	return cuota;
-	    },
-	    calcularTotal(indice){
-	    	//console.log(this.registrosGuardados[indice].pedidosPop);
-	    	var cantidadTotal = 0;
-	    	for(let registro in this.registrosGuardados[indice].pedidosPop){
-	    		cantidadTotal += parseFloat(this.registrosGuardados[indice].pedidosPop[registro].cantidad);
-	    	}
-	    	return cantidadTotal;
-	    },
-	    calcularCostoFigura(indice,indiceP){
-	    	var costoFigura = 0;
-	    	var precioDolar = this.calcularPrecioDolar(indice);
-	    	var cuota = this.calcularCuota(indice);
-	    	var costoUsd = parseFloat(this.registrosGuardados[indice].pedidosPop[indiceP].costoDls);
-
-	    	costoFigura = (costoUsd * precioDolar) + cuota;
-
-	    	return costoFigura;
-	    },
-	    calcularCostoTotalFigura(indice,indiceP){
-	    	var costoFigura = this.calcularCostoFigura(indice,indiceP);
-	    	var costoTotalFigura = 0;
-	    	costoTotalFigura = costoFigura *  parseFloat(this.registrosGuardados[indice].pedidosPop[indiceP].cantidad);
-	    	return costoTotalFigura;
-	    },
-	    calcularCostoFiguraEnvioEU(indice,indiceP){
-	    	var costoEnvioEU = parseFloat(this.registrosGuardados[indice].costoEnvioEU);
-	    	var costoEnvioEUPesos = parseFloat(this.registrosGuardados[indice].costoEnvioEU) * this.calcularPrecioDolar(indice);
-	    	var cantidadoPops = this.calcularTotal(indice);
-
-	    	var costoEnvioXFigura = 0;
-	    	//costoEnvioXFigura = costoEnvioEUPesos / cantidadoPops;
-	    	costoEnvioXFigura = costoEnvioEUPesos / 30;
-	    	return costoEnvioXFigura;
-	    },
-	    calcularCostoTotalFiguraEnvioEU(indice,indiceP){
-	    	var costoEnvioXFigura  = this.calcularCostoFiguraEnvioEU(indice,indiceP);
-	    	var cantidadoPops = this.registrosGuardados[indice].pedidosPop[indiceP].cantidad;
-	    	var costoTotalEnvioXFigura = costoEnvioXFigura * cantidadoPops ;
-	    	return costoTotalEnvioXFigura;
-	    },
-	    calcularCostoImportacion(indice,indiceP){
-	    	var costoFigura = this.calcularCostoFigura(indice,indiceP);
-	    	var costoImportacion = 0;
-	    	costoImportacion = costoFigura * 0.15;
-	    	return costoImportacion;
-	    },
-	    calcularCostoTotalImportacion(indice,indiceP){
-	    	var costoImportacion = this.calcularCostoImportacion(indice,indiceP);
-	    	var cantidadoPops = this.registrosGuardados[indice].pedidosPop[indiceP].cantidad;
-	    	var calcularCostoTotalImportacion = cantidadoPops * costoImportacion;
-	    	return calcularCostoTotalImportacion;
-	    }
-
+	    
 	},
 	created(){
 		this.getDataRegister();
@@ -368,8 +520,11 @@ export default {
 			var costoDolar = 0;
 			var cantidadTotal = 0;
 			var cuota = 0;
+			var cuotaPesos = 0;
 			var costoFigura = 0;
+			var costoFigurasPesos = 0;
 			var costoTotal = 0;
+			var costoTotalPesos = 0;
 			var costoEnvioEU
 			var costoEnvioEUPesos = 0;
 			var costoEnvioXFiguraEU = 0;
@@ -379,27 +534,43 @@ export default {
 			var costoEnvioMx = 0;
 			var costoTotalFigura = 0;
 
+			var sumaCostoFigura = 0;
+			var sumaCostoEnvioEU = 0;
+			var sumaCostoImportacion = 0;
+
 			for(let val in this.registrosGuardados){
+				cantidadTotal = 0;
 				for(let registro in this.registrosGuardados[val].pedidosPop){
 					cantidadTotal += parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
+					this.registrosGuardados[val].cantidadTotal = cantidadTotal;
 				}
 			}
 
 			for(let val in this.registrosGuardados){
+				sumaCostoFigura = 0;
+				sumaCostoEnvioEU = 0;
+				sumaCostoImportacion = 0;
 				totalPedido = parseFloat(this.registrosGuardados[val].costoFigurasDls) + parseFloat(this.registrosGuardados[val].costoEnvioEU);
 				costoDolar = parseFloat(this.registrosGuardados[val].cobroBanco) / totalPedido;
 				costoEnvioEU = parseFloat(this.registrosGuardados[val].costoEnvioEU);
 				costoEnvioEUPesos = costoEnvioEU * costoDolar;
+				cuotaPesos = costoDolar * this.registrosGuardados[val].fee;
+				costoFigurasPesos = costoDolar * this.registrosGuardados[val].costoFigurasDls;
+				costoTotalPesos = costoEnvioEUPesos + costoFigurasPesos
 		    	for(let registro in this.registrosGuardados[val].pedidosPop){
-		    		cuota = (costoDolar * this.registrosGuardados[val].fee) / cantidadTotal;
+		    		cuota = (costoDolar * this.registrosGuardados[val].fee) / parseInt(this.registrosGuardados[val].cantidadTotal);
 		    		costoFigura = (parseFloat(this.registrosGuardados[val].pedidosPop[registro].costoDls) * costoDolar) + cuota;
 		    		costoTotal = costoFigura *  parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
 		    		costoImportacion = costoFigura * 0.15;
-		    		costoEnvioMx = parseFloat(this.registrosGuardados[val].costoEnvioMX) / cantidadTotal;
-		    		costoEnvioXFiguraEU = costoEnvioEUPesos / cantidadTotal;
+		    		costoEnvioMx = parseFloat(this.registrosGuardados[val].costoEnvioMX) / parseInt(this.registrosGuardados[val].cantidadTotal);
+		    		costoEnvioXFiguraEU = costoEnvioEUPesos / parseInt(this.registrosGuardados[val].cantidadTotal);
 		    		costoTotalEnvioXFiguraEU = costoEnvioXFiguraEU * parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
-			    	costoTotalImportacion = cantidadTotal * costoImportacion
+			    	costoTotalImportacion = parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad) * costoImportacion;
 			    	costoTotalFigura = costoFigura + costoEnvioXFiguraEU + costoImportacion + costoEnvioMx;
+
+			    	sumaCostoFigura = sumaCostoFigura + costoTotal;
+			    	sumaCostoEnvioEU = sumaCostoEnvioEU + costoTotalEnvioXFiguraEU;
+			    	sumaCostoImportacion = sumaCostoImportacion + costoTotalImportacion;
 
 			    	this.registrosGuardados[val].pedidosPop[registro].cuota = cuota;
 			    	this.registrosGuardados[val].pedidosPop[registro].costoFigura = costoFigura;
@@ -411,10 +582,15 @@ export default {
 			    	this.registrosGuardados[val].pedidosPop[registro].costoEnvioMx = costoEnvioMx;
 			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalFigura = costoTotalFigura;
 		    	}
+		    	this.registrosGuardados[val].sumaCostoImportacion = sumaCostoImportacion;
+		    	this.registrosGuardados[val].sumaCostoEnvioEU = sumaCostoEnvioEU;
+		    	this.registrosGuardados[val].sumaCostoFigura = sumaCostoFigura;
+		    	this.registrosGuardados[val].costoTotalPesos = costoTotalPesos;
+		    	this.registrosGuardados[val].costoFigurasPesos = costoFigurasPesos;
+		    	this.registrosGuardados[val].cuotaPesos = cuotaPesos;
 		    	this.registrosGuardados[val].totalPedido = totalPedido;
 		    	this.registrosGuardados[val].costoDolar = costoDolar;
 		    	this.registrosGuardados[val].costoEnvioEUPesos = costoEnvioEUPesos;
-		    	this.registrosGuardados[val].cantidadTotal = cantidadTotal;
 			}
 
 			return this.registrosGuardados;
@@ -425,7 +601,11 @@ export default {
 </script>
 
 <style lang="scss">
-	
+	.internal-content{
+		&.controlAAA{
+			margin-bottom: 80px;
+		}
+	}
 	.add-order-button-container{
 		background-color: white;
 		position: fixed;
@@ -442,6 +622,26 @@ export default {
 			max-width: 450px;
 			margin-left: auto;
 			margin-right: auto;
+		}
+	}
+
+	.table-funkopop{
+		&.controlAAA{
+			thead{
+				tr{
+					th{
+						font-size: 12px;
+					}
+				}
+			}
+			tbody{
+				tr{
+					td{
+						font-size: 12px;
+						padding: 2px 6px;
+					}
+				}
+			}
 		}
 	}
 
