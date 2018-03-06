@@ -53,40 +53,45 @@
 							</tr>
 						</thead>
 						<tbody>
-							<template v-for="(registro, indice) in registrosGuardados">
-								<tr>
-									<template v-for="(pedidosPop, indiceP) in registro.pedidosPop"> 
-										<td>
-											{{ pedidosPop.nombrePop }}
-										</td>
-										<td>
-											{{ pedidosPop.cantidad }}
-										</td>
-										<td>
-											{{ pedidosPop.costoDls }}
-										</td>
-										<td>
-											{{ calcularCuota(indice) }}
-										</td>
-										<td>
-											{{ calcularCostoFigura(indice,indiceP) }}
-										</td>
-										<td>
-											{{ calcularCostoTotalFigura(indice, indiceP) }}
-										</td>
-										<td>
-											{{ calcularCostoFiguraEnvioEU(indice, indiceP) }}
-										</td>
-										<td>
-											{{ calcularCostoTotalFiguraEnvioEU(indice, indiceP) }}
-										</td>
-										<td>
-											{{ calcularCostoImportacion(indice, indiceP) }}
-										</td>
-										<td>
-											{{ calcularCostoTotalImportacion(indice, indiceP) }}
-										</td>
-									</template>
+							<template v-for="(registro, indice) in registrosPedidosCompleto">
+								<tr v-for="(pedidosPop, indiceP) in registro.pedidosPop">
+									<td>
+										{{ pedidosPop.nombrePop }}
+									</td>
+									<td>
+										{{ pedidosPop.cantidad }}
+									</td>
+									<td>
+										{{ pedidosPop.costoDls }}
+									</td>
+									<td>
+										{{ pedidosPop.cuota.toFixed(2) }}
+									</td>
+									<td>
+										{{ pedidosPop.costoFigura.toFixed(2) }}
+									</td>
+									<td>
+										{{ pedidosPop.costoTotal.toFixed(2) }}
+									</td>
+									<td>
+										{{ pedidosPop.costoEnvioXFiguraEU.toFixed(2) }}
+										
+									</td>
+									<td>
+										{{ pedidosPop.costoTotalEnvioXFiguraEU.toFixed(2) }}
+									</td>
+									<td>
+										{{ pedidosPop.costoImportacion.toFixed(2) }}
+									</td>
+									<td>
+										{{ pedidosPop.costoTotalImportacion.toFixed(2) }}
+									</td>
+									<td>
+										{{ pedidosPop.costoEnvioMx.toFixed(2) }}
+									</td>
+									<td>
+										{{ pedidosPop.costoTotalFigura.toFixed(2) }}
+									</td>
 								</tr>
 							</template>
 							<tr >
@@ -337,8 +342,8 @@ export default {
 	    calcularCostoTotalFiguraEnvioEU(indice,indiceP){
 	    	var costoEnvioXFigura  = this.calcularCostoFiguraEnvioEU(indice,indiceP);
 	    	var cantidadoPops = this.registrosGuardados[indice].pedidosPop[indiceP].cantidad;
-	    	var costoTotalEnvioXFIgura = costoEnvioXFigura * cantidadoPops ;
-	    	return costoTotalEnvioXFIgura;
+	    	var costoTotalEnvioXFigura = costoEnvioXFigura * cantidadoPops ;
+	    	return costoTotalEnvioXFigura;
 	    },
 	    calcularCostoImportacion(indice,indiceP){
 	    	var costoFigura = this.calcularCostoFigura(indice,indiceP);
@@ -358,31 +363,61 @@ export default {
 		this.getDataRegister();
 	},
 	computed:{
-		calcular: function(){
+		registrosPedidosCompleto: function(){
 			var totalPedido = 0;
 			var costoDolar = 0;
 			var cantidadTotal = 0;
 			var cuota = 0;
 			var costoFigura = 0;
-			var costoTotalFigura = 0;
+			var costoTotal = 0;
 			var costoEnvioEU
 			var costoEnvioEUPesos = 0;
 			var costoEnvioXFiguraEU = 0;
+			var costoTotalEnvioXFiguraEU = 0;
+			var costoImportacion = 0;
+			var costoTotalImportacion = 0;
+			var costoEnvioMx = 0;
+			var costoTotalFigura = 0;
+
+			for(let val in this.registrosGuardados){
+				for(let registro in this.registrosGuardados[val].pedidosPop){
+					cantidadTotal += parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
+				}
+			}
+
 			for(let val in this.registrosGuardados){
 				totalPedido = parseFloat(this.registrosGuardados[val].costoFigurasDls) + parseFloat(this.registrosGuardados[val].costoEnvioEU);
 				costoDolar = parseFloat(this.registrosGuardados[val].cobroBanco) / totalPedido;
-				cuota = (costoDolar * this.registrosGuardados[val].fee) / 30;
 				costoEnvioEU = parseFloat(this.registrosGuardados[val].costoEnvioEU);
 				costoEnvioEUPesos = costoEnvioEU * costoDolar;
 		    	for(let registro in this.registrosGuardados[val].pedidosPop){
-		    		cantidadTotal += parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
-		    		costoFigura = (parseFloat(this.registrosGuardados[val].pedidosPop[registro].costoDls) * costoDolar ) + cuota;
-		    		costoTotalFigura = costoFigura *  parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
+		    		cuota = (costoDolar * this.registrosGuardados[val].fee) / cantidadTotal;
+		    		costoFigura = (parseFloat(this.registrosGuardados[val].pedidosPop[registro].costoDls) * costoDolar) + cuota;
+		    		costoTotal = costoFigura *  parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
+		    		costoImportacion = costoFigura * 0.15;
+		    		costoEnvioMx = parseFloat(this.registrosGuardados[val].costoEnvioMX) / cantidadTotal;
+		    		costoEnvioXFiguraEU = costoEnvioEUPesos / cantidadTotal;
+		    		costoTotalEnvioXFiguraEU = costoEnvioXFiguraEU * parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
+			    	costoTotalImportacion = cantidadTotal * costoImportacion
+			    	costoTotalFigura = costoFigura + costoEnvioXFiguraEU + costoImportacion + costoEnvioMx;
+
+			    	this.registrosGuardados[val].pedidosPop[registro].cuota = cuota;
+			    	this.registrosGuardados[val].pedidosPop[registro].costoFigura = costoFigura;
+			    	this.registrosGuardados[val].pedidosPop[registro].costoTotal = costoTotal;
+			    	this.registrosGuardados[val].pedidosPop[registro].costoEnvioXFiguraEU = costoEnvioXFiguraEU;
+			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalEnvioXFiguraEU = costoTotalEnvioXFiguraEU;
+			    	this.registrosGuardados[val].pedidosPop[registro].costoImportacion = costoImportacion;
+			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalImportacion = costoTotalImportacion;
+			    	this.registrosGuardados[val].pedidosPop[registro].costoEnvioMx = costoEnvioMx;
+			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalFigura = costoTotalFigura;
 		    	}
-		    	costoEnvioXFiguraEU = costoEnvioEUPesos / cantidadTotal;
-		    	return costoEnvioXFiguraEU;
-				//this.registrosGuardados[val];
+		    	this.registrosGuardados[val].totalPedido = totalPedido;
+		    	this.registrosGuardados[val].costoDolar = costoDolar;
+		    	this.registrosGuardados[val].costoEnvioEUPesos = costoEnvioEUPesos;
+		    	this.registrosGuardados[val].cantidadTotal = cantidadTotal;
 			}
+
+			return this.registrosGuardados;
 		}
 	}
 }
