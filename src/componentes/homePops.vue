@@ -3,8 +3,9 @@
 		<div class="funko-options">
 			<router-link tag="button" to="/FunkoPop/listadoPops" class="btn btn-primary btn-lg btn-block">Lista de FunkoPop</router-link>
 			<router-link tag="button" to="/FunkoPop/nuevoPop" class="btn btn-success btn-lg btn-block">Nuevo FunkoPop</router-link>
-			<router-link tag="button" to="/FunkoPop/pedidosAAA" class="btn btn-warning btn-lg btn-block">Lista Pedidos AAA</router-link>
+			<router-link tag="button" to="/FunkoPop/pedidosAAA" class="btn btn-warning btn-lg btn-block">Lista Pedidos</router-link>
 			<router-link tag="button" to="/FunkoPop/registroAAA" class="btn btn-info btn-lg btn-block">Registro AAA</router-link>
+			<router-link tag="button" to="/FunkoPop/registroEE" class="btn btn-danger btn-lg btn-block">Registro EE</router-link>
 			<!-- <router-link tag="button" to="/FunkoPop/avisoPop" class="btn btn-warning btn-lg">Aviso / Apartado FunkoPop</router-link>
 			<router-link tag="button" to="/FunkoPop/pedidosPop" class="btn btn-danger btn-lg">Pedidos FunkoPop</router-link> -->
 		</div>

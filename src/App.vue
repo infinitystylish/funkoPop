@@ -69,6 +69,9 @@
 							<li>
 								<router-link tag="a" to="/FunkoPop/registroAAA">Registro AAA</router-link>
 							</li>
+							<li>
+								<router-link tag="a" to="/FunkoPop/registroEE">Registro EE</router-link>
+							</li>
 							<!-- <li>
 								<router-link tag="a" to="/FunkoPop/avisoPop">Listado de Avisos</router-link>
 							</li>
@@ -267,7 +270,7 @@ h1{
 	align-items: center;
 	flex-wrap: wrap;
 	button{
-		margin-bottom: 20px;
+		margin-bottom: 5px;
 		@media (max-width: 991px){
 		    display: block;
     		width: 100%;

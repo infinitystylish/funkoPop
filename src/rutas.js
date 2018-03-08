@@ -5,6 +5,7 @@ import avisoPop from './componentes/avisoPop.vue'
 import pedidosPop from './componentes/pedidosPop.vue'
 import pedidosAAA from './componentes/pedidosAAA.vue'
 import registroAAA from './componentes/registroAAA.vue'
+import registroEE from './componentes/registroEE.vue'
 
 export const rutas = [
 	{ 
@@ -27,5 +28,8 @@ export const rutas = [
 	},
 	{
 		path: '/FunkoPop/registroAAA', component:  registroAAA, name: 'registroAAA'
+	},
+	{
+		path: '/FunkoPop/registroEE', component:  registroEE, name: 'registroEE'
 	},
 ]

@@ -27,7 +27,7 @@
 
 		<div class="panel panel-default panel-pedidos">
 			<div class="panel-heading">
-				<h1>Pedidos clientes (AAA)</h1>
+				<h1>Pedidos clientes</h1>
 			</div>
 			<div class="panel-body">
 				<div class="orders">
