@@ -492,7 +492,7 @@ export default {
 				sumaCostoFigura = 0;
 				sumaCostoEnvioEU = 0;
 				sumaCostoImportacion = 0;
-			
+				sumaCostoTotalFiguras = 0;
 		    	for(let registro in this.registrosGuardados[val].pedidosPop){
 		    		costoPedidoDls = parseFloat(this.registrosGuardados[val].pedidosPop[registro].costoDls) * parseInt(this.registrosGuardados[val].pedidosPop[registro].cantidad);
 		    		costoDolar = parseFloat(this.registrosGuardados[val].pedidosPop[registro].cobroBanco) / costoPedidoDls;
@@ -543,7 +543,7 @@ export default {
 
 <style lang="scss">
 	.internal-content{
-		&.controlAAA{
+		&.controlEE{
 			margin-bottom: 80px;
 		}
 	}
