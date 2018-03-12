@@ -361,9 +361,9 @@ export default {
 		},
 		guardarRegistroModificado(id,indice){
 
-			var nombreRegistro = this.registroTemporal.nombreRegistro;
-			var costoEnvioEU = this.registroTemporal.costoEnvioEU;
-			var costoEnvioMX = this.registroTemporal.costoEnvioMX;
+			var nombreRegistro = this.registroTemporal.nombreRegistro.trim();
+			var costoEnvioEU = parseFloat(this.registroTemporal.costoEnvioEU);
+			var costoEnvioMX = parseFloat(this.registroTemporal.costoEnvioMX);
 			var pedidosPop = this.registroTemporal.pedidosPop;
 
 			var id = id;
