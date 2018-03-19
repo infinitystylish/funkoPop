@@ -52,6 +52,9 @@
 									<th>
 										Costo Total Figuras
 									</th>
+									<th>
+										Costo Dolar
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -93,6 +96,9 @@
 									</td>
 									<td>
 										{{ pedidosPop.costoTotalFiguras.toFixed(2) }}
+									</td>
+									<td>
+										{{ pedidosPop.costoDolar.toFixed(2)}}
 									</td>
 								</tr>
 								<tr>
@@ -139,6 +145,9 @@
 								<th>
 									Total
 								</th>
+								<th>
+									Costo Dolar Promedio
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -157,6 +166,9 @@
 								</td>
 								<td>
 									{{ registro.sumaTotal.toFixed(2) }}
+								</td>
+								<td>
+									{{ registro.sumaCostoDolar }}
 								</td>
 							</tr>
 						</tbody>
@@ -478,6 +490,9 @@ export default {
 			var sumaCostoImportacion = 0;
 			var sumaCostoTotalFiguras = 0;
 			var comprobacionCostoImportacion = 0;
+			var sumaCostoDolar = 0;
+
+			var noPedidos = 0;
 
 			for(let val in this.registrosGuardados){
 				cantidadTotal = 0;
@@ -493,7 +508,10 @@ export default {
 				sumaCostoEnvioEU = 0;
 				sumaCostoImportacion = 0;
 				sumaCostoTotalFiguras = 0;
+				sumaCostoDolar = 0;
+				noPedidos = 0;
 		    	for(let registro in this.registrosGuardados[val].pedidosPop){
+		    		noPedidos ++;
 		    		costoPedidoDls = parseFloat(this.registrosGuardados[val].pedidosPop[registro].costoDls) * parseInt(this.registrosGuardados[val].pedidosPop[registro].cantidad);
 		    		costoDolar = parseFloat(this.registrosGuardados[val].pedidosPop[registro].cobroBanco) / costoPedidoDls;
 		    		costoFigura = parseFloat(this.registrosGuardados[val].pedidosPop[registro].costoDls) * costoDolar;
@@ -509,6 +527,7 @@ export default {
 			    	sumaCostoEnvioEU = sumaCostoEnvioEU + costoTotalEnvioXFiguraEU;
 			    	sumaCostoImportacion = sumaCostoImportacion + costoTotalImportacion;
 			    	sumaCostoTotalFiguras = sumaCostoTotalFiguras + costoTotalFiguras;
+			    	sumaCostoDolar = sumaCostoDolar + costoDolar;
 
 			    	this.registrosGuardados[val].pedidosPop[registro].costoPedidoDls = costoPedidoDls;
 			    	this.registrosGuardados[val].pedidosPop[registro].costoDolar = costoDolar;
@@ -522,7 +541,8 @@ export default {
 			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalFigura = costoTotalFigura;
 			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalFiguras = costoTotalFiguras;
 		    	}
-
+		    	sumaCostoDolar = sumaCostoDolar / noPedidos;
+		    	this.registrosGuardados[val].sumaCostoDolar = sumaCostoDolar;
 		    	this.registrosGuardados[val].sumaCostoImportacion = sumaCostoImportacion;
 		    	this.registrosGuardados[val].sumaCostoEnvioEU = sumaCostoEnvioEU;
 		    	this.registrosGuardados[val].sumaCostoFigura = sumaCostoFigura;
