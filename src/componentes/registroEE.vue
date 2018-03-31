@@ -233,6 +233,7 @@
 							</li>
 						</ul>
 						<button class="btn btn-primary" @click="agregarPopPedido">Agregar</button>
+						<button class="btn btn-primary btn-danger" @click="quitarPopPedido()">Quitar</button>
 			     	</div>
 			      	<div class="modal-footer">
 				        <button type="button" class="btn btn-default" v-on:click="" data-dismiss="modal">Cerrar</button>
@@ -361,6 +362,9 @@ export default {
 			);
 
 		},
+		quitarPopPedido(){
+			this.nuevoPedidoPop.pop();
+		},
 		agregarPopRegistroModificado(id,indice){
 			this.registroTemporal.pedidosPop.push(
 				{
@@ -412,6 +416,16 @@ export default {
 			 		$('#registroModal').modal('hide');
 			 	},500);
 			 	if(respuesta.status == 200){
+
+			 		let pedido = {
+						nombreRegistro: nombreRegistro,
+					 	costoEnvioEU: costoEnvioEU,
+					 	costoEnvioMX: costoEnvioMX,
+					 	pedidosPop : pedidosPop,
+		            }
+
+		            this.registrosGuardados.push(pedido);
+
 					this.nombreRegistro = "";
 					this.costoEnvioEU = 0;
 					this.costoEnvioMX = 0;

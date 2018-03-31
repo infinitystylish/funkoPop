@@ -1,7 +1,7 @@
 <template>
 	<div class="internal-content order">
 		
-		<div class="alert alert-success" role="alert"v-bind:class="{ active: datosGuardados }">>
+		<div class="alert alert-success" role="alert"v-bind:class="{ active: datosGuardados }">
 			Los datos han sido guardados
 		</div>
 		
@@ -170,6 +170,7 @@
 						    </li>
 						</ul>
 						<button class="btn btn-primary" @click="agregarPopPedido()">Agregar</button>
+						<button class="btn btn-primary btn-danger" @click="quitarPopPedido()">Quitar</button>
 						<div class="form-group advance">
 					      	<label for="">$$ de Adelanto:</label>
 					        <input type="number" v-model="adelanto" class="form-control">
@@ -265,6 +266,9 @@ export default {
 				}		
 			);
 
+		},
+		quitarPopPedido(){
+			this.popsPedidos.pop();
 		},
 		clearPedido(){
 			this.nombreCliente = "";
