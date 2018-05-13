@@ -5,8 +5,16 @@
 				<h1>Listado de Funko Pop</h1>
 			</div>
 			<div class="panel-body">
-				<div class="form-group">
-				    <input type="text" class="form-control" placeholder="Buscar Pop" v-model="buscar">
+				<div class="form-group search">
+				    <input type="text" ref="searchPop" class="form-control" placeholder="Buscar Pop" v-model="buscar">
+				    <button class="btn btn-success quit.filter" v-on:click="changeFilterFlag()">
+				    	 <div v-if="filtered_pops_flag == 0">
+						  Filtrar disponibles
+						</div>
+						<div v-else>
+						  Quitar Filtro
+						</div>
+				    </button>
 				</div>
 				<!-- 
 				<div class="abbreviations">
@@ -374,7 +382,8 @@
 				],
 				apartar : {},
 				validacionApartados: false,
-				filtered_pops: {}
+				filtered_pops: {},
+				filtered_pops_flag : 1
 		    }
 		},
 		methods:{
@@ -563,6 +572,29 @@
 			},
 			removeElement: function (index) {
 				this.apartados.splice(index, 1);
+			},
+			changeFilterFlag: function(){
+				var searchPop = "";
+				if(this.filtered_pops_flag == 0){
+					this.filtered_pops_flag = 1;
+
+				}
+				else if(this.filtered_pops_flag == 1){
+					this.filtered_pops_flag = 0;
+				}
+				this.filter();
+
+			},
+			filter: function(){
+				let filtered_pops = {};
+				this.filtered_pops = this.pops.filter((pop) => pop.nombre.toLowerCase().includes(this.buscar.toLowerCase()));
+				if(this.filtered_pops_flag == 0){
+					return this.filtered_pops;
+				}
+				else if(this.filtered_pops_flag == 1){
+					this.filtered_pops = this.filtered_pops.filter((pop) => pop.cantidadDisponible >= 1);
+					return this.filtered_pops;
+				}
 			}
 		},
 		computed:{
@@ -578,9 +610,7 @@
 		},
 		watch: {
 			'buscar': function(){
-				let filtered_pops = {};
-				this.filtered_pops = this.pops.filter((pop) => pop.nombre.toLowerCase().includes(this.buscar.toLowerCase()));
-				return this.filtered_pops;
+				this.filter();
 				//return this.pops.filter((pop) => pop.nombre.includes(this.buscar));
 			},
 			'nuevaVenta': function(val, oldVal){
@@ -665,6 +695,17 @@
 		button{
 			&:nth-child(2){
 				margin-left: 10px;
+			}
+		}
+	}
+
+	.form-group{
+		&.search{
+			position: relative;
+			button{
+				position: absolute;
+				right: 0;
+				top: 0;
 			}
 		}
 	}
