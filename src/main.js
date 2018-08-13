@@ -22,7 +22,8 @@ Vue.use(VueAxios, Axios)
 
 const enrutador = new VueRouter({
 	routes: rutas,
-	mode: 'history'
+	mode: 'history',
+	base: 'index'
 })
 
 new Vue({

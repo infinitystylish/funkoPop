@@ -44,13 +44,16 @@
 										Comision Imp
 									</th>
 									<th>
-										Costo Total Importacion
+										Costo T. Imp
 									</th>
 									<th>
 										Costo Envio MX
 									</th>
 									<th>
 										Costo Total Figura
+									</th>
+									<th>
+										Costo Total Figuras
 									</th>
 								</tr>
 							</thead>
@@ -94,6 +97,9 @@
 									<td>
 										{{ pedidosPop.costoTotalFigura.toFixed(2) }}
 									</td>
+									<td>
+										{{ pedidosPop.costoTotalFiguras.toFixed(2) }}
+									</td>
 								</tr>
 								<tr>
 									<td>
@@ -113,6 +119,11 @@
 									<td></td>
 									<td>
 										{{ registro.sumaCostoImportacion.toFixed(2) }}
+									</td>
+									<td></td>
+									<td></td>
+									<td>
+										{{ registro.sumaCostoTotalFiguras.toFixed(2) }}
 									</td>
 								</tr>
 							</tbody>
@@ -551,6 +562,9 @@ export default {
 			var costoEnvioMx = 0;
 			var costoTotalFigura = 0;
 
+			var costoTotalFiguras = 0;
+			var sumaCostoTotalFiguras = 0;
+
 			var sumaCostoFigura = 0;
 			var sumaCostoEnvioEU = 0;
 			var sumaCostoImportacion = 0;
@@ -567,6 +581,7 @@ export default {
 				sumaCostoFigura = 0;
 				sumaCostoEnvioEU = 0;
 				sumaCostoImportacion = 0;
+				sumaCostoTotalFiguras = 0;
 				totalPedido = parseFloat(this.registrosGuardados[val].costoFigurasDls) + parseFloat(this.registrosGuardados[val].costoEnvioEU);
 				costoDolar = parseFloat(this.registrosGuardados[val].cobroBanco) / totalPedido;
 				costoEnvioEU = parseFloat(this.registrosGuardados[val].costoEnvioEU);
@@ -585,6 +600,9 @@ export default {
 			    	costoTotalImportacion = parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad) * costoImportacion;
 			    	costoTotalFigura = costoFigura + costoEnvioXFiguraEU + costoImportacion + costoEnvioMx;
 
+			    	costoTotalFiguras = costoTotalFigura * parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
+			    	sumaCostoTotalFiguras = sumaCostoTotalFiguras + costoTotalFiguras;
+
 			    	sumaCostoFigura = sumaCostoFigura + costoTotal;
 			    	sumaCostoEnvioEU = sumaCostoEnvioEU + costoTotalEnvioXFiguraEU;
 			    	sumaCostoImportacion = sumaCostoImportacion + costoTotalImportacion;
@@ -598,6 +616,8 @@ export default {
 			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalImportacion = costoTotalImportacion;
 			    	this.registrosGuardados[val].pedidosPop[registro].costoEnvioMx = costoEnvioMx;
 			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalFigura = costoTotalFigura;
+
+			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalFiguras = costoTotalFiguras;
 		    	}
 		    	this.registrosGuardados[val].sumaCostoImportacion = sumaCostoImportacion;
 		    	this.registrosGuardados[val].sumaCostoEnvioEU = sumaCostoEnvioEU;
@@ -608,6 +628,8 @@ export default {
 		    	this.registrosGuardados[val].totalPedido = totalPedido;
 		    	this.registrosGuardados[val].costoDolar = costoDolar;
 		    	this.registrosGuardados[val].costoEnvioEUPesos = costoEnvioEUPesos;
+
+		    	this.registrosGuardados[val].sumaCostoTotalFiguras = sumaCostoTotalFiguras;
 			}
 
 			return this.registrosGuardados;
