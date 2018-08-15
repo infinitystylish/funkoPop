@@ -13,8 +13,7 @@
                 v-bind:class="{'active': isActive(index)}"
                 @click="suggestionClick(index)"
             >
-              <a href="#">{{ suggestion.license }}
-              </a>
+              <span>{{ suggestion.license }}</span>
             </li>
         </ul>
     </div>

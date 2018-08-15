@@ -271,4 +271,25 @@ export default {
     }
 }
 
+.dropdown-menu>.active>span, .dropdown-menu>.active>span:focus, .dropdown-menu>.active>span:hover{
+	color: #fff;
+    text-decoration: none;
+    background-color: #337ab7;
+    outline: 0;
+}
+
+.dropdown-menu{
+	li{
+		span{
+			 display: block;
+		    padding: 3px 10px;
+		    clear: both;
+		    font-weight: 400;
+		    line-height: 1.42857143;
+		    color: #333;
+		    white-space: nowrap;
+		}
+	}
+}
+
 </style>
