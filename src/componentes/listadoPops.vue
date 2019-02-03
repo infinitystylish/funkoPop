@@ -488,7 +488,10 @@
 						this.pops[indiceOriginal].apartados = apartados;
 						//this.gananciaEmbalaje = 0;
 					}
-				})
+				}).catch(function (error) {
+				    // handle error
+				    console.log(error);
+				});
 			},
 			registrarVentaApartado(indiceOriginal,id,indexApartado){
 				let vendidos = parseInt(this.pops[indiceOriginal].vendidos) + parseInt(this.pops[indiceOriginal].apartados[indexApartado].cantidadApartada);

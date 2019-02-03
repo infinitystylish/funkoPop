@@ -247,6 +247,9 @@ export default {
 							this.pop.costo = 0;
 							this.pop.cantidadComprada = 0;
 						}
+					}).catch(function (error) {
+					    // handle error
+					    console.log(error);
 					});
 				}
 				else{
