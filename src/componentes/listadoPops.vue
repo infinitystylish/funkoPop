@@ -587,7 +587,10 @@
 			},
 			filter: function(){
 				let filtered_pops = {};
-				this.filtered_pops = this.pops.filter((pop) => pop.nombre.toLowerCase().includes(this.buscar.toLowerCase()));
+				this.filtered_pops = this.pops.filter(
+					(pop) => 
+					pop.nombre.toLowerCase().includes(this.buscar.toLowerCase()) || pop.licencia.toLowerCase().includes(this.buscar.toLowerCase())
+				);
 				if(this.filtered_pops_flag == 0){
 					return this.filtered_pops;
 				}
