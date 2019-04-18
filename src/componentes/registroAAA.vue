@@ -11,7 +11,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">
-					<template v-for="(registro, indice) in registrosPedidosCompleto">
+					<template v-for="(registro, indice) in registrosPedidosCompleto.slice().reverse()">
 						<h1>{{registro.nombreRegistro}}</h1>
 						<table class="table table-hover table-bordered table-funkopop controlAAA">
 							<thead>
@@ -395,7 +395,8 @@ export default {
 			registrosGuardados : [],
 			idPedido : "",
 			indice : 0,
-			registroTemporal : []
+			registroTemporal : [],
+			totalRegistrosPedidosCompleto: 0
 			
 	    }
 	},
@@ -507,8 +508,9 @@ export default {
 
 		},
 		guardarTemporalPedido(id,indice){
-			this.registroTemporal = this.registrosGuardados[indice];
-			this.registroTemporal.indice = indice;
+			let totalRegistrosPedidosCompleto = (this.totalRegistrosPedidosCompleto - indice) - 1;
+			this.registroTemporal = this.registrosGuardados[totalRegistrosPedidosCompleto];
+			this.registroTemporal.indice = totalRegistrosPedidosCompleto;
 		},
 		getDataRegister(){
 
@@ -631,7 +633,7 @@ export default {
 
 		    	this.registrosGuardados[val].sumaCostoTotalFiguras = sumaCostoTotalFiguras;
 			}
-
+			this.totalRegistrosPedidosCompleto = this.registrosGuardados.length;
 			return this.registrosGuardados;
 		}
 	}

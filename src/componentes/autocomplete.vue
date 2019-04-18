@@ -47,7 +47,7 @@ export default {
     openSuggestion () {
       return this.matches.length !== 0 &&
              this.open === true
-    }
+    },
   },
   methods: {
     updateValue (value) {

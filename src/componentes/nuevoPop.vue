@@ -105,7 +105,7 @@ export default {
 		        numeroPop: '',
 		        costo: '',
 		        precioPublico: 280,
-		        cantidadComprada: '',
+		        cantidadComprada: 1,
 			},
 			estado: "",
 		    suggestions: [
@@ -243,9 +243,9 @@ export default {
 							this.pop.licencia = '';
 							this.pop.nombre = '';
 							this.pop.numeroPop = 0;
-							this.pop.precioPublico = 0;
+							this.pop.precioPublico = 280;
 							this.pop.costo = 0;
-							this.pop.cantidadComprada = 0;
+							this.pop.cantidadComprada = 1;
 						}
 					}).catch(function (error) {
 					    // handle error
