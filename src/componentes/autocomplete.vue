@@ -15,6 +15,7 @@
             >
               <span>{{ suggestion.license }}</span>
             </li>
+            <li @click="closeSuggestion()"><span>Quitar sugerencias</span></li>
         </ul>
     </div>
 </template>
@@ -47,9 +48,13 @@ export default {
     openSuggestion () {
       return this.matches.length !== 0 &&
              this.open === true
-    },
+    }
   },
   methods: {
+    closeSuggestion(){
+      this.open = false;
+      this.openSuggestion;
+    },
     updateValue (value) {
       if (this.open === false) {
         this.open = true

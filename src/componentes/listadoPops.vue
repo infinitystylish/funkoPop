@@ -477,7 +477,8 @@
 					cantidadDisponible: comprados,
 					apartados: apartados,
 					descuentos: descuentos,
-					gananciaEmbalaje: gananciaEmbalaje
+					gananciaEmbalaje: gananciaEmbalaje,
+					precioPublico: precioPublico
 				}).then(respuesta => { 
 					setTimeout(function(){
 						$('#myModal').modal('hide');
