@@ -23,7 +23,7 @@
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('licencia') }">
 								<label for="licencia">Licencia:</label>
 								<!--<input type="text" class="form-control" id="licencia" name="licencia" v-validate="'required'"  v-model="pop.licencia">-->
-								<autocomplete :suggestions="suggestions" v-model="pop.licencia"></autocomplete>
+								<autocomplete :suggestions="allLicense" v-model="pop.licencia"></autocomplete>
 
 							</div>
 							
@@ -108,103 +108,57 @@ export default {
 		        cantidadComprada: 1,
 			},
 			estado: "",
-		    suggestions: [
-		    	{ license: 'AHHHH! Monsters'},
-		    	{ license: 'Amy Winehouse'},
-		    	{ license: 'Anabelle'},
-		    	{ license: 'American Horror History'},
-		    	{ license: 'Alien Covenant'},
-		    	{ license: 'Adventure Time'},
-		    	{ license: 'Avengers: Infinity War'},
-
-		    	{ license: 'Back To The Future'},
-		    	{ license: 'Batman:TheAnimatedSeries'},
-		    	{ license: 'Batman TV 1966'},
-		    	{ license: 'Bride of chuky'},
-		    	{ license: 'Batman: The Dark Knight'},
-
-		    	{ license: 'Crash Bandicoot'},
-		    	{ license: 'Cthulhu'},
-		    	{ license: 'Cuphead'},
-		    	{ license: 'CatDog'},
-		    	{ license: 'Carrie'},
-
-		    	{ license: 'Deadpool'},
-		    	{ license: 'Dragon Ball Super'},
-		        { license: 'Dragon Ball'},
-		        { license: 'Dragon Ball Z'},
-		        { license: 'Disney'},
-		        { license: 'Death Note'},
-		        { license: 'Daredevil'},
-
-		        { license: 'Gears Of War'},
-		        { license: 'Guns And Roses'},
-		        { license: 'Guardians of the galaxy Vol.2'},
-		        { license: 'Game Of Thrones'},
-
-		        { license: 'Hercules'},
-		        { license: 'Hey Arnold'},
-		        { license: 'Harry Potter'},
-		        { license: 'Halo'},
-
-		        { license: 'It'},
-
-		        { license: 'John Wick 2'},
-		        { license: 'Justice League'},
-		        { license: 'Justin Bieber'},
-		        { license: 'Jurassic Park'},
-
-		        { license: 'Kurt Cobain'},
-
-		        { license: 'Motorhead'},
-		        { license: 'Mortal Kombat'},
-		        { license: 'Mad Max'},
-		        { license: 'Marvel Captain America: Civil War'},
-		        { license: 'Marvel'},
-		        { license: 'Metallica'},
-		        { license: 'Marvel Contest Of Champions'},
-		        { license: 'Max Max (Fury Road)'},
-
-		        { license: 'Naruto Shippuden'},
-
-		        { license: 'Looney Tunes'},
-
-		        { license: 'One Punch Man'},
-		        { license: 'Overwatch'},
-
-		        { license: 'Pets'},
-		        { license: 'Pirates of the Caribbean: Dead Men Tell No Tales'},
-
-		        { license: 'Rugrats'},
-		        { license: 'Resident Evil'},
-		        { license: 'Rick y morty'},
-		        { license: 'Ready Player One'},
-		        
-		        { license: 'Suicide Squad'},
-		        { license: 'South Park'},
-		        { license: 'Star Wars'},
-		        { license: 'Sailor Moon'},
-		        { license: 'Sherlock'},
-		        { license: 'Stranger Things'},
-		        { license: 'Sailor Moon'},
-		        { license: 'Spiderman: Homecoming'},
-		        { license: 'Sonic the Hedgehog'},
-		        
-		        { license: 'The Walking Dead'},
-		        { license: 'The Lord of the Rings'},
-		        { license: 'The shining'},
-		        { license: 'The Silence of the Lambs'},
-		        { license: 'Thor: Ragnarok'},
-		        
-		          
-		    ]
+			allLicense : [],
 		}
+	},
+	created(){
+		this.getLicenses();
 	},
   	methods:{
 		volver(){
 			this.$router.push({ name: 'homePops' });
 		},
+		getLicenses(){
+			this.axios.get('https://funko-pop.firebaseio.com/licenciasPop.json')
+	        .then(respuesta => { 
+	            return respuesta.data;
+	        })
+	        .then(respuestaJson => {
+				for (let license in respuestaJson){
+		            let licencia = {
+						license: respuestaJson[license].licencia,
+		            }
+		            this.allLicense.push(licencia);
+	          	}
+
+	        }).catch(function (error) {
+			    // handle error
+			    console.log(error);
+			});;
+		},
+		compareLicense(newLicense){
+			var licenseArray = Object.values(this.allLicense)
+			console.log(licenseArray);
+			var isRegistered = false;
+	        for (let licence in licenseArray) {
+	        	var lic = licenseArray[licence].license.toUpperCase();
+	        	var newLicenseUppercase = newLicense.toUpperCase();
+	        	if( lic === newLicenseUppercase){
+	        		isRegistered = true;
+	        	}
+	        }
+	        if(!isRegistered){
+	        	this.axios.post('https://funko-pop.firebaseio.com/licenciasPop.json',{
+				 	licencia: newLicense,
+				 }).then(respuesta => {
+				 	if(respuesta.status == 200){
+
+				 	}
+				});
+	        }
+		},
 		agregarPop(){
+			this.compareLicense(this.pop.licencia.trim());
 			this.$validator.validateAll().then((result) => {
 				
 				if(result){
