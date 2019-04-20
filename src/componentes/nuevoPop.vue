@@ -19,7 +19,11 @@
 			<div class="panel-body">
 				<form v-on:submit.prevent="agregarPop">
 					<div class="row">
+						<div class="button-reseller">
+							<button type="button" v-on:click="setEE()" class="btn btn-primary btn-warning">EE</button>
+						</div>
 						<div class="col-sm-6">
+							
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('licencia') }">
 								<label for="licencia">Licencia:</label>
 								<!--<input type="text" class="form-control" id="licencia" name="licencia" v-validate="'required'"  v-model="pop.licencia">-->
@@ -115,6 +119,9 @@ export default {
 		this.getLicenses();
 	},
   	methods:{
+  		setEE(){
+  			this.pop.cantidadComprada = 6;
+  		},
 		volver(){
 			this.$router.push({ name: 'homePops' });
 		},
@@ -138,7 +145,7 @@ export default {
 		},
 		compareLicense(newLicense){
 			var licenseArray = Object.values(this.allLicense)
-			console.log(licenseArray);
+			//console.log(licenseArray);
 			var isRegistered = false;
 	        for (let licence in licenseArray) {
 	        	var lic = licenseArray[licence].license.toUpperCase();
@@ -198,7 +205,7 @@ export default {
 							this.pop.nombre = '';
 							this.pop.numeroPop = 0;
 							this.pop.precioPublico = 280;
-							this.pop.costo = 0;
+							this.pop.costo = costo;
 							this.pop.cantidadComprada = 1;
 						}
 					}).catch(function (error) {
@@ -218,6 +225,11 @@ export default {
 </script>
 
 <style lang="scss">
+
+.button-reseller{
+	margin-bottom: 10px;
+	margin-left: 15px;
+}
 
 .help {
     display: block;
