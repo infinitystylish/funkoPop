@@ -53,6 +53,7 @@
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('nombre') }">
 								<label for="nombre">Nombre:</label>
 								<input type="text" class="form-control" id="nombre" name="nombre" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('nombre') }" v-model="pop.nombre">
+								<!-- <autocompleteNames :suggestions="allNamePops" v-model="pop.nombre"></autocompleteNames> -->
 								<span v-show="errors.has('nombre')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
 								<span v-show="errors.has('nombre')" class="help is-danger">{{ errors.first('nombre') }}</span>
 							</div>
@@ -90,10 +91,13 @@
 <script>
 
 import Autocomplete from './autocomplete.vue'
+// import AutocompleteNames from './autocompleteNames.vue'
 
 export default {
+	props: ['pops'],
 	components: {
-		Autocomplete
+		Autocomplete,
+		// AutocompleteNames
 	},
 	data (){
 		return{
@@ -113,12 +117,19 @@ export default {
 			},
 			estado: "",
 			allLicense : [],
+			allNamePops: [] 
 		}
 	},
 	created(){
 		this.getLicenses();
+		// this.filterNamePops();
 	},
   	methods:{
+        //filterNamePops(){			
+		// 	this.allNamePops = this.pops.map(function(pop){
+		// 		return pop.nombre;
+		// 	});
+		// },
   		setEE(){
   			this.pop.cantidadComprada = 6;
   		},
@@ -220,7 +231,7 @@ export default {
 				this.estado = false;
 			});
 		},
-	}	
+	}
 }
 </script>
 
