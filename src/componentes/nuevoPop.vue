@@ -52,8 +52,8 @@
 						<div class="col-sm-6">
 							<div class="form-group has-feedback" :class="{'input': true, 'has-error': errors.has('nombre') }">
 								<label for="nombre">Nombre:</label>
-								<input type="text" class="form-control" id="nombre" name="nombre" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('nombre') }" v-model="pop.nombre">
-								<!-- <autocompleteNames :suggestions="allNamePops" v-model="pop.nombre"></autocompleteNames> -->
+								<!-- <input type="text" class="form-control" id="nombre" name="nombre" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('nombre') }" v-model="pop.nombre"> -->
+								<autocompleteNames :suggestions="allNamePops" v-model="pop.nombre"></autocompleteNames>
 								<span v-show="errors.has('nombre')" class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
 								<span v-show="errors.has('nombre')" class="help is-danger">{{ errors.first('nombre') }}</span>
 							</div>
@@ -91,13 +91,13 @@
 <script>
 
 import Autocomplete from './autocomplete.vue'
-// import AutocompleteNames from './autocompleteNames.vue'
+import AutocompleteNames from './autocompleteNames.vue'
 
 export default {
 	props: ['pops'],
 	components: {
 		Autocomplete,
-		// AutocompleteNames
+		AutocompleteNames
 	},
 	data (){
 		return{
@@ -117,19 +117,28 @@ export default {
 			},
 			estado: "",
 			allLicense : [],
-			allNamePops: [] 
+			allNamePops: []
 		}
 	},
 	created(){
-		this.getLicenses();
-		// this.filterNamePops();
+		this.getLicenses();	
+		//this.filterNamePops();	
+	},
+	watch: {
+		pops: function () {
+			console.log("cargue pops");
+	    	this.filterNamePops();
+	    }
 	},
   	methods:{
-        //filterNamePops(){			
-		// 	this.allNamePops = this.pops.map(function(pop){
-		// 		return pop.nombre;
-		// 	});
-		// },
+  		filterNamePops(){		
+			this.allNamePops = this.pops.map(function(pop){
+				return {nombre: pop.nombre, numeroPop: pop.numeroPop };
+			});
+			
+			return this.allNamePops;
+			
+		},
   		setEE(){
   			this.pop.cantidadComprada = 6;
   		},

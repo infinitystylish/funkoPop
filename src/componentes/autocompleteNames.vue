@@ -13,7 +13,7 @@
                 v-bind:class="{'active': isActive(index)}"
                 @click="suggestionClick(index)"
             >
-              <span>{{ suggestion.nombre }}</span>
+              <span>{{ suggestion.nombre }} / {{ suggestion.numeroPop }}</span>
             </li>
             <li @click="closeSuggestion()"><span>Quitar sugerencias</span></li>
         </ul>
@@ -41,7 +41,8 @@ export default {
   computed: {
     // Filtering the suggestion based on the input
     matches () {
-      return this.suggestions.filter((obj) => {
+      let ordered_suggestions = this.suggestions.sort((a,b) => (a.numeroPop > b.numeroPop) ? 1 : ((b.numeroPop > a.numeroPop) ? -1 : 0)); 
+      return ordered_suggestions.filter((obj) => {
         return obj.nombre.toLowerCase().indexOf(this.value.toLowerCase()) >= 0
       })
     },

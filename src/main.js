@@ -5,17 +5,18 @@ import Axios from 'axios'
 import VueAxios from 'vue-axios'
 import { rutas } from './rutas.js'
 import VeeValidate, { Validator } from 'vee-validate';
-import messages from 'vee-validate/dist/locale/es';
+//import messages from 'vee-validate/dist/locale/es';
 import Lodash from 'lodash';
 
-Validator.addLocale(messages);
+//Validator.addLocale(messages);
 
 const config = {
    locale: 'es',
    strict: true
 };
 
-Vue.use(VeeValidate, config);
+//Vue.use(VeeValidate, config);
+Vue.use(VeeValidate);
 Vue.use(VueRouter);
 Vue.use(VueAxios, Axios)
 
