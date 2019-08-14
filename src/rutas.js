@@ -6,6 +6,7 @@ import pedidosPop from './componentes/pedidosPop.vue'
 import pedidosAAA from './componentes/pedidosAAA.vue'
 import registroAAA from './componentes/registroAAA.vue'
 import registroEE from './componentes/registroEE.vue'
+import resurtido from './componentes/resurtido.vue'
 
 export const rutas = [
 	{ 
@@ -31,5 +32,8 @@ export const rutas = [
 	},
 	{
 		path: '/FunkoPop/registroEE', component:  registroEE, name: 'registroEE'
+	},
+	{
+		path: '/FunkoPop/resurtido', component:  resurtido, name: 'resurtido'
 	},
 ]

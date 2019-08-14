@@ -72,6 +72,9 @@
 							<li>
 								<router-link tag="a" to="/FunkoPop/registroEE">Registro EE</router-link>
 							</li>
+							<li>
+								<router-link tag="a" to="/FunkoPop/resurtido">Resurtido</router-link>
+							</li>
 							<!-- <li>
 								<router-link tag="a" to="/FunkoPop/avisoPop">Listado de Avisos</router-link>
 							</li>

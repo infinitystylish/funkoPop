@@ -162,7 +162,8 @@
 									{{ registro.comprobacionCostoImportacion.toFixed(2) }}
 								</td>
 								<td>
-									{{ registro.costoEnvioMX.toFixed(2) }}
+									<!-- error -->
+									{{ registro.costoEnvioMX }}
 								</td>
 								<td>
 									{{ registro.sumaTotal.toFixed(2) }}
@@ -377,6 +378,7 @@ export default {
 		},
 		guardarRegistroModificado(id,indice){
 
+			console.log(this.registroTemporal.costoEnvioMX);
 			var nombreRegistro = this.registroTemporal.nombreRegistro.trim();
 			var costoEnvioEU = parseFloat(this.registroTemporal.costoEnvioEU);
 			var costoEnvioMX = parseFloat(this.registroTemporal.costoEnvioMX);
@@ -400,7 +402,6 @@ export default {
 			})
 		},
 		agregarRegistroPedido(){
-
 			var nombreRegistro = this.nombreRegistro.trim();
 			var costoEnvioEU = parseFloat(this.costoEnvioEU);
 			var costoEnvioMX = parseFloat(this.costoEnvioMX);
