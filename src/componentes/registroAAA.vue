@@ -105,7 +105,9 @@
 									<td>
 										<button data-toggle="modal" data-target="#agregarRegistroModal" class="btn btn-primary btn-small btn-block" v-on:click="guardarTemporalPedido(registro.id,indice)">Agregar Pop / Modificar Pedido</button>
 									</td>
-									<td></td>
+									<td>
+										{{ registro.cantidadTotal }}
+									</td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -621,6 +623,8 @@ export default {
 
 			    	this.registrosGuardados[val].pedidosPop[registro].costoTotalFiguras = costoTotalFiguras;
 		    	}
+
+		    	console.log(parseInt(this.registrosGuardados[val].cantidadTotal));
 		    	this.registrosGuardados[val].sumaCostoImportacion = sumaCostoImportacion;
 		    	this.registrosGuardados[val].sumaCostoEnvioEU = sumaCostoEnvioEU;
 		    	this.registrosGuardados[val].sumaCostoFigura = sumaCostoFigura;

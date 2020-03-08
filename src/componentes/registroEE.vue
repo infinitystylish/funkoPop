@@ -201,6 +201,18 @@
 					      	<label for="">Costo Envio MX [Mnx]:</label>
 					        <input type="text" v-model="costoEnvioMX" class="form-control">
 					    </div>
+					    <div class="form-group">
+					      	<label for="">Costo de importación:</label>
+					        <input type="text" v-model="costoImportacionR" class="form-control">
+					    </div>
+					    <div class="form-group">
+					      	<label for="">Total: Figuras + Envio [Dls]:</label>
+					        <input type="text" v-model="totalFactura" class="form-control">
+					    </div>
+					    <div class="form-group">
+					      	<label for="">Costo Envio [Dls]:</label>
+					        <input type="text" v-model="costoEnvioEUDls" class="form-control">
+					    </div>
 					    <ul class="list-group">
 						    <li class="list-group-item" v-for="(pedidoPop, index) in nuevoPedidoPop">
 								<div class="figure-division">
@@ -264,6 +276,18 @@
 					    <div class="form-group">
 					      	<label for="">Costo Envio MX [Mnx]:</label>
 					        <input type="text" v-model="registroTemporal.costoEnvioMX" class="form-control">
+					    </div>
+					      <div class="form-group">
+					      	<label for="">Costo de importación:</label>
+					        <input type="text" v-model="registroTemporal.costoImportacionR" class="form-control">
+					    </div>
+					    <div class="form-group">
+					      	<label for="">Total: Figuras + Envio [Dls]:</label>
+					        <input type="text" v-model="registroTemporal.totalFactura" class="form-control">
+					    </div>
+					    <div class="form-group">
+					      	<label for="">Costo Envio [Dls]:</label>
+					        <input type="text" v-model="registroTemporal.costoEnvioEUDls" class="form-control">
 					    </div>
 					    <ul class="list-group">
 						    <li class="list-group-item" v-for="(pedidoPop, index) in registroTemporal.pedidosPop">
@@ -329,20 +353,82 @@ export default {
 					],
 					costoEnvioEU: '',
 					costoEnvioMX: '',
-					nombreRegistro: ''
+					nombreRegistro: '',
+					costoImportacion: '',
+					totalFactura: '',
+					costoEnvioEUDls: ''
 				}	
 			],
-			nombreRegistro: "",
-			costoEnvioEU: 0,
-			costoEnvioMX: 0,
+			// nombreRegistro: "",
+			// costoEnvioEU: 0,
+			// costoEnvioMX: 0,
+			// costoImportacion: 0,
+			// totalFactura: 0,
+			// costoEnvioEUDls: 0,
+			// nuevoPedidoPop:[
+			// 	{
+			// 		cantidad: 6,
+			// 		costoDls: 6.6,
+			// 		nombrePop: "",
+			// 		cobroBanco: 0,
+			// 	}
+			// ],
+
+
+
+			nombreRegistro: "Registro #42",
+			costoEnvioEU: 342.44,
+			costoEnvioMX: 95,
+			costoImportacionR: 0,
+			totalFactura: 0,
+			costoEnvioEUDls: 0,
 			nuevoPedidoPop:[
 				{
 					cantidad: 6,
 					costoDls: 6.6,
-					nombrePop: "",
-					cobroBanco: 0,
+					nombrePop: "Naruto with Rasengan Pop! Vinyl Figure",
+					cobroBanco: 750,
+				},
+				{
+					cantidad: 6,
+					costoDls: 6.6,
+					nombrePop: "Spider-Man: Far From Home Hero Suit Pop! Vinyl Figure",
+					cobroBanco: 750,
+				},
+				{
+					cantidad: 6,
+					costoDls: 9.9,
+					nombrePop: "Star Wars Darth Vader Electronic Pop! Vinyl Figure",
+					cobroBanco: 1132.11,
+				},
+				{
+					cantidad: 6,
+					costoDls: 6.6,
+					nombrePop: "Justice League Movie Superman Pop! Vinyl Figure",
+					cobroBanco: 754.54,
+				},
+				{
+					cantidad: 6,
+					costoDls: 6.6,
+					nombrePop: "Pokemon Charmander Pop! Vinyl Figure",
+					cobroBanco: 751.59,
+				},
+				{
+					cantidad: 6,
+					costoDls: 6.6,
+					nombrePop: "Coca-Cola Polar Bear Pop! Vinyl Figure",
+					cobroBanco: 751.59,
+				},
+				{
+					cantidad: 6,
+					costoDls: 6.6,
+					nombrePop: "Avengers: Endgame Captain America Broken Shield Pop! Figure",
+					cobroBanco: 751.59,
 				}
 			],
+
+
+
 			registrosGuardados : [],
 			idPedido : "",
 			indice : 0,
@@ -384,13 +470,26 @@ export default {
 			var costoEnvioMX = parseFloat(this.registroTemporal.costoEnvioMX);
 			var pedidosPop = this.registroTemporal.pedidosPop;
 
+			/**Agregado**/
+			var costoImportacionR =	parseFloat(this.registroTemporal.costoImportacionR);
+			var totalFactura = parseFloat(this.registroTemporal.totalFactura);
+			var	costoEnvioEUDls = parseFloat(this.registroTemporal.costoEnvioEUDls);
+
+
 			var id = id;
 
 			this.axios.patch('https://funko-pop.firebaseio.com/registrosEE/' + id + '.json', {
 				nombreRegistro: nombreRegistro,
 				costoEnvioEU: costoEnvioEU,
 				costoEnvioMX: costoEnvioMX,
-				pedidosPop: pedidosPop
+
+				pedidosPop: pedidosPop,
+
+				costoImportacionR : costoImportacionR,
+				totalFactura : totalFactura,
+				costoEnvioEUDls : costoEnvioEUDls
+
+
 			}).then(respuesta => { 
 				setTimeout(function(){
 					$('#agregarRegistroModal').modal('hide');
@@ -407,11 +506,21 @@ export default {
 			var costoEnvioMX = parseFloat(this.costoEnvioMX);
 			var pedidosPop = this.nuevoPedidoPop;
 
+			var costoImportacionR =	parseFloat(this.costoImportacionR);
+			var totalFactura = parseFloat(this.totalFactura);
+			var	costoEnvioEUDls = parseFloat(this.costoEnvioEUDls);
+
+
 			this.axios.post('https://funko-pop.firebaseio.com/registrosEE.json',{
 			 	nombreRegistro: nombreRegistro,
 			 	costoEnvioEU: costoEnvioEU,
 			 	costoEnvioMX: costoEnvioMX,
 			 	pedidosPop : pedidosPop,
+
+			 	costoImportacionR : costoImportacionR,
+				totalFactura : totalFactura,
+				costoEnvioEUDls : costoEnvioEUDls
+
 			 }).then(respuesta => {
 			 	setTimeout(function(){
 			 		$('#registroModal').modal('hide');
@@ -423,6 +532,10 @@ export default {
 					 	costoEnvioEU: costoEnvioEU,
 					 	costoEnvioMX: costoEnvioMX,
 					 	pedidosPop : pedidosPop,
+
+					 	costoImportacionR : costoImportacionR,
+						totalFactura : totalFactura,
+						costoEnvioEUDls : costoEnvioEUDls
 		            }
 
 		            this.registrosGuardados.push(pedido);
@@ -430,6 +543,11 @@ export default {
 					this.nombreRegistro = "";
 					this.costoEnvioEU = 0;
 					this.costoEnvioMX = 0;
+
+					this.costoImportacionR = 0,
+					this.totalFactura = 0,
+					this.costoEnvioEUDls = 0,
+
 					this.nuevoPedidoPop = [
 						{
 							cantidad: 6,
@@ -462,7 +580,11 @@ export default {
 						nombreRegistro: respuestaJson[id].nombreRegistro,
 						costoEnvioEU: respuestaJson[id].costoEnvioEU,
 						costoEnvioMX: respuestaJson[id].costoEnvioMX,
-						pedidosPop: respuestaJson[id].pedidosPop
+						pedidosPop: respuestaJson[id].pedidosPop,
+
+						costoImportacionR:	respuestaJson[id].costoImportacionR,
+						totalFactura: respuestaJson[id].totalFactura,
+						costoEnvioEUDls: respuestaJson[id].costoEnvioEUDls
 		            }
 		            this.registrosGuardados.push(registro);
 	          	}
@@ -510,6 +632,10 @@ export default {
 
 			var noPedidos = 0;
 
+			var costoImportacionRFiguraParcial = 0;
+			var costoImportacionREnvioParcial = 0;
+			var costoImportacionREnvioIndividual = 0;
+
 			for(let val in this.registrosGuardados){
 				cantidadTotal = 0;
 				for(let registro in this.registrosGuardados[val].pedidosPop){
@@ -532,7 +658,22 @@ export default {
 		    		costoDolar = parseFloat(this.registrosGuardados[val].pedidosPop[registro].cobroBanco) / costoPedidoDls;
 		    		costoFigura = parseFloat(this.registrosGuardados[val].pedidosPop[registro].costoDls) * costoDolar;
 		    		costoTotal = costoFigura *  parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
-		    		costoImportacion = costoFigura * 0.15;
+
+
+		    		console.log(this.registrosGuardados[val].costoImportacionR);
+		    		if(this.registrosGuardados[val].costoImportacionR === undefined || this.registrosGuardados[val].totalFactura === undefined || this.registrosGuardados[val].costoEnvioEUDls === undefined ){
+		    			costoImportacion = costoFigura * 0.15;
+		    		}
+		    		else if(this.registrosGuardados[val].costoImportacionR === 0 || this.registrosGuardados[val].totalFactura === 0 || this.registrosGuardados[val].costoEnvioEUDls === 0 ){
+		    			costoImportacion = costoFigura * 0.15;
+		    		}
+		    		else{
+		    			costoImportacionRFiguraParcial = ( parseFloat(this.registrosGuardados[val].pedidosPop[registro].costoDls) * parseFloat(this.registrosGuardados[val].costoImportacionR) ) / parseFloat(this.registrosGuardados[val].totalFactura);
+		    			costoImportacionREnvioParcial =  ( parseFloat(this.registrosGuardados[val].costoEnvioEUDls) * parseFloat(this.registrosGuardados[val].costoImportacionR) ) / parseFloat(this.registrosGuardados[val].totalFactura);
+						costoImportacionREnvioIndividual = costoImportacionREnvioParcial / this.registrosGuardados[val].cantidadTotal;
+						costoImportacion = costoImportacionREnvioIndividual + costoImportacionRFiguraParcial;
+		    		}
+
 		    		costoEnvioMx = parseFloat(this.registrosGuardados[val].costoEnvioMX) / parseInt(this.registrosGuardados[val].cantidadTotal);
 		    		costoEnvioXFiguraEU = parseFloat(this.registrosGuardados[val].costoEnvioEU) / parseInt(this.registrosGuardados[val].cantidadTotal);
 		    		costoTotalEnvioXFiguraEU = costoEnvioXFiguraEU * parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
