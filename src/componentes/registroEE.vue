@@ -359,73 +359,73 @@ export default {
 					costoEnvioEUDls: ''
 				}	
 			],
-			// nombreRegistro: "",
-			// costoEnvioEU: 0,
-			// costoEnvioMX: 0,
-			// costoImportacion: 0,
-			// totalFactura: 0,
-			// costoEnvioEUDls: 0,
-			// nuevoPedidoPop:[
-			// 	{
-			// 		cantidad: 6,
-			// 		costoDls: 6.6,
-			// 		nombrePop: "",
-			// 		cobroBanco: 0,
-			// 	}
-			// ],
-
-
-
-			nombreRegistro: "Registro #42",
-			costoEnvioEU: 342.44,
-			costoEnvioMX: 95,
-			costoImportacionR: 0,
+			nombreRegistro: "",
+			costoEnvioEU: 0,
+			costoEnvioMX: 0,
+			costoImportacion: 0,
 			totalFactura: 0,
 			costoEnvioEUDls: 0,
 			nuevoPedidoPop:[
 				{
 					cantidad: 6,
 					costoDls: 6.6,
-					nombrePop: "Naruto with Rasengan Pop! Vinyl Figure",
-					cobroBanco: 750,
-				},
-				{
-					cantidad: 6,
-					costoDls: 6.6,
-					nombrePop: "Spider-Man: Far From Home Hero Suit Pop! Vinyl Figure",
-					cobroBanco: 750,
-				},
-				{
-					cantidad: 6,
-					costoDls: 9.9,
-					nombrePop: "Star Wars Darth Vader Electronic Pop! Vinyl Figure",
-					cobroBanco: 1132.11,
-				},
-				{
-					cantidad: 6,
-					costoDls: 6.6,
-					nombrePop: "Justice League Movie Superman Pop! Vinyl Figure",
-					cobroBanco: 754.54,
-				},
-				{
-					cantidad: 6,
-					costoDls: 6.6,
-					nombrePop: "Pokemon Charmander Pop! Vinyl Figure",
-					cobroBanco: 751.59,
-				},
-				{
-					cantidad: 6,
-					costoDls: 6.6,
-					nombrePop: "Coca-Cola Polar Bear Pop! Vinyl Figure",
-					cobroBanco: 751.59,
-				},
-				{
-					cantidad: 6,
-					costoDls: 6.6,
-					nombrePop: "Avengers: Endgame Captain America Broken Shield Pop! Figure",
-					cobroBanco: 751.59,
+					nombrePop: "",
+					cobroBanco: 0,
 				}
 			],
+
+
+
+			// nombreRegistro: "Registro #42",
+			// costoEnvioEU: 342.44,
+			// costoEnvioMX: 95,
+			// costoImportacionR: 0,
+			// totalFactura: 0,
+			// costoEnvioEUDls: 0,
+			// nuevoPedidoPop:[
+			// 	{
+			// 		cantidad: 6,
+			// 		costoDls: 6.6,
+			// 		nombrePop: "Naruto with Rasengan Pop! Vinyl Figure",
+			// 		cobroBanco: 750,
+			// 	},
+			// 	{
+			// 		cantidad: 6,
+			// 		costoDls: 6.6,
+			// 		nombrePop: "Spider-Man: Far From Home Hero Suit Pop! Vinyl Figure",
+			// 		cobroBanco: 750,
+			// 	},
+			// 	{
+			// 		cantidad: 6,
+			// 		costoDls: 9.9,
+			// 		nombrePop: "Star Wars Darth Vader Electronic Pop! Vinyl Figure",
+			// 		cobroBanco: 1132.11,
+			// 	},
+			// 	{
+			// 		cantidad: 6,
+			// 		costoDls: 6.6,
+			// 		nombrePop: "Justice League Movie Superman Pop! Vinyl Figure",
+			// 		cobroBanco: 754.54,
+			// 	},
+			// 	{
+			// 		cantidad: 6,
+			// 		costoDls: 6.6,
+			// 		nombrePop: "Pokemon Charmander Pop! Vinyl Figure",
+			// 		cobroBanco: 751.59,
+			// 	},
+			// 	{
+			// 		cantidad: 6,
+			// 		costoDls: 6.6,
+			// 		nombrePop: "Coca-Cola Polar Bear Pop! Vinyl Figure",
+			// 		cobroBanco: 751.59,
+			// 	},
+			// 	{
+			// 		cantidad: 6,
+			// 		costoDls: 6.6,
+			// 		nombrePop: "Avengers: Endgame Captain America Broken Shield Pop! Figure",
+			// 		cobroBanco: 751.59,
+			// 	}
+			// ],
 
 
 
@@ -660,7 +660,7 @@ export default {
 		    		costoTotal = costoFigura *  parseFloat(this.registrosGuardados[val].pedidosPop[registro].cantidad);
 
 
-		    		console.log(this.registrosGuardados[val].costoImportacionR);
+		    		//console.log(this.registrosGuardados[val].costoImportacionR);
 		    		if(this.registrosGuardados[val].costoImportacionR === undefined || this.registrosGuardados[val].totalFactura === undefined || this.registrosGuardados[val].costoEnvioEUDls === undefined ){
 		    			costoImportacion = costoFigura * 0.15;
 		    		}
@@ -703,7 +703,15 @@ export default {
 		    	this.registrosGuardados[val].sumaCostoImportacion = sumaCostoImportacion;
 		    	this.registrosGuardados[val].sumaCostoEnvioEU = sumaCostoEnvioEU;
 		    	this.registrosGuardados[val].sumaCostoFigura = sumaCostoFigura;
-		    	this.registrosGuardados[val].comprobacionCostoImportacion = sumaCostoFigura * 0.15;
+				if(this.registrosGuardados[val].costoImportacionR === undefined || this.registrosGuardados[val].totalFactura === undefined || this.registrosGuardados[val].costoEnvioEUDls === undefined ){
+		    		this.registrosGuardados[val].comprobacionCostoImportacion = sumaCostoFigura * 0.15;
+				}
+		    	else if(this.registrosGuardados[val].costoImportacionR === 0 || this.registrosGuardados[val].totalFactura === 0 || this.registrosGuardados[val].costoEnvioEUDls === 0 ){
+		    		this.registrosGuardados[val].comprobacionCostoImportacion = sumaCostoFigura * 0.15;
+		    	}
+				else{
+					this.registrosGuardados[val].comprobacionCostoImportacion = parseFloat(this.registrosGuardados[val].costoImportacionR);
+				}
 		    	this.registrosGuardados[val].sumaCostoTotalFiguras = sumaCostoTotalFiguras;
 		    	this.registrosGuardados[val].sumaTotal = sumaCostoFigura + sumaCostoEnvioEU + sumaCostoImportacion + parseFloat(this.registrosGuardados[val].costoEnvioMX);
 		    	
